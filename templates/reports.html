@@ -1,0 +1,30 @@
+{% extends 'base.html'%}
+
+{% block title %}
+All reports
+{% endblock %}
+
+{%block body %}
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+          <nav class="my-2 my-md-0 mr-md-3">
+            <a class="p-2 text-dark" href="/create-report">Create a report</a>
+            <a class="p-2 text-dark" href="#">Reports</a>
+          </nav>
+        </div>
+        <div class="container mt-5">
+            <h1>All reports</h1>
+
+            {% if reports|length > 0 %}
+                {% for rep in reports %}
+                <div class="alert alert-info">
+                    <h2>{{rep.summary}}</h2>
+                    <p>{{rep.user_name}}</p>
+                    <p><b>Date: {{rep.date}}</b></p>
+                    <a href="/reports/id={{ rep.id }}">Description</a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No reports were found in database.</p>
+            {% endif %}
+        </div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html'%}
+
+{% block title %}
+Create a report
+{% endblock %}
+
+{%block body %}
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+          <nav class="my-2 my-md-0 mr-md-3">
+            <a class="p-2 text-dark" href="#">Create a report</a>
+            <a class="p-2 text-dark" href="/reports">Reports</a>
+          </nav>
+        </div>
+        <div class="container">
+            <div id='input-form' class="col-md-6 mb-3">
+                    <form method="post">
+                        <label for="userName">User name</label>
+                        <input type="text" class="form-control" id="userName" name="userName" placeholder="" value="{{user_name}}" maxlength="64">
+                        <div class="invalid-feedback">
+                          Valid user name is required.
+                        </div>
+
+                        <label for="reportSummary">Report summary</label>
+                        <input type="text" class="form-control" id="reportSummary" name="reportSummary" placeholder="" value="" required="" maxlength="300">
+                        <div class="invalid-feedback">
+                          Report summary is required
+                        </div>
+
+                        <label for="reportDescription">Report description</label>
+                        <textarea class="form-control" id="reportDescription" name="reportDescription" rows="10" cols="50" placeholder="" required=""></textarea>
+                        <div class="invalid-feedback">
+                          Report description is required.
+                        </div>
+
+                        <hr class="mb-4">
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">Send a report</button>
+                    </form>
+            </div>
+        </div>
+{% endblock %}
