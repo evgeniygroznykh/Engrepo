@@ -8,6 +8,9 @@ TAGS = ['АКВЛ', 'VAR', 'Выпуск', 'SDNO', 'Hardware', 'Синхрони
         'ЦКА', 'Служебная связь', 'Другое']
 #ENDGLOBAL
 
+def db_exists():
+    pass
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///EngrepoDB'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -23,6 +26,9 @@ class Report(db.Model):
 
     def __repr__(self):
         return '<Report %r' % self.id
+
+
+db.create_all() if not os.path.exists(os.path.join(os.getcwd(), 'EngrepoDB')) else db_exists()
 
 @app.route("/", methods=['POST', 'GET'])
 @app.route("/create-report", methods=['POST', 'GET'])
