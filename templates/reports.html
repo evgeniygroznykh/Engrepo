@@ -22,7 +22,7 @@ All reports
             <h1>All reports</h1>
 
             <hr>
-            <form action='/reports/search_by_tag' method="POST">
+            <form action="/reports/search_by_tag" method="POST">
                 {% if tags|length > 0 %}
                     {% for tag in tags %}
                         <input class="btn btn-warning" type="submit" name="{{ tag }}_button" value="{{ tag }}">

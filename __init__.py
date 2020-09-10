@@ -95,7 +95,12 @@ def search():
 
 @app.route('/reports/search_by_tag', methods=['POST', 'GET'])
 def search_by_tag():
-    pass
+    if request.method == 'POST':
+        for tag in TAGS:
+            if tag + '_button' in request.form.keys():
+                tag_to_search = request.form[tag+'_button']
+                needed_reports = Report.query.filter(Report.tags.ilike(f'%{tag_to_search}%')).order_by(Report.date.desc()).all()
+                return render_template('reports.html', reports=needed_reports, tags=TAGS)
 
 if __name__ == "__main__":
     app.run(debug=True)
