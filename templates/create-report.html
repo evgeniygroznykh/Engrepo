@@ -32,6 +32,14 @@ Create a report
                           Report summary is required
                         </div>
 
+                        <br>
+                        {% if tags|length > 0 %}
+                            {% for tag in tags%}
+                                <button class="btn btn-warning" type="button" onclick="addText(this)" name="{{tag}}_button">{{ tag }}</button>
+                            {% endfor %}
+                        {% endif %}
+                        <br>
+
                         <label for="reportDescription">Report description</label>
                         <textarea class="form-control" id="reportDescription" name="reportDescription" rows="10" cols="50" placeholder="" required=""></textarea>
                         <div class="invalid-feedback">

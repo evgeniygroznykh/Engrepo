@@ -3,6 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
 
+#GLOBAL
+TAGS = ['АКВЛ', 'VAR', 'Выпуск', 'SDNO', 'Hardware', 'Synchronization']
+#ENDGLOBAL
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///EngrepoDB'
@@ -42,7 +45,7 @@ def report():
             return "При отправке отчета произошла ошибка"
     else:
         user_name = f"{os.environ['userdomain']}/{os.environ['username']}"
-        return render_template("create-report.html", user_name=user_name)
+        return render_template("create-report.html", user_name=user_name, tags=TAGS)
 
 @app.route("/reports")
 @app.route("/reports/")
@@ -82,6 +85,14 @@ def report_update(id):
             return "При обновлении отчета произошла ошибка"
     else:
         return render_template("report-update.html", report=report)
+
+@app.route("/search", methods=['POST', 'GET'])
+def search():
+    pass
+
+@app.route('/search_by_tag', methods=['POST', 'GET'])
+def search_by_tag():
+    pass
 
 if __name__ == "__main__":
     app.run(debug=True)

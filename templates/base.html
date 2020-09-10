@@ -8,6 +8,12 @@
             {% block title %}
             {% endblock %}
         </title>
+        <script>
+            function addText(Button) {
+                var input = document.getElementById('reportTags');
+                input.value = input.value + Button.textContent + ' ';
+            }
+        </script>
     </head>
     <body>
         {% block body %}
