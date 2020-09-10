@@ -4,7 +4,8 @@ from datetime import datetime
 import os
 
 #GLOBAL
-TAGS = ['АКВЛ', 'VAR', 'Выпуск', 'SDNO', 'Hardware', 'Synchronization']
+TAGS = ['АКВЛ', 'VAR', 'Выпуск', 'SDNO', 'Hardware', 'Синхронизация', 'Внешние линии', 'Качество сигнала',
+        'ЦКА', 'Служебная связь', 'Другое']
 #ENDGLOBAL
 
 app = Flask(__name__)
@@ -84,7 +85,7 @@ def report_update(id):
         except:
             return "При обновлении отчета произошла ошибка"
     else:
-        return render_template("report-update.html", report=report)
+        return render_template("report-update.html", report=report, tags=TAGS)
 
 @app.route("/search", methods=['POST', 'GET'])
 def search():

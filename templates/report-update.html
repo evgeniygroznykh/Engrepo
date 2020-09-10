@@ -29,8 +29,16 @@ Updating report
                         <label for="reportTags">Tags</label>
                         <input type="text" class="form-control" id="reportTags" name="reportTags" placeholder="" value="{{ report.tags }}" required="" maxlength="300">
                         <div class="invalid-feedback">
-                          Report summary is required
+                          Report tags are required
                         </div>
+
+                        <br>
+                        {% if tags|length > 0 %}
+                            {% for tag in tags%}
+                                <button class="btn btn-warning" type="button" onclick="addText(this)" name="{{tag}}_button">{{ tag }}</button>
+                            {% endfor %}
+                        {% endif %}
+                        <br>
 
                         <label for="reportDescription">Report description</label>
                         <textarea class="form-control" id="reportDescription" name="reportDescription" rows="10" cols="50" placeholder="" required="">{{ report.description }}</textarea>
