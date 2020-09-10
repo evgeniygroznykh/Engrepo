@@ -47,11 +47,11 @@ def report():
         user_name = f"{os.environ['userdomain']}/{os.environ['username']}"
         return render_template("create-report.html", user_name=user_name, tags=TAGS)
 
-@app.route("/reports")
-@app.route("/reports/")
+@app.route("/reports", methods=['POST', 'GET'])
+@app.route("/reports/", methods=['POST', 'GET'])
 def reports():
     reports = Report.query.order_by(Report.date.desc()).all()
-    return render_template("reports.html", reports=reports)
+    return render_template("reports.html", reports=reports, tags=TAGS)
 
 @app.route("/reports/id=<int:id>")
 def report_details(id):
@@ -88,9 +88,12 @@ def report_update(id):
 
 @app.route("/search", methods=['POST', 'GET'])
 def search():
-    pass
+    if request.method == 'POST':
+        search_string = request.form['search_string']
+        needed_reports = Report.query.filter(Report.summary.ilike(f'%{search_string}%')).filter(Report.description.ilike(f'%{search_string}%')).order_by(Report.date.desc()).all()
+        return render_template('reports.html', reports=needed_reports, tags=TAGS)
 
-@app.route('/search_by_tag', methods=['POST', 'GET'])
+@app.route('/reports/search_by_tag', methods=['POST', 'GET'])
 def search_by_tag():
     pass
 
