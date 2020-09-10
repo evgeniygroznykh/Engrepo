@@ -9,11 +9,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///EngrepoDB'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-
 class Report(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_name = f"{os.environ['userdomain']}/{os.environ['username']}"
     summary = db.Column(db.String(300), nullable=False)
+    tags = db.Column(db.Text, nullable = False)
     description = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -24,18 +24,22 @@ class Report(db.Model):
 @app.route("/create-report", methods=['POST', 'GET'])
 @app.route("/create-report/", methods=['POST', 'GET'])
 def report():
+    if not os.path.exists(os.path.join(os.getcwd(), 'EngrepoDB')):
+        db.create_all()
+
     if request.method == 'POST':
         user_name = request.form['userName']
         report_summary = request.form['reportSummary']
+        report_tags = request.form['reportTags']
         report_description = request.form['reportDescription']
 
-        report = Report(user_name = user_name, summary=report_summary, description=report_description)
-        try:
-            db.session.add(report)
-            db.session.commit()
-            return redirect('/reports')
-        except:
-            return "При отправке отчета произошла ошибка"
+        report = Report(user_name = user_name, summary = report_summary, tags = report_tags, description = report_description)
+        # try:
+        db.session.add(report)
+        db.session.commit()
+        return redirect('/reports')
+        # except:
+        #     return "При отправке отчета произошла ошибка"
     else:
         user_name = f"{os.environ['userdomain']}/{os.environ['username']}"
         return render_template("create-report.html", user_name=user_name)
@@ -68,6 +72,7 @@ def report_update(id):
     if request.method == 'POST':
         report.user_name = request.form['userName']
         report.summary = request.form['reportSummary']
+        report.tags = request.form['reportTags']
         report.description = request.form['reportDescription']
 
         try:
