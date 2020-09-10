@@ -34,12 +34,12 @@ def report():
         report_description = request.form['reportDescription']
 
         report = Report(user_name = user_name, summary = report_summary, tags = report_tags, description = report_description)
-        # try:
-        db.session.add(report)
-        db.session.commit()
-        return redirect('/reports')
-        # except:
-        #     return "При отправке отчета произошла ошибка"
+        try:
+            db.session.add(report)
+            db.session.commit()
+            return redirect('/reports')
+        except:
+            return "При отправке отчета произошла ошибка"
     else:
         user_name = f"{os.environ['userdomain']}/{os.environ['username']}"
         return render_template("create-report.html", user_name=user_name)
