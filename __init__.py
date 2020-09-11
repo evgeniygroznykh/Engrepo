@@ -2,10 +2,12 @@ from flask import Flask, render_template, url_for, request, redirect
 from models.dbconn import DBContext as DBC
 import models.report
 import os
+import json
 
 #GLOBAL
-TAGS = ['АКВЛ', 'VAR', 'Выпуск', 'SDNO', 'Hardware', 'Синхронизация', 'Внешние линии', 'Качество сигнала',
-        'ЦКА', 'Служебная связь', 'Другое']
+with open('cfg/config.json', 'r', encoding='utf-8') as read_json_config:
+    tags_json = json.load(read_json_config)
+TAGS = tags_json['tags']
 #ENDGLOBAL
 
 app = Flask(__name__)
