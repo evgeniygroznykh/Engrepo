@@ -10,7 +10,9 @@ class DBContext():
 
     @staticmethod
     def create_db(app:Flask):
-        database = SQLAlchemy(app)
+        database = SQLAlchemy()
+        database.app = app
+        database.init_app(app)
         database.create_all()
         return database
 
