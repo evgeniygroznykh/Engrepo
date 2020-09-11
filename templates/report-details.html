@@ -4,6 +4,9 @@
 {{ report.summary }}
 {% endblock %}
 
+{% block add_scripts %}
+{% endblock %}
+
 {%block body %}
 <div class="container mt-5">
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
@@ -14,7 +17,7 @@
     </div>
     <h1>{{ report.summary }}</h1>
     <div class="alert alert-info">
-        <p>{{ report.description }}</p>
+        <p id="desc"><b>Description:</b> {{ report.description }}</p>
         <p><b>Date: {{report.date}}</b></p>
         <a href="/reports/id={{ report.id }}/delete" class="btn btn-danger">Delete</a>
         <a href="/reports/id={{ report.id }}/update" class="btn btn-success">Edit</a>

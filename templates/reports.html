@@ -35,8 +35,8 @@ All reports
                 {% for rep in reports %}
                 <div class="alert alert-info">
                     <h2>{{rep.summary}}</h2>
-                    <p>{{rep.tags}}</p>
-                    <p>{{rep.user_name}}</p>
+                    <p><b>Tags:</b> {{rep.tags}}</p>
+                    <p><b>User name:</b> {{rep.user_name}}</p>
                     <p><b>Date: {{rep.date}}</b></p>
                     <a href="/reports/id={{ rep.id }}">Description</a>
                 </div>
