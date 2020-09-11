@@ -2,7 +2,7 @@ from models.report import Report, db
 from cfg.config import get_tags
 from flask import render_template, url_for, request, redirect, Blueprint
 from models.dbconn import DBContext as DBC
-import os
+
 
 TAGS = get_tags()
 BLUEPRINTS = []
@@ -28,8 +28,7 @@ def report():
         except:
             return "При отправке отчета произошла ошибка"
     else:
-        user_name = f"{os.environ['userdomain']}/{os.environ['username']}"
-        return render_template("create-report.html", user_name=user_name, tags=TAGS)
+        return render_template("create-report.html", tags=TAGS)
 
 reports_page = Blueprint('reports_page', __name__, static_folder='static', template_folder='template')
 BLUEPRINTS.append(reports_page)
