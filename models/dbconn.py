@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 import os
 
 class DBContext():
@@ -9,8 +8,7 @@ class DBContext():
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     @staticmethod
-    def create_db(app:Flask):
-        database = SQLAlchemy()
+    def create_db(database, app:Flask):
         database.app = app
         database.init_app(app)
         database.create_all()
