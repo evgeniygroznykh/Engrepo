@@ -1,10 +1,30 @@
 {% extends 'base.html'%}
 
+{% block my_styles %}
+{{super()}}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom/main.css') }}">
+{% endblock %}
+
 {% block title %}
 {{ report.summary }}
 {% endblock %}
 
 {% block add_scripts %}
+<script>
+    var flag = 0;
+    function read(){
+        if(flag == 0){
+            document.getElementById("more").style.display="inline";
+            document.getElementById("more_link").innerHTML="Read less";
+            flag = 1;
+        }
+        else{
+            document.getElementById("more").style.display="none";
+            document.getElementById("more_link").innerHTML="Read more";
+            flag = 0;
+        }
+    }
+</script>
 {% endblock %}
 
 {%block body %}
@@ -17,7 +37,10 @@
     </div>
     <h1>{{ report.summary }}</h1>
     <div class="alert alert-info">
-        <p id="desc"><b>Description:</b> {{ report.description }}</p>
+        <p id="desc"><b>Description:</b> {{ report.description[:262] }}<span id="more">{{report.description[262:]}}</span></p>
+        <button onclick="read()" id="more_link">Read more..</button>
+        <br>
+        <br>
         <p><b>Date: {{report.date}}</b></p>
         <a href="/reports/id={{ report.id }}/delete" class="btn btn-danger">Delete</a>
         <a href="/reports/id={{ report.id }}/update" class="btn btn-success">Edit</a>

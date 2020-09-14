@@ -1,0 +1,11 @@
+button {
+}
+
+#desc {
+     word-wrap: break-word;
+     text-align: justify;
+}
+
+#more {
+    display: none;
+}
