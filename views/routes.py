@@ -1,6 +1,7 @@
 from models.report import Report, db
 from cfg.config import get_tags
 from flask import render_template, url_for, request, redirect, Blueprint
+from sqlalchemy import or_
 from models.dbconn import DBContext as DBC
 
 
@@ -88,8 +89,8 @@ BLUEPRINTS.append(search_page)
 def search():
     if request.method == 'POST':
         search_string = request.form['search_string']
-        needed_reports = Report.query.filter(Report.summary.ilike(f'%{search_string}%'))\
-                                                    .filter(Report.description.ilike(f'%{search_string}%'))\
+        needed_reports = Report.query.filter(or_(Report.summary.ilike(f'%{search_string}%'),
+                                                 Report.description.ilike(f'%{search_string}%')))\
                                                     .order_by(Report.date.desc()).all()
         return render_template('reports.html', reports=needed_reports, tags=TAGS)
 
