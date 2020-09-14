@@ -5,6 +5,9 @@
 # Database files
 *.db
 
+# .idea folder
+.idea
+
 # Python cache files
 __pycache__/
 
