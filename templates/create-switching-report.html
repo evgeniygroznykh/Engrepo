@@ -1,0 +1,90 @@
+{% extends 'base.html'%}
+
+{% block title %}
+Create a report
+{% endblock %}
+
+{% block add_scripts %}
+        <script>
+            function addText(Button) {
+                var input = document.getElementById('reportTags');
+                input.value = input.value + Button.textContent + ' ';
+            }
+        </script>
+{% endblock %}
+
+{%block body %}
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+          <nav class="my-2 my-md-0 mr-md-3">
+            <a class="p-2 text-dark" href="/create-report">Create a report</a>
+            <a class="p-2 text-dark" href="#">Create a switching report</a>
+            <a class="p-2 text-dark" href="/reports">Reports</a>
+              <a class="p-2 text-dark" href="/switching-reports">Switching reports</a>
+          </nav>
+        </div>
+        <div class="container">
+            <div id='input-form' class="col-md-6 mb-3">
+                    <form method="post">
+                        <label for="switchingReportWorkType">Work type</label>
+                        <div class="input-group mb-3">
+                          <select class="custom-select" id="switchingReportWorkType" name="switchingReportWorkType">
+                              <option selected>Choose a work type</option>
+                            {% for work_type in work_types %}
+                                <option value="{{ work_type }}">{{ work_type }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+
+                        <label for="switchingCustomer">Work type</label>
+                        <div class="input-group mb-3">
+                          <select class="custom-select" id="switchingCustomer" name="switchingCustomer">
+                              <option selected>Choose a customer</option>
+                            {% for customer in customers %}
+                                <option value="{{ customer }}">{{ customer }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+
+                        <label for="shiftComp">Shift composition</label>
+                        <div class="input-group mb-3">
+                          <select class="custom-select" id="shiftComp" name="shiftComp">
+                              <option selected>Choose a shift</option>
+                            {% for shift in shifts %}
+                                <option value="{{ shift }}">{{ shift }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+
+                        <label for="translationStartTime">Start Time</label>
+                        <input type="text" class="form-control" id="translationStartTime" name="translationStartTime" placeholder="" value="" required="">
+                        <div class="invalid-feedback">
+                          Valid start time is required.
+                        </div>
+
+                        <label for="translationEndTime">End Time</label>
+                        <input type="text" class="form-control" id="translationEndTime" name="translationEndTime" placeholder="" value="" required="">
+                        <div class="invalid-feedback">
+                          Valid end time is required.
+                        </div>
+
+                        <label for="switchingSource">Source</label>
+                        <input type="text" class="form-control" id="switchingSource" name="switchingSource" placeholder="" value="" required="" maxlength="50">
+                        <div class="invalid-feedback">
+                          Switching source is required
+                        </div>
+
+                        <label for="switchingDestination">Destination</label>
+                        <input type="text" class="form-control" id="switchingDestination" name="switchingDestination" placeholder="" value="" required="" maxlength="50">
+                        <div class="invalid-feedback">
+                          Switching destination is required
+                        </div>
+
+                        <label for="switchingReportComment">Report description</label>
+                        <textarea class="form-control" id="switchingReportComment" name="switchingReportComment" rows="10" cols="50" placeholder=""></textarea>
+
+                        <hr class="mb-4">
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">Send a report</button>
+                    </form>
+            </div>
+        </div>
+{% endblock %}

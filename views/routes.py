@@ -1,11 +1,15 @@
 from models.report import Report, db
-from cfg.config import get_tags, get_users
+from models.switching_report import SwitchingReport
+from cfg.config import get_tags, get_users, get_work_types, get_shifts, get_customers
 from flask import render_template, url_for, request, redirect, Blueprint
 from sqlalchemy import or_
 from models.dbconn import DBContext as DBC
 
 TAGS = get_tags()
+CUSTOMERS = get_customers()
 USERS = get_users()
+SHIFTS = get_shifts()
+WORK_TYPES = get_work_types()
 BLUEPRINTS = []
 
 report_page = Blueprint('report_page', __name__, static_folder='static', template_folder='template')
@@ -85,6 +89,45 @@ def report_update(id):
     else:
         return render_template("report-update.html", report=report, tags=TAGS)
 
+switching_report_page = Blueprint('switching_report_page', __name__, static_folder='static', template_folder='template')
+BLUEPRINTS.append(switching_report_page)
+@DBC.verify_db('Engrepo')
+@switching_report_page.route("/create-switching-report/", methods=['POST', 'GET'])
+@switching_report_page.route("/create-switching-report", methods=['POST', 'GET'])
+def switching_report():
+    return "TO DO"
+    #UNCOMMENT THIS
+    # if request.method == 'POST':
+    #     work_type = request.form['switchingReportWorkType']
+    #     customer = request.form['switchingCustomer']
+    #     shift_comp = request.form['']
+    #     start_time = request.form['translationStartTime']
+    #     end_time = request.form['translationEndTime']
+    #     switching_source = request.form['switchingSource']
+    #     switching_destination = request.form['switchingDestination']
+    #     comment = request.form['switchingReportComment']
+    #
+    #     switching_report = SwitchingReport(work_type=work_type, customer=customer, start_time=start_time,
+    #                                        end_time=end_time, source=switching_source, destination=switching_destination,
+    #                                        shift_comp=shift_comp, comment=comment)
+    #
+    #     try:
+    #         db.session.add(switching_report)
+    #         db.session.commit()
+    #         return redirect('/switching-reports')
+    #     except:
+    #         return "При отправке отчета произошла ошибка"
+    # else:
+    #     return render_template("create-switching-report.html", work_types=WORK_TYPES, customers=CUSTOMERS, shifts=SHIFTS)
+
+switching_reports_page = Blueprint('switching_reports_page', __name__, static_folder='static', template_folder='template')
+BLUEPRINTS.append(switching_reports_page)
+@DBC.verify_db('Engrepo')
+@switching_reports_page.route("/switching-reports", methods=['POST', 'GET'])
+@switching_reports_page.route("/switching-reports/", methods=['POST', 'GET'])
+def switching_reports():
+    return "TO DO"
+
 search_page = Blueprint('search_page', __name__, static_folder='static', template_folder='template')
 BLUEPRINTS.append(search_page)
 @DBC.verify_db('Engrepo')
@@ -109,3 +152,4 @@ def search_by_tag():
                 needed_reports = Report.query.filter(Report.tags.ilike(f'%{tag_to_search}%'))\
                                                             .order_by(Report.date.desc()).all()
                 return render_template('reports.html', reports=needed_reports, tags=TAGS)
+
