@@ -1,11 +1,11 @@
 from models.report import Report, db
-from cfg.config import get_tags
+from cfg.config import get_tags, get_users
 from flask import render_template, url_for, request, redirect, Blueprint
 from sqlalchemy import or_
 from models.dbconn import DBContext as DBC
 
-
 TAGS = get_tags()
+USERS = get_users()
 BLUEPRINTS = []
 
 report_page = Blueprint('report_page', __name__, static_folder='static', template_folder='template')
@@ -21,7 +21,10 @@ def report():
         report_tags = request.form['reportTags']
         report_description = request.form['reportDescription']
 
-        report = Report(user_name = user_name, summary = report_summary, tags = report_tags, description = report_description)
+        report = Report(user_name = USERS[user_name.lower().title()] if user_name.lower().title() in USERS.keys()
+                                                                    else user_name, summary = report_summary,
+                                                                                        tags = report_tags,
+                                                                                        description = report_description)
         try:
             db.session.add(report)
             db.session.commit()
