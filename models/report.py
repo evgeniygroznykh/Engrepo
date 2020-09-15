@@ -8,7 +8,7 @@ class Report(db.Model):
     summary = db.Column(db.String(300), nullable=False)
     tags = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
-    date = db.Column(db.DateTime, default=datetime.utcnow)
+    date = db.Column(db.DateTime, default=datetime.now)
     remarks = db.Column(db.Text)
 
     def __repr__(self):
