@@ -5,6 +5,18 @@
 {% endblock %}
 
 {% block add_scripts %}
+        <script>
+            function chooseWorkType(Button) {
+                var select = document.getElementById('switchingReportWorkType');
+                select.value = Button.textContent;
+            }
+        </script>
+        <script>
+            function chooseCustomer(Button) {
+                var select = document.getElementById('switchingCustomer');
+                select.value = Button.textContent;
+            }
+        </script>
 {% endblock %}
 
 {%block body %}
@@ -33,6 +45,14 @@
                       </select>
                     </div>
 
+                    {% if work_types|length > 0 %}
+                        {% for work_type in work_types%}
+                            <button class="btn btn-warning" type="button" onclick="chooseWorkType(this)" name="{{work_type}}_button">{{ work_type }}</button>
+                        {% endfor %}
+                    {% endif %}
+                    <br>
+                    <hr class="mb-4">
+
                     <label for="switchingCustomer">Заказчик</label>
                     <div class="input-group mb-3">
                       <select class="custom-select" id="switchingCustomer" name="switchingCustomer">
@@ -42,6 +62,14 @@
                         {% endfor %}
                       </select>
                     </div>
+
+                    {% if customers|length > 0 %}
+                        {% for cust in customers%}
+                            <button class="btn btn-warning" type="button" onclick="chooseCustomer(this)" name="{{cust}}_button">{{ cust }}</button>
+                        {% endfor %}
+                    {% endif %}
+                    <br>
+                    <hr class="mb-4">
 
                     <label for="shiftComp">Состав смены</label>
                     <div class="input-group mb-3">
