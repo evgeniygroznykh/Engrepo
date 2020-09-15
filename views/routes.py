@@ -39,7 +39,7 @@ def report():
         except:
             return "При отправке отчета произошла ошибка"
     else:
-        return render_template("create-report.html", tags=TAGS)
+        return render_template("create-report.html", tags=TAGS, remarks='Без замечаний')
 
 reports_page = Blueprint('reports_page', __name__, static_folder='static', template_folder='template')
 BLUEPRINTS.append(reports_page)

@@ -9,7 +9,7 @@ class Report(db.Model):
     tags = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, default=datetime.now)
-    remarks = db.Column(db.Text)
+    remarks = db.Column(db.Text, default='Без замечаний')
 
     def __repr__(self):
         return '<Report %r' % self.id
