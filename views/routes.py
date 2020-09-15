@@ -205,3 +205,15 @@ def search_by_tag():
                                                             .order_by(Report.date.desc()).all()
                 return render_template('reports.html', reports=needed_reports, tags=TAGS)
 
+sw_search_page = Blueprint('sw_search_page', __name__, static_folder='static', template_folder='template')
+BLUEPRINTS.append(sw_search_page)
+@DBC.verify_db('Engrepo')
+@sw_search_page.route("/sw_search", methods=['POST', 'GET'])
+def sw_search():
+    if request.method == 'POST':
+        search_string = request.form['search_string']
+        needed_switching_reports = SwitchingReport.query.filter(or_(SwitchingReport.work_type.ilike(f'%{search_string}%'),
+                                                 SwitchingReport.comment.ilike(f'%{search_string}%')),)\
+                                                    .order_by(SwitchingReport.date.desc()).all()
+        return render_template('switching-reports.html', switching_reports=needed_switching_reports)
+
