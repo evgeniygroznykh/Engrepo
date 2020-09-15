@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block title %}
-{{ report.summary }}
+Детали инженерного отчёта
 {% endblock %}
 
 {% block add_scripts %}
@@ -15,12 +15,12 @@
     function read(){
         if(flag == 0){
             document.getElementById("more").style.display="inline";
-            document.getElementById("more_link").innerHTML="Read less";
+            document.getElementById("more_link").innerHTML="Скрыть";
             flag = 1;
         }
         else{
             document.getElementById("more").style.display="none";
-            document.getElementById("more_link").innerHTML="Read more";
+            document.getElementById("more_link").innerHTML="Читать подробнее..";
             flag = 0;
         }
     }
@@ -31,20 +31,22 @@
 <div class="container mt-5">
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="/create-report">Create a report</a>
-        <a class="p-2 text-dark" href="/reports">Reports</a>
+            <a class="p-2 text-dark" href="/create-report">Создать инженерный отчёт</a>
+            <a class="p-2 text-dark" href="/create-switching-report">Создать отчёт о коммутации</a>
+            <a class="p-2 text-dark" href="/reports">Инженерные отчёты</a>
+              <a class="p-2 text-dark" href="/switching-reports">Отчёты о коммутации</a>
       </nav>
     </div>
     <h1>{{ report.summary }}</h1>
     <div class="alert alert-info">
-        <p id="desc"><b>Description:</b> {{ report.description[:262] }}<span id="more">{{report.description[262:]}}</span></p>
+        <p id="desc"><b>Подробное описание:</b> {{ report.description[:262] }}<span id="more">{{report.description[262:]}}</span></p>
         <button onclick="read()" id="more_link">Read more..</button>
         <br>
         <br>
-        <p><b>Remarks:</b> {{ report.remarks }}</p>
-        <p><b>Date: {{report.date}}</b></p>
-        <a href="/reports/id={{ report.id }}/delete" class="btn btn-danger">Delete</a>
-        <a href="/reports/id={{ report.id }}/update" class="btn btn-success">Edit</a>
+        <p><b>Замечания:</b> {{ report.remarks }}</p>
+        <p><b>Дата создания отчёта: {{report.date}}</b></p>
+        <a href="/reports/id={{ report.id }}/delete" class="btn btn-danger">Удалить</a>
+        <a href="/reports/id={{ report.id }}/update" class="btn btn-success">Редактировать</a>
     </div>
 </div>
 {% endblock %}
