@@ -2,7 +2,7 @@ from models.report import Report, db
 from models.switching_report import SwitchingReport
 from cfg.config import get_tags, get_users, get_work_types, get_shifts, get_customers
 from flask import render_template, url_for, request, redirect, Blueprint
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 from models.dbconn import DBContext as DBC
 import datetime as dt
 
@@ -222,3 +222,29 @@ def sw_search():
                                                     .order_by(SwitchingReport.date.desc()).all()
         return render_template('switching-reports.html', switching_reports=needed_switching_reports)
 
+filter_page = Blueprint('filter_page', __name__, static_folder='static', template_folder='template')
+BLUEPRINTS.append(filter_page)
+@DBC.verify_db('Engrepo')
+@filter_page.route("/filter_reports", methods=['POST', 'GET'])
+def filter_reports():
+    if request.method == 'POST':
+        filter_from_date = request.form['sortStartTime']
+        filter_to_date = request.form['sortEndTime']
+
+        filtered_reports = Report.query.filter(and_(Report.date >= filter_from_date, Report.date <= filter_to_date))\
+                                        .order_by(Report.date.desc()).all()
+        return render_template('reports.html', reports=filtered_reports, tags=TAGS)
+
+
+sw_filter_page = Blueprint('sw_filter_page', __name__, static_folder='static', template_folder='template')
+BLUEPRINTS.append(sw_filter_page)
+@DBC.verify_db('Engrepo')
+@sw_filter_page.route("/sw_filter_reports", methods=['POST', 'GET'])
+def sw_filter_reports():
+    if request.method == 'POST':
+        filter_from_date = request.form['sortStartTime']
+        filter_to_date = request.form['sortEndTime']
+
+        filtered_sw_reports = SwitchingReport.query.filter(and_(SwitchingReport.date >= filter_from_date, SwitchingReport.date <= filter_to_date))\
+                                                    .order_by(SwitchingReport.date.desc()).all()
+        return render_template('switching-reports.html', switching_reports=filtered_sw_reports)
