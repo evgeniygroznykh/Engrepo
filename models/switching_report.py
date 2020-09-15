@@ -13,7 +13,7 @@ class SwitchingReport(db.Model):
     source = db.Column(db.String(50), nullable=False)
     destination = db.Column(db.String(50), nullable=False)
     customer = db.Column(db.String(50), nullable=False)
-    remarks = db.Column(db.Text)
+    remarks = db.Column(db.Text, default='Без замечаний')
 
 
     def __repr__(self):

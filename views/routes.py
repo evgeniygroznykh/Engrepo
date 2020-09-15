@@ -121,7 +121,7 @@ def switching_report():
         except Exception as exc:
             return 'Args: %s; Error: %s;' % (exc.args, exc)
     else:
-        return render_template("create-switching-report.html", work_types=WORK_TYPES, customers=CUSTOMERS, shifts=SHIFTS)
+        return render_template("create-switching-report.html", work_types=WORK_TYPES, customers=CUSTOMERS, shifts=SHIFTS, remarks='Без замечаний')
 
 switching_reports_page = Blueprint('switching_reports_page', __name__, static_folder='static', template_folder='template')
 BLUEPRINTS.append(switching_reports_page)
