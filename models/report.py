@@ -1,8 +1,7 @@
-from flask_sqlalchemy import SQLAlchemy
+from models.shared_db import db
 from datetime import datetime
 
 
-db = SQLAlchemy()
 class Report(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(300), nullable=False)

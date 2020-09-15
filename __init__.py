@@ -1,5 +1,5 @@
 from flask import Flask
-from models.report import db
+from models.shared_db import db
 from views.routes import BLUEPRINTS
 from models.dbconn import DBContext as DBC
 

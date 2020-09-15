@@ -4,6 +4,7 @@ from cfg.config import get_tags, get_users, get_work_types, get_shifts, get_cust
 from flask import render_template, url_for, request, redirect, Blueprint
 from sqlalchemy import or_
 from models.dbconn import DBContext as DBC
+import datetime as dt
 
 TAGS = get_tags()
 CUSTOMERS = get_customers()
@@ -95,30 +96,28 @@ BLUEPRINTS.append(switching_report_page)
 @switching_report_page.route("/create-switching-report/", methods=['POST', 'GET'])
 @switching_report_page.route("/create-switching-report", methods=['POST', 'GET'])
 def switching_report():
-    return "TO DO"
-    #UNCOMMENT THIS
-    # if request.method == 'POST':
-    #     work_type = request.form['switchingReportWorkType']
-    #     customer = request.form['switchingCustomer']
-    #     shift_comp = request.form['']
-    #     start_time = request.form['translationStartTime']
-    #     end_time = request.form['translationEndTime']
-    #     switching_source = request.form['switchingSource']
-    #     switching_destination = request.form['switchingDestination']
-    #     comment = request.form['switchingReportComment']
-    #
-    #     switching_report = SwitchingReport(work_type=work_type, customer=customer, start_time=start_time,
-    #                                        end_time=end_time, source=switching_source, destination=switching_destination,
-    #                                        shift_comp=shift_comp, comment=comment)
-    #
-    #     try:
-    #         db.session.add(switching_report)
-    #         db.session.commit()
-    #         return redirect('/switching-reports')
-    #     except:
-    #         return "При отправке отчета произошла ошибка"
-    # else:
-    #     return render_template("create-switching-report.html", work_types=WORK_TYPES, customers=CUSTOMERS, shifts=SHIFTS)
+    if request.method == 'POST':
+        work_type = request.form['switchingReportWorkType']
+        customer = request.form['switchingCustomer']
+        shift_comp = request.form['shiftComp']
+        start_time = dt.datetime.strptime(request.form['translationStartTime'], '%Y-%m-%dT%H:%M')
+        end_time = dt.datetime.strptime(request.form['translationEndTime'], '%Y-%m-%dT%H:%M')
+        switching_source = request.form['switchingSource']
+        switching_destination = request.form['switchingDestination']
+        comment = request.form['switchingReportComment']
+
+        switching_report = SwitchingReport(work_type=work_type, customer=customer, start_time=start_time,
+                                           end_time=end_time, source=switching_source, destination=switching_destination,
+                                           shift_comp=shift_comp, comment=comment)
+
+        try:
+            db.session.add(switching_report)
+            db.session.commit()
+            return redirect('/switching-reports')
+        except Exception as exc:
+            return 'Args: %s; Error: %s;' % (exc.args, exc)
+    else:
+        return render_template("create-switching-report.html", work_types=WORK_TYPES, customers=CUSTOMERS, shifts=SHIFTS)
 
 switching_reports_page = Blueprint('switching_reports_page', __name__, static_folder='static', template_folder='template')
 BLUEPRINTS.append(switching_reports_page)
@@ -126,7 +125,8 @@ BLUEPRINTS.append(switching_reports_page)
 @switching_reports_page.route("/switching-reports", methods=['POST', 'GET'])
 @switching_reports_page.route("/switching-reports/", methods=['POST', 'GET'])
 def switching_reports():
-    return "TO DO"
+    switching_reports = SwitchingReport.query.order_by(SwitchingReport.date.desc()).all()
+    return render_template("switching-reports.html", switching_reports=switching_reports)
 
 search_page = Blueprint('search_page', __name__, static_folder='static', template_folder='template')
 BLUEPRINTS.append(search_page)

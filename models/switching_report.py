@@ -1,10 +1,10 @@
-from flask_sqlalchemy import SQLAlchemy
+from models.shared_db import db
 from datetime import datetime
 
 
-db = SQLAlchemy()
 class SwitchingReport(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.DateTime, default=datetime.utcnow())
     work_type = db.Column(db.String(300), nullable=False)
     shift_comp = db.Column(db.String(300), nullable=False)
     comment = db.Column(db.Text, nullable=False)

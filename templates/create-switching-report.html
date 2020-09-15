@@ -55,17 +55,19 @@ Create a report
                           </select>
                         </div>
 
-                        <label for="translationStartTime">Start Time</label>
-                        <input type="text" class="form-control" id="translationStartTime" name="translationStartTime" placeholder="" value="" required="">
+                        <label for="translationStartTime">Start Time</label><br>
+                        <input type="datetime-local" id="translationStartTime" name="translationStartTime" placeholder="" value="" required="">
                         <div class="invalid-feedback">
                           Valid start time is required.
                         </div>
+                        <br>
 
-                        <label for="translationEndTime">End Time</label>
-                        <input type="text" class="form-control" id="translationEndTime" name="translationEndTime" placeholder="" value="" required="">
+                        <label for="translationEndTime">End Time</label><br>
+                        <input type="datetime-local"  id="translationEndTime" name="translationEndTime" placeholder="" value="" required="">
                         <div class="invalid-feedback">
                           Valid end time is required.
                         </div>
+                        <br>
 
                         <label for="switchingSource">Source</label>
                         <input type="text" class="form-control" id="switchingSource" name="switchingSource" placeholder="" value="" required="" maxlength="50">

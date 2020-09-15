@@ -21,26 +21,17 @@ All reports
             </div>
             <br>
 
-            <h1>All reports</h1>
+            <h1>All switching reports</h1>
 
-            <hr>
-            <form action="/reports/search_by_tag" method="POST">
-                {% if tags|length > 0 %}
-                    {% for tag in tags %}
-                        <input class="btn btn-warning" type="submit" name="{{ tag }}_button" value="{{ tag }}">
-                    {% endfor %}
-                {% endif %}
-            </form>
-            <hr>
-
-            {% if reports|length > 0 %}
-                {% for rep in reports %}
+            {% if switching_reports|length > 0 %}
+                {% for sw_rep in switching_reports %}
                 <div class="alert alert-info">
-                    <h2>{{rep.summary}}</h2>
-                    <p><b>Tags:</b> {{rep.tags}}</p>
-                    <p><b>User name:</b> {{rep.user_name}}</p>
-                    <p><b>Date: {{rep.date}}</b></p>
-                    <a href="/reports/id={{ rep.id }}">Description</a>
+                    <h2>{{sw_rep.work_type}} for {{sw_rep.customer}}</h2>
+                    <p><b>Shift:</b> {{sw_rep.shift_comp}}</p>
+                    <p><b>Broadcast start time:</b> {{sw_rep.start_time}}</p>
+                    <p><b>Broadcast end time:</b> {{sw_rep.end_time}}</p>
+                    <p><b>Source:</b> {{sw_rep.source}}</p>
+                    <p><b>Destination:</b> {{sw_rep.destination}}</p>
                 </div>
                 {% endfor %}
             {% else %}
