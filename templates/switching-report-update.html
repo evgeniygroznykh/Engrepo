@@ -17,70 +17,74 @@ Create a report
           </nav>
         </div>
         <div class="container">
-            <div id='input-form' class="col-md-6 mb-3">
-                    <form method="post">
-                        <label for="switchingReportWorkType">Work type</label>
-                        <div class="input-group mb-3">
-                          <select class="custom-select" id="switchingReportWorkType" name="switchingReportWorkType">
-                              <option selected>{{ switching_report.work_type}}</option>
-                            {% for work_type in work_types %}
-                                <option value="{{ work_type }}">{{ work_type }}</option>
-                            {% endfor %}
-                          </select>
-                        </div>
+            <form method="post">
+                <div id='input-form-2' class="col-md-6 mb-3" style="float: right;">
+                    <label for="switchingReportRemarks">Remarks</label>
+                    <textarea class="form-control" id="switchingReportRemarks" name="switchingReportRemarks" rows="13" cols="50" placeholder="">{{ switching_report.remarks }}</textarea>
+                </div>
+                <div id='input-form' class="col-md-6 mb-3">
+                    <label for="switchingReportWorkType">Work type</label>
+                    <div class="input-group mb-3">
+                      <select class="custom-select" id="switchingReportWorkType" name="switchingReportWorkType">
+                          <option selected>{{ switching_report.work_type}}</option>
+                        {% for work_type in work_types %}
+                            <option value="{{ work_type }}">{{ work_type }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
 
-                        <label for="switchingCustomer">Work type</label>
-                        <div class="input-group mb-3">
-                          <select class="custom-select" id="switchingCustomer" name="switchingCustomer">
-                              <option selected>{{ switching_report.customer }}</option>
-                            {% for customer in customers %}
-                                <option value="{{ customer }}">{{ customer }}</option>
-                            {% endfor %}
-                          </select>
-                        </div>
+                    <label for="switchingCustomer">Work type</label>
+                    <div class="input-group mb-3">
+                      <select class="custom-select" id="switchingCustomer" name="switchingCustomer">
+                          <option selected>{{ switching_report.customer }}</option>
+                        {% for customer in customers %}
+                            <option value="{{ customer }}">{{ customer }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
 
-                        <label for="shiftComp">Shift composition</label>
-                        <div class="input-group mb-3">
-                          <select class="custom-select" id="shiftComp" name="shiftComp">
-                              <option selected>{{ switching_report.shift_comp }}</option>
-                            {% for shift in shifts %}
-                                <option value="{{ shift }}">{{ shift }}</option>
-                            {% endfor %}
-                          </select>
-                        </div>
+                    <label for="shiftComp">Shift composition</label>
+                    <div class="input-group mb-3">
+                      <select class="custom-select" id="shiftComp" name="shiftComp">
+                          <option selected>{{ switching_report.shift_comp }}</option>
+                        {% for shift in shifts %}
+                            <option value="{{ shift }}">{{ shift }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
 
-                        <label for="translationStartTime">Start Time</label><br>
-                        <input type="datetime-local" id="translationStartTime" name="translationStartTime" placeholder="" value="{{ start_time }}" required="">
-                        <div class="invalid-feedback">
-                          Valid start time is required.
-                        </div>
-                        <br>
+                    <label for="translationStartTime">Start Time</label><br>
+                    <input type="datetime-local" id="translationStartTime" name="translationStartTime" placeholder="" value="{{ start_time }}" required="">
+                    <div class="invalid-feedback">
+                      Valid start time is required.
+                    </div>
+                    <br>
 
-                        <label for="translationEndTime">End Time</label><br>
-                        <input type="datetime-local"  id="translationEndTime" name="translationEndTime" placeholder="" value="{{ end_time }}" required="">
-                        <div class="invalid-feedback">
-                          Valid end time is required.
-                        </div>
-                        <br>
+                    <label for="translationEndTime">End Time</label><br>
+                    <input type="datetime-local"  id="translationEndTime" name="translationEndTime" placeholder="" value="{{ end_time }}" required="">
+                    <div class="invalid-feedback">
+                      Valid end time is required.
+                    </div>
+                    <br>
 
-                        <label for="switchingSource">Source</label>
-                        <input type="text" class="form-control" id="switchingSource" name="switchingSource" placeholder="" value="{{ switching_report.source }}" required="" maxlength="50">
-                        <div class="invalid-feedback">
-                          Switching source is required
-                        </div>
+                    <label for="switchingSource">Source</label>
+                    <input type="text" class="form-control" id="switchingSource" name="switchingSource" placeholder="" value="{{ switching_report.source }}" required="" maxlength="50">
+                    <div class="invalid-feedback">
+                      Switching source is required
+                    </div>
 
-                        <label for="switchingDestination">Destination</label>
-                        <input type="text" class="form-control" id="switchingDestination" name="switchingDestination" placeholder="" value="{{ switching_report.destination }}" required="" maxlength="50">
-                        <div class="invalid-feedback">
-                          Switching destination is required
-                        </div>
+                    <label for="switchingDestination">Destination</label>
+                    <input type="text" class="form-control" id="switchingDestination" name="switchingDestination" placeholder="" value="{{ switching_report.destination }}" required="" maxlength="50">
+                    <div class="invalid-feedback">
+                      Switching destination is required
+                    </div>
 
-                        <label for="switchingReportComment">Report description</label>
-                        <textarea class="form-control" id="switchingReportComment" name="switchingReportComment" rows="10" cols="50" placeholder="">{{ switching_report.comment }}</textarea>
+                    <label for="switchingReportComment">Report description</label>
+                    <textarea class="form-control" id="switchingReportComment" name="switchingReportComment" rows="10" cols="50" placeholder="">{{ switching_report.comment }}</textarea>
 
-                        <hr class="mb-4">
-                        <button class="btn btn-primary btn-lg btn-block" type="submit">Send a report</button>
-                    </form>
-            </div>
+                    <hr class="mb-4">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Send a report</button>
+                </div>
+            </form>
         </div>
 {% endblock %}

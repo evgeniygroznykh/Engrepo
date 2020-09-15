@@ -41,6 +41,7 @@
         <button onclick="read()" id="more_link">Read more..</button>
         <br>
         <br>
+        <p><b>Remarks:</b> {{ report.remarks }}</p>
         <p><b>Date: {{report.date}}</b></p>
         <a href="/reports/id={{ report.id }}/delete" class="btn btn-danger">Delete</a>
         <a href="/reports/id={{ report.id }}/update" class="btn btn-success">Edit</a>

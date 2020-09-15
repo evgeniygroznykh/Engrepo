@@ -23,43 +23,50 @@ Create a report
           </nav>
         </div>
         <div class="container">
-            <div id='input-form' class="col-md-6 mb-3">
-                    <form method="post">
-                        <label for="userName">User name</label>
-                        <input type="text" class="form-control" id="userName" name="userName" placeholder="Введите имя своей учётной записи" value="" required="" maxlength="64">
-                        <div class="invalid-feedback">
-                          Valid user name is required.
-                        </div>
+            <form method="post">
+                <div id='input-form-2' class="col-md-6 mb-3" style="float: right;">
+                    <label for="reportRemarks">Remarks</label>
+                    <textarea class="form-control" id="reportRemarks" name="reportRemarks" rows="13" cols="50" placeholder="" required=""></textarea>
+                    <div class="invalid-feedback">
+                      Report description is required.
+                    </div>
+                </div>
+                <div id='input-form' class="col-md-6 mb-3">
+                    <label for="userName">User name</label>
+                    <input type="text" class="form-control" id="userName" name="userName" placeholder="Введите имя своей учётной записи" value="" required="" maxlength="64">
+                    <div class="invalid-feedback">
+                      Valid user name is required.
+                    </div>
 
-                        <label for="reportSummary">Report summary</label>
-                        <input type="text" class="form-control" id="reportSummary" name="reportSummary" placeholder="" value="" required="" maxlength="300">
-                        <div class="invalid-feedback">
-                          Report summary is required
-                        </div>
+                    <label for="reportSummary">Report summary</label>
+                    <input type="text" class="form-control" id="reportSummary" name="reportSummary" placeholder="" value="" required="" maxlength="300">
+                    <div class="invalid-feedback">
+                      Report summary is required
+                    </div>
 
-                        <label for="reportTags">Tags</label>
-                        <input type="text" class="form-control" id="reportTags" name="reportTags" placeholder="" value="" required="" maxlength="300">
-                        <div class="invalid-feedback">
-                          Report tags are required
-                        </div>
+                    <label for="reportTags">Tags</label>
+                    <input type="text" class="form-control" id="reportTags" name="reportTags" placeholder="" value="" required="" maxlength="300">
+                    <div class="invalid-feedback">
+                      Report tags are required
+                    </div>
 
-                        <br>
-                        {% if tags|length > 0 %}
-                            {% for tag in tags%}
-                                <button class="btn btn-warning" type="button" onclick="addText(this)" name="{{tag}}_button">{{ tag }}</button>
-                            {% endfor %}
-                        {% endif %}
-                        <br>
+                    <br>
+                    {% if tags|length > 0 %}
+                        {% for tag in tags%}
+                            <button class="btn btn-warning" type="button" onclick="addText(this)" name="{{tag}}_button">{{ tag }}</button>
+                        {% endfor %}
+                    {% endif %}
+                    <br>
+                    <hr class="mb-4">
 
-                        <label for="reportDescription">Report description</label>
-                        <textarea class="form-control" id="reportDescription" name="reportDescription" rows="10" cols="50" placeholder="" required=""></textarea>
-                        <div class="invalid-feedback">
-                          Report description is required.
-                        </div>
-
-                        <hr class="mb-4">
-                        <button class="btn btn-primary btn-lg btn-block" type="submit">Send a report</button>
-                    </form>
-            </div>
+                    <label for="reportDescription">Report description</label>
+                    <textarea class="form-control" id="reportDescription" name="reportDescription" rows="10" cols="50" placeholder="" required=""></textarea>
+                    <div class="invalid-feedback">
+                      Report description is required.
+                    </div>
+                    <hr class="mb-4">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Send a report</button>
+                </div>
+            </form>
         </div>
 {% endblock %}

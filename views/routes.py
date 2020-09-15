@@ -22,14 +22,16 @@ BLUEPRINTS.append(report_page)
 def report():
     if request.method == 'POST':
         user_name = request.form['userName']
-        report_summary = request.form['reportSummary']
-        report_tags = request.form['reportTags']
-        report_description = request.form['reportDescription']
+        summary = request.form['reportSummary']
+        tags = request.form['reportTags']
+        description = request.form['reportDescription']
+        remarks = request.form['reportRemarks']
 
         report = Report(user_name = USERS[user_name.lower().title()] if user_name.lower().title() in USERS.keys()
-                                                                    else user_name, summary = report_summary,
-                                                                                        tags = report_tags,
-                                                                                        description = report_description)
+                                                                    else user_name, summary = summary,
+                                                                                        tags = tags,
+                                                                                        description = description,
+                                                                                        remarks = remarks)
         try:
             db.session.add(report)
             db.session.commit()
@@ -81,6 +83,7 @@ def report_update(id):
         report.summary = request.form['reportSummary']
         report.tags = request.form['reportTags']
         report.description = request.form['reportDescription']
+        report.remarks = request.form['reportRemarks']
 
         try:
             db.session.commit()
@@ -105,10 +108,11 @@ def switching_report():
         switching_source = request.form['switchingSource']
         switching_destination = request.form['switchingDestination']
         comment = request.form['switchingReportComment']
+        remarks = request.form['switchingReportRemarks']
 
         switching_report = SwitchingReport(work_type=work_type, customer=customer, start_time=start_time,
                                            end_time=end_time, source=switching_source, destination=switching_destination,
-                                           shift_comp=shift_comp, comment=comment)
+                                           shift_comp=shift_comp, comment=comment, remarks=remarks)
 
         try:
             db.session.add(switching_report)
@@ -165,6 +169,7 @@ def switching_report_update(id):
         switching_report.switching_source = request.form['switchingSource']
         switching_report.switching_destination = request.form['switchingDestination']
         switching_report.comment = request.form['switchingReportComment']
+        switching_report.remarks = request.form['switchingReportRemarks']
 
         try:
             db.session.commit()
