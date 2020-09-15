@@ -4,12 +4,18 @@
 
 # Database files
 *.db
+*DB
+*db
+*db.*
+*DB.*
 
 # .idea folder
 .idea
 
 # Python cache files
 __pycache__/
+*.pyc
+
 
 # User-specific stuff
 .idea/**/workspace.xml
