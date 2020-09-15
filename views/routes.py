@@ -218,7 +218,8 @@ def sw_search():
     if request.method == 'POST':
         search_string = request.form['search_string']
         needed_switching_reports = SwitchingReport.query.filter(or_(SwitchingReport.work_type.ilike(f'%{search_string}%'),
-                                                 SwitchingReport.comment.ilike(f'%{search_string}%')),)\
+                                                 SwitchingReport.comment.ilike(f'%{search_string}%'),
+                                                    SwitchingReport.shift_comp.ilike(f'%{search_string}%')))\
                                                     .order_by(SwitchingReport.date.desc()).all()
         return render_template('switching-reports.html', switching_reports=needed_switching_reports)
 
