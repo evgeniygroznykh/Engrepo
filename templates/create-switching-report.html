@@ -17,6 +17,30 @@
                 select.value = Button.textContent;
             }
         </script>
+        <script>
+            var is_open = 0;
+            function sourcesForm() {
+              if(is_open == 0) {
+                document.getElementById("sources_popup").style.display = "block";
+                is_open = 1;
+              } else {
+                document.getElementById("sources_popup").style.display = "none";
+                is_open = 0;
+              }
+            }
+        </script>
+        <script>
+            var is_open = 0;
+            function destForm() {
+              if(is_open == 0) {
+                document.getElementById("destinations_popup").style.display = "block";
+                is_open = 1;
+              } else {
+                document.getElementById("destinations_popup").style.display = "none";
+                is_open = 0;
+              }
+            }
+        </script>
 {% endblock %}
 
 {%block body %}
@@ -101,10 +125,40 @@
                       Необходимо ввести основной источник для данной коммутации.
                     </div>
 
+                    <button type="button" class="btn btn-primary" onclick="sourcesForm()">Sources</button>
+                    <br>
+                    <div style="display: none; position: relative; bottom: 200px; left: 600px; border: 3px solid #f1f1f1; float: right;" id="sources_popup">
+                      <form action="" class="form-container">
+                        <h1>Sources</h1>
+                          {% if sources|length > 0 %}
+                              {% for source in sources %}
+                                <button class="btn btn-primary">{{ source }}</button>
+                              {% endfor %}
+                          {% else %}
+                            <h2>No sources</h2>
+                          {% endif %}
+                      </form>
+                    </div>
+
                     <label for="switchingDestination">Основное направление</label>
                     <input type="text" class="form-control" id="switchingDestination" name="switchingDestination" placeholder="" value="" required="" maxlength="50">
                     <div class="invalid-feedback">
                       Необходимо ввести основное направление для данной коммутации.
+                    </div>
+
+                    <button type="button" class="btn btn-primary" onclick="destForm()">Destinations</button>
+                    <br>
+                    <div style="display: none; position: relative; bottom: 200px; left: 600px; border: 3px solid #f1f1f1; float: right;" id="destinations_popup">
+                      <form action="" class="form-container">
+                        <h1>Destinations</h1>
+                          {% if destinations|length > 0 %}
+                              {% for dest in destinations %}
+                                <button class="btn btn-primary">{{ dest }}</button>
+                              {% endfor %}
+                          {% else %}
+                            <h2>No destinations</h2>
+                          {% endif %}
+                      </form>
                     </div>
 
                     <label for="reserveSwitchingSource">Резервный источник</label>

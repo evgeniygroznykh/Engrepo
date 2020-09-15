@@ -1,6 +1,6 @@
 from models.report import Report, db
 from models.switching_report import SwitchingReport
-from cfg.config import get_tags, get_users, get_work_types, get_shifts, get_customers
+from cfg.config import get_tags, get_users, get_work_types, get_shifts, get_customers, get_sources, get_destinations
 from flask import render_template, url_for, request, redirect, Blueprint
 from sqlalchemy import or_, and_
 from models.dbconn import DBContext as DBC
@@ -11,6 +11,8 @@ CUSTOMERS = get_customers()
 USERS = get_users()
 SHIFTS = get_shifts()
 WORK_TYPES = get_work_types()
+SOURCES = get_sources()
+DESTINATIONS = get_destinations()
 BLUEPRINTS = []
 
 report_page = Blueprint('report_page', __name__, static_folder='static', template_folder='template')
@@ -124,7 +126,7 @@ def switching_report():
         except Exception as exc:
             return 'Args: %s; Error: %s;' % (exc.args, exc)
     else:
-        return render_template("create-switching-report.html", work_types=WORK_TYPES, customers=CUSTOMERS, shifts=SHIFTS, remarks='Без замечаний')
+        return render_template("create-switching-report.html", work_types=WORK_TYPES, customers=CUSTOMERS, shifts=SHIFTS, remarks='Без замечаний', sources=SOURCES, destinations=DESTINATIONS)
 
 switching_reports_page = Blueprint('switching_reports_page', __name__, static_folder='static', template_folder='template')
 BLUEPRINTS.append(switching_reports_page)

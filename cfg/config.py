@@ -25,3 +25,13 @@ def get_shifts():
     with open('cfg/config.json', 'r', encoding='utf-8') as read_json_config:
         config_json = json.load(read_json_config)
     return config_json['shifts']
+
+def get_sources():
+    with open('cfg/config.json', 'r', encoding='utf-8') as read_json_config:
+        config_json = json.load(read_json_config)
+    return config_json['sources']
+
+def get_destinations():
+    with open('cfg/config.json', 'r', encoding='utf-8') as read_json_config:
+        config_json = json.load(read_json_config)
+    return config_json['destinations']
