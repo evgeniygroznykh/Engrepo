@@ -11,7 +11,9 @@ class SwitchingReport(db.Model):
     start_time = db.Column(db.DateTime, nullable=False)
     end_time = db.Column(db.DateTime, nullable=False)
     source = db.Column(db.String(50), nullable=False)
+    reserve_source = db.Column(db.String(50), nullable=False)
     destination = db.Column(db.String(50), nullable=False)
+    reserve_destination = db.Column(db.String(50), nullable=False)
     customer = db.Column(db.String(50), nullable=False)
     remarks = db.Column(db.Text, default='Без замечаний')
 

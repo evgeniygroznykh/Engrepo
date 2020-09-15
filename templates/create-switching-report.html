@@ -84,27 +84,39 @@
                     <label for="translationStartTime">Начало трансляции</label><br>
                     <input type="datetime-local" id="translationStartTime" name="translationStartTime" placeholder="" value="" required="">
                     <div class="invalid-feedback">
-                      Valid start time is required.
+                      Необходимо ввести время начала трансляции.
                     </div>
                     <br>
 
                     <label for="translationEndTime">Окончание трансляции</label><br>
                     <input type="datetime-local"  id="translationEndTime" name="translationEndTime" placeholder="" value="" required="">
                     <div class="invalid-feedback">
-                      Valid end time is required.
+                      Необходимо ввести время окончания трансляции.
                     </div>
                     <br>
 
-                    <label for="switchingSource">Источник</label>
+                    <label for="switchingSource">Основной источник</label>
                     <input type="text" class="form-control" id="switchingSource" name="switchingSource" placeholder="" value="" required="" maxlength="50">
                     <div class="invalid-feedback">
-                      Switching source is required
+                      Необходимо ввести основной источник для данной коммутации.
                     </div>
 
-                    <label for="switchingDestination">Направление</label>
+                    <label for="switchingDestination">Основное направление</label>
                     <input type="text" class="form-control" id="switchingDestination" name="switchingDestination" placeholder="" value="" required="" maxlength="50">
                     <div class="invalid-feedback">
-                      Switching destination is required
+                      Необходимо ввести основное направление для данной коммутации.
+                    </div>
+
+                    <label for="reserveSwitchingSource">Резервный источник</label>
+                    <input type="text" class="form-control" id="reserveSwitchingSource" name="reserveSwitchingSource" placeholder="" value="" required="" maxlength="50">
+                    <div class="invalid-feedback">
+                      Необходимо ввести основной источник для данной коммутации.
+                    </div>
+
+                    <label for="reserveSwitchingDestination">Резервное направление</label>
+                    <input type="text" class="form-control" id="reserveSwitchingDestination" name="reserveSwitchingDestination" placeholder="" value="" required="" maxlength="50">
+                    <div class="invalid-feedback">
+                      Необходимо ввести основное направление для данной коммутации.
                     </div>
 
                     <label for="switchingReportComment">Комментарий</label>

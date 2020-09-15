@@ -46,8 +46,11 @@
         <p><b>Состав смены:</b> {{switching_report.shift_comp}}</p>
         <p><b>Начало трансляции:</b> {{switching_report.start_time}}</p>
         <p><b>Окончание трансляции:</b> {{switching_report.end_time}}</p>
-        <p><b>Источник:</b> {{switching_report.source}}</p>
-        <p><b>Направление:</b> {{switching_report.destination}}</p>
+        <p><b>Окончание трансляции:</b> {{switching_report.end_time}}</p>
+        <p><b>Основной источник:</b> {{switching_report.source}}</p>
+        <p><b>Основное направление:</b> {{switching_report.destination}}</p>
+        <p><b>Резервный источник:</b> {{switching_report.reserve_source}}</p>
+        <p><b>Резервное направление:</b> {{switching_report.reserve_destination}}</p>
         <p><b>Замечания:</b> {{switching_report.remarks}}</p>
         <a href="/switching-reports/id={{ switching_report.id }}/delete" class="btn btn-danger">Удалить</a>
         <a href="/switching-reports/id={{ switching_report.id }}/update" class="btn btn-success">Редактировать</a>

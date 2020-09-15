@@ -107,11 +107,14 @@ def switching_report():
         end_time = dt.datetime.strptime(request.form['translationEndTime'], '%Y-%m-%dT%H:%M')
         switching_source = request.form['switchingSource']
         switching_destination = request.form['switchingDestination']
+        switching_reserve_source = request.form['reserveSwitchingSource']
+        switching_reserve_destination = request.form['reserveSwitchingDestination']
         comment = request.form['switchingReportComment']
         remarks = request.form['switchingReportRemarks']
 
         switching_report = SwitchingReport(work_type=work_type, customer=customer, start_time=start_time,
                                            end_time=end_time, source=switching_source, destination=switching_destination,
+                                           reserve_source = switching_reserve_source, reserve_destination = switching_reserve_destination,
                                            shift_comp=shift_comp, comment=comment, remarks=remarks)
 
         try:
@@ -166,8 +169,10 @@ def switching_report_update(id):
         switching_report.shift_comp = request.form['shiftComp']
         switching_report.start_time = dt.datetime.strptime(request.form['translationStartTime'], '%Y-%m-%dT%H:%M')
         switching_report.end_time = dt.datetime.strptime(request.form['translationEndTime'], '%Y-%m-%dT%H:%M')
-        switching_report.switching_source = request.form['switchingSource']
-        switching_report.switching_destination = request.form['switchingDestination']
+        switching_report.source = request.form['switchingSource']
+        switching_report.destination = request.form['switchingDestination']
+        switching_report.reserve_source = request.form['reserveSwitchingSource']
+        switching_report.reserve_destination = request.form['reserveSwitchingDestination']
         switching_report.comment = request.form['switchingReportComment']
         switching_report.remarks = request.form['switchingReportRemarks']
 

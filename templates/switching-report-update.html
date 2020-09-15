@@ -98,13 +98,25 @@
                     <label for="switchingSource">Источник</label>
                     <input type="text" class="form-control" id="switchingSource" name="switchingSource" placeholder="" value="{{ switching_report.source }}" required="" maxlength="50">
                     <div class="invalid-feedback">
-                      Необходимо ввести источник для данной коммутации.
+                      Необходимо ввести основной источник для данной коммутации.
                     </div>
 
                     <label for="switchingDestination">Направление</label>
                     <input type="text" class="form-control" id="switchingDestination" name="switchingDestination" placeholder="" value="{{ switching_report.destination }}" required="" maxlength="50">
                     <div class="invalid-feedback">
-                      Необходимо ввести направление для данной коммутации.
+                      Необходимо ввести резервное направление для данной коммутации.
+                    </div>
+
+                    <label for="reserveSwitchingSource">Резервный источник</label>
+                    <input type="text" class="form-control" id="reserveSwitchingSource" name="reserveSwitchingSource" placeholder="" value="{{ switching_report.reserve_source }}" required="" maxlength="50">
+                    <div class="invalid-feedback">
+                      Необходимо ввести основной источник для данной коммутации.
+                    </div>
+
+                    <label for="reserveSwitchingDestination">Резервное направление</label>
+                    <input type="text" class="form-control" id="reserveSwitchingDestination" name="reserveSwitchingDestination" placeholder="" value="{{ switching_report.reserve_destination }}" required="" maxlength="50">
+                    <div class="invalid-feedback">
+                      Необходимо ввести резервное направление для данной коммутации.
                     </div>
 
                     <label for="switchingReportComment">Комментарий</label>

@@ -48,8 +48,10 @@
                     <p><b>Состав смены:</b> {{sw_rep.shift_comp}}</p>
                     <p><b>Начало трансляции:</b> {{sw_rep.start_time}}</p>
                     <p><b>Окончание трансляции:</b> {{sw_rep.end_time}}</p>
-                    <p><b>Источник:</b> {{sw_rep.source}}</p>
-                    <p><b>Направление:</b> {{sw_rep.destination}}</p>
+                    <p><b>Основной источник:</b> {{sw_rep.source}}</p>
+                    <p><b>Основное направление:</b> {{sw_rep.destination}}</p>
+                    <p><b>Резервный источник:</b> {{sw_rep.reserve_source}}</p>
+                    <p><b>Резервное направление:</b> {{sw_rep.reserve_destination}}</p>
                     <a href="/switching-reports/id={{ sw_rep.id }}">Подробнее..</a>
                 </div>
                 {% endfor %}
