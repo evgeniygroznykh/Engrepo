@@ -32,10 +32,11 @@ All reports
                     <p><b>Broadcast end time:</b> {{sw_rep.end_time}}</p>
                     <p><b>Source:</b> {{sw_rep.source}}</p>
                     <p><b>Destination:</b> {{sw_rep.destination}}</p>
+                    <a href="/switching-reports/id={{ sw_rep.id }}">Description</a>
                 </div>
                 {% endfor %}
             {% else %}
-                <p>No reports were found in database.</p>
+                <p>No switching reports were found in database.</p>
             {% endif %}
         </div>
 {% endblock %}

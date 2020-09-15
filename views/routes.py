@@ -128,6 +128,58 @@ def switching_reports():
     switching_reports = SwitchingReport.query.order_by(SwitchingReport.date.desc()).all()
     return render_template("switching-reports.html", switching_reports=switching_reports)
 
+switching_report_details_page = Blueprint('switching_report_details_page', __name__, static_folder='static', template_folder='template')
+BLUEPRINTS.append(switching_report_details_page)
+@DBC.verify_db('Engrepo')
+@switching_report_details_page.route("/switching-reports/id=<int:id>")
+def switching_report_details(id):
+    switching_report = SwitchingReport.query.get(id)
+    return render_template("switching-report-details.html", switching_report=switching_report)
+
+switching_report_delete_page = Blueprint('switching_report_delete_page', __name__, static_folder='static', template_folder='template')
+BLUEPRINTS.append(switching_report_delete_page)
+@DBC.verify_db('Engrepo')
+@switching_report_delete_page.route("/switching-reports/id=<int:id>/delete")
+def switching_report_delete(id):
+    switching_report = SwitchingReport.query.get_or_404(id)
+
+    try:
+        db.session.delete(switching_report)
+        db.session.commit()
+        return redirect('/switching-reports')
+    except:
+        return "При удалении отчета произошла ошибка"
+
+switching_report_update_page = Blueprint('switching_report_update_page', __name__, static_folder='static', template_folder='template')
+BLUEPRINTS.append(switching_report_update_page)
+@DBC.verify_db('Engrepo')
+@switching_report_update_page.route("/switching-reports/id=<int:id>/update", methods=['POST', 'GET'])
+def switching_report_update(id):
+    switching_report = SwitchingReport.query.get(id)
+    if request.method == 'POST':
+        switching_report.work_type = request.form['switchingReportWorkType']
+        switching_report.customer = request.form['switchingCustomer']
+        switching_report.shift_comp = request.form['shiftComp']
+        switching_report.start_time = dt.datetime.strptime(request.form['translationStartTime'], '%Y-%m-%dT%H:%M')
+        switching_report.end_time = dt.datetime.strptime(request.form['translationEndTime'], '%Y-%m-%dT%H:%M')
+        switching_report.switching_source = request.form['switchingSource']
+        switching_report.switching_destination = request.form['switchingDestination']
+        switching_report.comment = request.form['switchingReportComment']
+
+        try:
+            db.session.commit()
+            return redirect('/switching-reports')
+        except:
+            return "При обновлении отчета произошла ошибка"
+    else:
+        formatted_start_time = dt.datetime.strftime(switching_report.start_time, '%Y-%m-%dT%H:%M')
+        formatted_end_time = dt.datetime.strftime(switching_report.end_time,'%Y-%m-%dT%H:%M')
+        return render_template("switching-report-update.html", switching_report=switching_report,
+                                                                start_time=formatted_start_time,
+                                                                end_time=formatted_end_time,
+                                                                work_types=WORK_TYPES, customers=CUSTOMERS,
+                                                                shifts=SHIFTS)
+
 search_page = Blueprint('search_page', __name__, static_folder='static', template_folder='template')
 BLUEPRINTS.append(search_page)
 @DBC.verify_db('Engrepo')

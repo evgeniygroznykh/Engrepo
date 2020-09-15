@@ -22,7 +22,7 @@ Create a report
                         <label for="switchingReportWorkType">Work type</label>
                         <div class="input-group mb-3">
                           <select class="custom-select" id="switchingReportWorkType" name="switchingReportWorkType">
-                              <option selected>Choose a work type</option>
+                              <option selected>{{ switching_report.work_type}}</option>
                             {% for work_type in work_types %}
                                 <option value="{{ work_type }}">{{ work_type }}</option>
                             {% endfor %}
@@ -32,7 +32,7 @@ Create a report
                         <label for="switchingCustomer">Work type</label>
                         <div class="input-group mb-3">
                           <select class="custom-select" id="switchingCustomer" name="switchingCustomer">
-                              <option selected>Choose a customer</option>
+                              <option selected>{{ switching_report.customer }}</option>
                             {% for customer in customers %}
                                 <option value="{{ customer }}">{{ customer }}</option>
                             {% endfor %}
@@ -42,7 +42,7 @@ Create a report
                         <label for="shiftComp">Shift composition</label>
                         <div class="input-group mb-3">
                           <select class="custom-select" id="shiftComp" name="shiftComp">
-                              <option selected>Choose a shift</option>
+                              <option selected>{{ switching_report.shift_comp }}</option>
                             {% for shift in shifts %}
                                 <option value="{{ shift }}">{{ shift }}</option>
                             {% endfor %}
@@ -50,33 +50,33 @@ Create a report
                         </div>
 
                         <label for="translationStartTime">Start Time</label><br>
-                        <input type="datetime-local" id="translationStartTime" name="translationStartTime" placeholder="" value="" required="">
+                        <input type="datetime-local" id="translationStartTime" name="translationStartTime" placeholder="" value="{{ start_time }}" required="">
                         <div class="invalid-feedback">
                           Valid start time is required.
                         </div>
                         <br>
 
                         <label for="translationEndTime">End Time</label><br>
-                        <input type="datetime-local"  id="translationEndTime" name="translationEndTime" placeholder="" value="" required="">
+                        <input type="datetime-local"  id="translationEndTime" name="translationEndTime" placeholder="" value="{{ end_time }}" required="">
                         <div class="invalid-feedback">
                           Valid end time is required.
                         </div>
                         <br>
 
                         <label for="switchingSource">Source</label>
-                        <input type="text" class="form-control" id="switchingSource" name="switchingSource" placeholder="" value="" required="" maxlength="50">
+                        <input type="text" class="form-control" id="switchingSource" name="switchingSource" placeholder="" value="{{ switching_report.source }}" required="" maxlength="50">
                         <div class="invalid-feedback">
                           Switching source is required
                         </div>
 
                         <label for="switchingDestination">Destination</label>
-                        <input type="text" class="form-control" id="switchingDestination" name="switchingDestination" placeholder="" value="" required="" maxlength="50">
+                        <input type="text" class="form-control" id="switchingDestination" name="switchingDestination" placeholder="" value="{{ switching_report.destination }}" required="" maxlength="50">
                         <div class="invalid-feedback">
                           Switching destination is required
                         </div>
 
                         <label for="switchingReportComment">Report description</label>
-                        <textarea class="form-control" id="switchingReportComment" name="switchingReportComment" rows="10" cols="50" placeholder=""></textarea>
+                        <textarea class="form-control" id="switchingReportComment" name="switchingReportComment" rows="10" cols="50" placeholder="">{{ switching_report.comment }}</textarea>
 
                         <hr class="mb-4">
                         <button class="btn btn-primary btn-lg btn-block" type="submit">Send a report</button>

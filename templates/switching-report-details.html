@@ -1,0 +1,55 @@
+{% extends 'base.html'%}
+
+{% block my_styles %}
+{{super()}}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom/main.css') }}">
+{% endblock %}
+
+{% block title %}
+{{switching_report.work_type}} for {{switching_report.customer}}
+{% endblock %}
+
+{% block add_scripts %}
+<script>
+    var flag = 0;
+    function read(){
+        if(flag == 0){
+            document.getElementById("more").style.display="inline";
+            document.getElementById("more_link").innerHTML="Read less";
+            flag = 1;
+        }
+        else{
+            document.getElementById("more").style.display="none";
+            document.getElementById("more_link").innerHTML="Read more";
+            flag = 0;
+        }
+    }
+</script>
+{% endblock %}
+
+{%block body %}
+<div class="container mt-5">
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+          <nav class="my-2 my-md-0 mr-md-3">
+            <a class="p-2 text-dark" href="/create-report">Create a report</a>
+            <a class="p-2 text-dark" href="/create-switching-report">Create a switching report</a>
+            <a class="p-2 text-dark" href="/reports">Reports</a>
+              <a class="p-2 text-dark" href="/switching-reports">Switching reports</a>
+          </nav>
+        </div>
+    <h1>{{switching_report.work_type}} for {{switching_report.customer}}</h1>
+    <div class="alert alert-info">
+        <p id="desc"><b>Comment:</b> {{ switching_report.comment[:262] }}<span id="more">{{switching_report.comment[262:]}}</span></p>
+        <button onclick="read()" id="more_link">Read more..</button>
+        <br>
+        <br>
+        <p><b>Shift:</b> {{switching_report.shift_comp}}</p>
+        <p><b>Broadcast start time:</b> {{switching_report.start_time}}</p>
+        <p><b>Broadcast end time:</b> {{switching_report.end_time}}</p>
+        <p><b>Source:</b> {{switching_report.source}}</p>
+        <p><b>Destination:</b> {{switching_report.destination}}</p>
+        <a href="/switching-reports/id={{ switching_report.id }}/delete" class="btn btn-danger">Delete</a>
+        <a href="/switching-reports/id={{ switching_report.id }}/update" class="btn btn-success">Edit</a>
+    </div>
+</div>
+{% endblock %}
