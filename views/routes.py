@@ -1,18 +1,15 @@
 from models.report import Report, db
 from models.switching_report import SwitchingReport
-from cfg.config import get_tags, get_users, get_work_types, get_shifts, get_customers, get_sources, get_destinations
+from cfg.config import get_json_config
 from flask import render_template, url_for, request, redirect, Blueprint
 from sqlalchemy import or_, and_
 from models.dbconn import DBContext as DBC
 import datetime as dt
 
-TAGS = get_tags()
-CUSTOMERS = get_customers()
-USERS = get_users()
-SHIFTS = get_shifts()
-WORK_TYPES = get_work_types()
-SOURCES = get_sources()
-DESTINATIONS = get_destinations()
+
+JSON_CONFIG = get_json_config()
+
+TAGS, USERS, CUSTOMERS, WORK_TYPES, SHIFTS, SOURCES, DESTINATIONS = [config_value for config_value in JSON_CONFIG.values()]
 BLUEPRINTS = []
 
 report_page = Blueprint('report_page', __name__, static_folder='static', template_folder='template')
