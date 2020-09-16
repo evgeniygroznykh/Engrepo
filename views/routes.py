@@ -187,7 +187,7 @@ def switching_report_update(id):
                                                                 start_time=formatted_start_time,
                                                                 end_time=formatted_end_time,
                                                                 work_types=WORK_TYPES, customers=CUSTOMERS,
-                                                                shifts=SHIFTS)
+                                                                shifts=SHIFTS, sources=SOURCES, destinations=DESTINATIONS)
 
 search_page = Blueprint('search_page', __name__, static_folder='static', template_folder='template')
 BLUEPRINTS.append(search_page)

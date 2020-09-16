@@ -59,28 +59,28 @@
         <script>
             function selectMainSource(Button) {
                 var input = document.getElementById('switchingSource');
-                input.value += Button.textContent;
+                input.value = Button.textContent;
                 document.querySelector(".main-srcs-bg-modal").style.display = 'none';
             }
         </script>
         <script>
             function selectMainDest(Button) {
                 var input = document.getElementById('switchingDestination');
-                input.value += Button.textContent;
+                input.value = Button.textContent;
                 document.querySelector(".main-dests-bg-modal").style.display = 'none';
             }
         </script>
         <script>
             function selectResSource(Button) {
                 var input = document.getElementById('reserveSwitchingSource');
-                input.value += Button.textContent;
+                input.value = Button.textContent;
                 document.querySelector(".res-srcs-bg-modal").style.display = 'none';
             }
         </script>
         <script>
             function selectResDest(Button) {
                 var input = document.getElementById('reserveSwitchingDestination');
-                input.value += Button.textContent;
+                input.value = Button.textContent;
                 document.querySelector(".res-dests-bg-modal").style.display = 'none';
             }
         </script>
@@ -248,6 +248,7 @@
 
                     <button id="res-sources-button" type="button" class="btn btn-primary">Sources</button>
                     <br>
+
                     <label for="reserveSwitchingDestination">Резервное направление</label>
                     <input type="text" class="form-control" id="reserveSwitchingDestination" name="reserveSwitchingDestination" placeholder="" value="" required="" maxlength="50">
                     <div class="invalid-feedback">
@@ -256,6 +257,7 @@
 
                     <button id="res-dests-button" type="button" class="btn btn-primary">Destinations</button>
                     <br>
+
                     <label for="switchingReportComment">Комментарий</label>
                     <textarea class="form-control" id="switchingReportComment" name="switchingReportComment" rows="10" cols="50" placeholder=""></textarea>
 
