@@ -164,12 +164,7 @@
                 <div id='input-form' class="col-md-6 mb-3">
                     <label for="switchingReportWorkType">Тип работ</label>
                     <div class="input-group mb-3">
-                      <select class="custom-select" id="switchingReportWorkType" name="switchingReportWorkType">
-                          <option selected>Выберите тип работ</option>
-                        {% for work_type in work_types %}
-                            <option value="{{ work_type }}">{{ work_type }}</option>
-                        {% endfor %}
-                      </select>
+                    <input type="text" class="form-control" id="switchingReportWorkType" name="switchingReportWorkType" placeholder="Выберите тип работ" value="" required="" maxlength="50">
                     </div>
 
                     {% if work_types|length > 0 %}
@@ -182,12 +177,7 @@
 
                     <label for="switchingCustomer">Заказчик</label>
                     <div class="input-group mb-3">
-                      <select class="custom-select" id="switchingCustomer" name="switchingCustomer">
-                          <option selected>Выберите заказчика</option>
-                        {% for customer in customers %}
-                            <option value="{{ customer }}">{{ customer }}</option>
-                        {% endfor %}
-                      </select>
+                    <input type="text" class="form-control" id="switchingCustomer" name="switchingCustomer" placeholder="Выберите заказчика" value="" required="" maxlength="50">
                     </div>
 
                     {% if customers|length > 0 %}
