@@ -24,13 +24,14 @@ button {
 
 .main-srcs-modal-content, .main-dests-modal-content, .res-srcs-modal-content, .res-dests-modal-content {
     width: 500px;
-    height: 300px;
+    height: fit-content;
     background-color: white;
     border: 1px solid black;
     border-radius: 4px;
     text-align: center;
     padding: 20px;
     position: relative;
+    display: inline-block;
 }
 
 .main-srcs-close-btn, .main-dests-close-btn, .res-srcs-close-btn, .res-dests-close-btn {
