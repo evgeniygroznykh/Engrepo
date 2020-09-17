@@ -4,6 +4,15 @@
 Все отчёты о коммутации
 {% endblock %}
 
+{% block add_scripts %}
+    <script>
+        $(document).ready(function(){
+            $("div.myclass:contains('Без замечаний')").css("background-color", "green");
+            $("div.myclass:not(:contains('Без замечаний'))").css("background-color", "red");
+        });
+    </script>
+{% endblock %}
+
 {% block nav %}
 <li class="nav-item active">
     <a class="nav-link" href="/switching_reports/create_switching_report">Создать отчёт о коммутации</a>
@@ -43,7 +52,7 @@
 
             {% if switching_reports|length > 0 %}
                 {% for sw_rep in switching_reports %}
-                <div class="alert alert-info">
+                <div class="myclass">
                     <h2>{{sw_rep.work_type}} для {{sw_rep.customer}}</h2>
                     <p><b>Дата создания:</b> {{ sw_rep.date }}</p>
                     <p><b>Состав смены:</b> {{sw_rep.shift_comp}}</p>
@@ -53,6 +62,7 @@
                     <p><b>Основное направление:</b> {{sw_rep.destination}}</p>
                     <p><b>Резервный источник:</b> {{sw_rep.reserve_source}}</p>
                     <p><b>Резервное направление:</b> {{sw_rep.reserve_destination}}</p>
+                    <p style="display: none;">{{ sw_rep.remarks }}</p>
                     <a href="id={{ sw_rep.id }}">Подробнее..</a>
                 </div>
                 {% endfor %}
