@@ -58,5 +58,7 @@
 				 "Гайворонский Василий, Бадаев Александр, Фёдоров Владимир, Гущин Сергей, Семенов Павел",
 				  "Гайворонский Василий, Пирогов Артем, Самойлов Евгений, Власов Максим, Баринов Владимир"],
   "sources" : ["CA EXT 1", "CA EXT 2", "CA EXT 3", "CA EXT 4", "ASB 8", "APB 8", "Jetris", "Sport 1", "Sport 3", "Sport 4", "Sport 5", "ASB 20", "ASB 27", "Sport 7-1", "Sport 7-2", "Sport 7-3", "Sport 7-4", "SINT 1", "SINT 2", "SINT 3", "SINT 4", "EXT AC3", "EXT MIR"],
-  "destinations" : ["EXT1", "EXT2", "EXT3", "EXT4", "EXT 5", "EXT 6", "SKY 8-1", "SKY 10-1", "SKY EXT 1", "SKY EXT 2", "SKY02_1", "SKY02_2", "SKY02_3", "SKY02_4", "SKY03_1", "SKY03_2", "SKY03_3", "SKY03_4", "SKY17_1", "SKY17_2", "SKY17_3", "SKY17_4", "SKY17_5", "SKY17_6", "SKY17_7", "SKY17_8", "SKY18_1", "SKY18_2", "SKY18_3", "SKY18_4", "SKY18_5", "SKY18_6", "SKY18_7", "SKY18_8", "XD CAM", "REC_01", "REC_02", "REC_03", "REC_04", "GPM EXT 2"]
+  "destinations" : ["EXT1", "EXT2", "EXT3", "EXT4", "EXT 5", "EXT 6", "SKY 8-1", "SKY 10-1", "SKY EXT 1", "SKY EXT 2", "SKY02_1", "SKY02_2", "SKY02_3", "SKY02_4", "SKY03_1", "SKY03_2", "SKY03_3", "SKY03_4", "SKY17_1", "SKY17_2", "SKY17_3", "SKY17_4", "SKY17_5", "SKY17_6", "SKY17_7", "SKY17_8", "SKY18_1", "SKY18_2", "SKY18_3", "SKY18_4", "SKY18_5", "SKY18_6", "SKY18_7", "SKY18_8", "XD CAM", "REC_01", "REC_02", "REC_03", "REC_04", "GPM EXT 2"],
+  "upload_folder" : "C:/Users/eagroznykh/Engrepo/uploads/",
+  "max_file_size" : 5000000
 }

@@ -4,7 +4,8 @@ from flask import render_template, url_for, request, redirect, Blueprint
 from sqlalchemy import or_, and_
 from models.dbconn import DBContext as DBC
 import datetime as dt
-from cfg.config import CUSTOMERS, WORK_TYPES, SHIFTS, SOURCES, DESTINATIONS
+import os
+from cfg.config import CUSTOMERS, WORK_TYPES, SHIFTS, SOURCES, DESTINATIONS, UPLOAD_FOLDER
 
 SWITCHING_REPORT_BLUEPRINTS = []
 
@@ -27,11 +28,23 @@ def switching_report():
         switching_reserve_destination = request.form['reserveSwitchingDestination']
         comment = request.form['switchingReportComment']
         remarks = request.form['switchingReportRemarks']
+        request_file = request.files['requestFile']
+        request_file_path = 'no request file'
+
+        if request_file.filename != '':
+            if not os.path.isfile(UPLOAD_FOLDER + request_file.filename):
+                request_file_path = UPLOAD_FOLDER + request_file.filename
+                request_file.save(request_file_path)
+            else:
+                if remarks == 'Без замечаний':
+                    remarks = '\nВНИМАНИЕ: данный файл заявки уже существует, файл не был сохранён'
+                else:
+                    remarks += '\nВНИМАНИЕ: данный файл заявки уже существует, файл не был сохранён'
 
         switching_report = SwitchingReport(work_type=work_type, customer=customer, start_time=start_time,
                                            end_time=end_time, source=switching_source, destination=switching_destination,
                                            reserve_source = switching_reserve_source, reserve_destination = switching_reserve_destination,
-                                           shift_comp=shift_comp, comment=comment, remarks=remarks)
+                                           shift_comp=shift_comp, comment=comment, remarks=remarks, request_file_path=request_file_path)
 
         try:
             db.session.add(switching_report)
@@ -79,6 +92,7 @@ SWITCHING_REPORT_BLUEPRINTS.append(switching_report_update_page)
 @switching_report_update_page.route("/switching_reports/id=<int:id>/update", methods=['POST', 'GET'])
 def switching_report_update(id):
     switching_report = SwitchingReport.query.get(id)
+
     if request.method == 'POST':
         switching_report.work_type = request.form['switchingReportWorkType']
         switching_report.customer = request.form['switchingCustomer']
@@ -91,6 +105,16 @@ def switching_report_update(id):
         switching_report.reserve_destination = request.form['reserveSwitchingDestination']
         switching_report.comment = request.form['switchingReportComment']
         switching_report.remarks = request.form['switchingReportRemarks']
+        request_file = request.files['requestFile']
+
+        if request_file.filename != '':
+            if os.path.isfile(request_file.filename):
+                switching_report.remarks += '\nВНИМАНИЕ: данный файл заявки уже существует, файл не был сохранён'
+            else:
+                request_file.save(f'{UPLOAD_FOLDER}' + f'{request_file.filename}')
+                if switching_report.request_file_path == 'no request file':
+                    switching_report.request_file_path = ''
+                switching_report.request_file_path += f'\n{UPLOAD_FOLDER}' + f'{request_file.filename}'
 
         try:
             db.session.commit()

@@ -16,6 +16,7 @@ class SwitchingReport(db.Model):
     reserve_destination = db.Column(db.String(50), nullable=False)
     customer = db.Column(db.String(50), nullable=False)
     remarks = db.Column(db.Text, default='Без замечаний')
+    request_file_path = db.Column(db.Text)
 
 
     def __repr__(self):
