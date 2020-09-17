@@ -1,4 +1,4 @@
-{% extends 'base.html'%}
+{% extends 'switching-report-base.html'%}
 
 {% block my_styles %}
 {{super()}}
@@ -12,16 +12,17 @@
 {% block add_scripts %}
 {% endblock %}
 
+{% block nav %}
+<li class="nav-item active">
+    <a class="nav-link" href="/switching_reports/create_switching_report">Создать отчёт о коммутации</a>
+</li>
+<li class="nav-item active">
+    <a class="nav-link" href="/switching_reports/switching_reports">Отчёты о коммутации</a>
+</li>
+{% endblock %}
+
 {%block body %}
 <div class="container mt-5">
-        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-          <nav class="my-2 my-md-0 mr-md-3">
-            <a class="p-2 text-dark" href="/create-report">Создать инженерный отчёт</a>
-            <a class="p-2 text-dark" href="/create-switching-report">Создать отчёт о коммутации</a>
-            <a class="p-2 text-dark" href="/reports">Инженерные отчёты</a>
-              <a class="p-2 text-dark" href="/switching-reports">Отчёты о коммутации</a>
-          </nav>
-        </div>
     <h1>{{switching_report.work_type}} для {{switching_report.customer}}</h1>
     <div class="alert alert-info">
         <p id="desc"><b>Комментарий:</b> {{ switching_report.comment[:262] }}<span id="more">{{switching_report.comment[262:]}}</span></p>
@@ -36,8 +37,8 @@
         <p><b>Резервный источник:</b> {{switching_report.reserve_source}}</p>
         <p><b>Резервное направление:</b> {{switching_report.reserve_destination}}</p>
         <p><b>Замечания:</b> {{switching_report.remarks}}</p>
-        <a href="/switching-reports/id={{ switching_report.id }}/delete" class="btn btn-danger">Удалить</a>
-        <a href="/switching-reports/id={{ switching_report.id }}/update" class="btn btn-success">Редактировать</a>
+        <a href="/switching_reports/switching_reports/id={{ switching_report.id }}/delete" class="btn btn-danger">Удалить</a>
+        <a href="/switching_reports/switching_reports/id={{ switching_report.id }}/update" class="btn btn-success">Редактировать</a>
     </div>
 </div>
 {% endblock %}

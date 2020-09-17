@@ -1,4 +1,4 @@
-{% extends 'base.html'%}
+{% extends 'switching-report-base.html'%}
 
 {% block my_styles %}
 {{super()}}
@@ -15,15 +15,16 @@
         </script>
 {% endblock %}
 
+{% block nav %}
+<li class="nav-item active">
+    <a class="nav-link" href="/switching_reports/create_switching_report">Создать отчёт о коммутации</a>
+</li>
+<li class="nav-item active">
+    <a class="nav-link" href="/switching_reports/switching_reports">Отчёты о коммутации</a>
+</li>
+{% endblock %}
+
 {%block body %}
-        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-          <nav class="my-2 my-md-0 mr-md-3">
-            <a class="p-2 text-dark" href="/create-report">Создать инженерный отчёт</a>
-            <a class="p-2 text-dark" href="/create-switching-report">Создать отчёт о коммутации</a>
-            <a class="p-2 text-dark" href="/reports">Инженерные отчёты</a>
-              <a class="p-2 text-dark" href="/switching-reports">Отчёты о коммутации</a>
-          </nav>
-        </div>
         <div class="main-srcs-bg-modal">
             <div class="main-srcs-modal-content">
               <div class="main-srcs-close-btn">+</div>
@@ -147,7 +148,7 @@
                       Необходимо ввести основной источник для данной коммутации.
                     </div>
 
-                    <button id="main-sources-button" type="button" class="btn btn-primary">Sources</button>
+                    <button id="main-sources-button" type="button" class="btn btn-dark">Sources</button>
                     <br>
 
                     <label for="switchingDestination">Направление</label>
@@ -156,7 +157,7 @@
                       Необходимо ввести резервное направление для данной коммутации.
                     </div>
 
-                    <button id="main-dests-button" type="button" class="btn btn-primary">Destinations</button>
+                    <button id="main-dests-button" type="button" class="btn btn-dark">Destinations</button>
                     <br>
 
                     <label for="reserveSwitchingSource">Резервный источник</label>
@@ -165,7 +166,7 @@
                       Необходимо ввести основной источник для данной коммутации.
                     </div>
 
-                    <button id="res-sources-button" type="button" class="btn btn-primary">Sources</button>
+                    <button id="res-sources-button" type="button" class="btn btn-dark">Sources</button>
                     <br>
 
                     <label for="reserveSwitchingDestination">Резервное направление</label>
@@ -174,14 +175,14 @@
                       Необходимо ввести резервное направление для данной коммутации.
                     </div>
 
-                    <button id="res-dests-button" type="button" class="btn btn-primary">Destinations</button>
+                    <button id="res-dests-button" type="button" class="btn btn-dark">Destinations</button>
                     <br>
 
                     <label for="switchingReportComment">Комментарий</label>
                     <textarea class="form-control" id="switchingReportComment" name="switchingReportComment" rows="10" cols="50" placeholder="">{{ switching_report.comment }}</textarea>
 
                     <hr class="mb-4">
-                    <button class="btn btn-primary btn-lg btn-block" type="submit">Отправить отчёт</button>
+                    <button class="btn btn-dark btn-lg btn-block" type="submit">Отправить отчёт</button>
                 </div>
             </form>
         </div>

@@ -1,0 +1,38 @@
+{% extends 'report-base.html'%}
+
+{% block my_styles %}
+{{super()}}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom/main.css') }}">
+{% endblock %}
+
+{% block title %}
+Детали инженерного отчёта
+{% endblock %}
+
+{% block add_scripts %}
+{% endblock %}
+
+{% block nav %}
+<li class="nav-item active">
+    <a class="nav-link" href="/reports/create_report">Создать инженерный отчёт</a>
+</li>
+<li class="nav-item active">
+    <a class="nav-link" href="/reports/reports">Инженерные отчёты</a>
+</li>
+{% endblock %}
+
+{%block body %}
+<div class="container mt-5">
+    <h1>{{ report.summary }}</h1>
+    <div class="alert alert-info">
+        <p id="desc"><b>Подробное описание:</b> {{ report.description[:262] }}<span id="more">{{report.description[262:]}}</span></p>
+        <button onclick="read()" id="more_link">Read more..</button>
+        <br>
+        <br>
+        <p><b>Замечания:</b> {{ report.remarks }}</p>
+        <p><b>Дата создания отчёта: {{report.date}}</b></p>
+        <a href="/reports/reports/id={{ report.id }}/delete" class="btn btn-danger">Удалить</a>
+        <a href="/reports/reports/id={{ report.id }}/update" class="btn btn-success">Редактировать</a>
+    </div>
+</div>
+{% endblock %}
