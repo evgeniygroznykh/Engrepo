@@ -2,7 +2,7 @@
 
 {% block my_styles %}
 {{super()}}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom/main.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/custom/main.css') }}">
 {% endblock %}
 
 {% block title %}
@@ -10,80 +10,9 @@
 {% endblock %}
 
 {% block add_scripts %}
-        <script>
-            function chooseWorkType(Button) {
-                var select = document.getElementById('switchingReportWorkType');
-                select.value = Button.textContent;
-            }
-        </script>
-        <script>
-            function chooseCustomer(Button) {
-                var select = document.getElementById('switchingCustomer');
-                select.value = Button.textContent;
-            }
-        </script>
-
-        <script>
-            $(document).ready(function() {
-                document.getElementById('main-sources-button').addEventListener('click', function() {
-                    document.querySelector('.main-srcs-bg-modal').style.display = 'flex';
-                });
-                document.getElementById('main-dests-button').addEventListener('click', function() {
-                    document.querySelector('.main-dests-bg-modal').style.display = 'flex';
-                });
-
-                document.querySelector('.main-srcs-close-btn').addEventListener('click', function() {
-                    document.querySelector(".main-srcs-bg-modal").style.display = 'none';
-                });
-
-                document.querySelector('.main-dests-close-btn').addEventListener('click', function() {
-                    document.querySelector(".main-dests-bg-modal").style.display = 'none';
-                });
-                document.getElementById('res-sources-button').addEventListener('click', function() {
-                    document.querySelector('.res-srcs-bg-modal').style.display = 'flex';
-                });
-                document.getElementById('res-dests-button').addEventListener('click', function() {
-                    document.querySelector('.res-dests-bg-modal').style.display = 'flex';
-                });
-
-                document.querySelector('.res-srcs-close-btn').addEventListener('click', function() {
-                    document.querySelector(".res-srcs-bg-modal").style.display = 'none';
-                });
-
-                document.querySelector('.res-dests-close-btn').addEventListener('click', function() {
-                    document.querySelector(".res-dests-bg-modal").style.display = 'none';
-                });
-            });
-        </script>
-
-        <script>
-            function selectMainSource(Button) {
-                var input = document.getElementById('switchingSource');
-                input.value = Button.textContent;
-                document.querySelector(".main-srcs-bg-modal").style.display = 'none';
-            }
-        </script>
-        <script>
-            function selectMainDest(Button) {
-                var input = document.getElementById('switchingDestination');
-                input.value = Button.textContent;
-                document.querySelector(".main-dests-bg-modal").style.display = 'none';
-            }
-        </script>
-        <script>
-            function selectResSource(Button) {
-                var input = document.getElementById('reserveSwitchingSource');
-                input.value = Button.textContent;
-                document.querySelector(".res-srcs-bg-modal").style.display = 'none';
-            }
-        </script>
-        <script>
-            function selectResDest(Button) {
-                var input = document.getElementById('reserveSwitchingDestination');
-                input.value = Button.textContent;
-                document.querySelector(".res-dests-bg-modal").style.display = 'none';
-            }
-        </script>
+<script>
+    $(document).ready(setButtonClickActions);
+</script>
 {% endblock %}
 
 {%block body %}

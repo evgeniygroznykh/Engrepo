@@ -10,21 +10,6 @@
 {% endblock %}
 
 {% block add_scripts %}
-<script>
-    var flag = 0;
-    function read(){
-        if(flag == 0){
-            document.getElementById("more").style.display="inline";
-            document.getElementById("more_link").innerHTML="Скрыть";
-            flag = 1;
-        }
-        else{
-            document.getElementById("more").style.display="none";
-            document.getElementById("more_link").innerHTML="Читать подробнее..";
-            flag = 0;
-        }
-    }
-</script>
 {% endblock %}
 
 {%block body %}
