@@ -7,8 +7,8 @@
 {% block add_scripts %}
     <script>
         $(document).ready(function(){
-            $("div.myclass:contains('Без замечаний')").css("background-color", "green");
-            $("div.myclass:not(:contains('Без замечаний'))").css("background-color", "red");
+            $("div.report-desc-block:contains('Без замечаний')").css("background", "linear-gradient(to bottom, #339933 0%, #99ff33 100%)");
+            $("div.report-desc-block:not(:contains('Без замечаний'))").css("background", "linear-gradient(to bottom, #ff0000 0%, #ff99cc 100%)");
         });
     </script>
 {% endblock %}
@@ -52,7 +52,7 @@
 
             {% if switching_reports|length > 0 %}
                 {% for sw_rep in switching_reports %}
-                <div class="myclass">
+                <div class="report-desc-block">
                     <h2>{{sw_rep.work_type}} для {{sw_rep.customer}}</h2>
                     <p><b>Дата создания:</b> {{ sw_rep.date }}</p>
                     <p><b>Состав смены:</b> {{sw_rep.shift_comp}}</p>
@@ -63,7 +63,7 @@
                     <p><b>Резервный источник:</b> {{sw_rep.reserve_source}}</p>
                     <p><b>Резервное направление:</b> {{sw_rep.reserve_destination}}</p>
                     <p style="display: none;">{{ sw_rep.remarks }}</p>
-                    <a href="id={{ sw_rep.id }}">Подробнее..</a>
+                    <a class="btn btn-warning btn-lg" href="id={{ sw_rep.id }}">Подробнее..</a>
                 </div>
                 {% endfor %}
             {% else %}

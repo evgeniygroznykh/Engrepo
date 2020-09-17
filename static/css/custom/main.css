@@ -41,3 +41,27 @@ button {
     font-size: 42px;
     transform: rotate(45deg);
 }
+
+.report-desc-block {
+    width: 700px;
+    border-radius: 40px;
+    border: 1px solid white;
+    justify-content: center;
+}
+
+.report-desc-block h2 {
+    font-family: Geneva;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.report-desc-block p {
+    font-family: Geneva;
+    margin: 30px;
+}
+
+.report-desc-block a {
+    margin-bottom: 20px;
+    position: relative;
+    left: 70%;
+}
