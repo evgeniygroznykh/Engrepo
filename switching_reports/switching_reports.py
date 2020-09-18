@@ -8,6 +8,7 @@ import os
 from cfg.config import CUSTOMERS, WORK_TYPES, SHIFTS, SOURCES, DESTINATIONS, UPLOAD_FOLDER
 
 SWITCHING_REPORT_BLUEPRINTS = []
+REQUEST_FILE_EXISTS_ERROR_TEXT = 'данный файл заявки уже существует, файл не был сохранён'
 
 switching_report_page = Blueprint('switching_report_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_report_page)
@@ -32,14 +33,14 @@ def switching_report():
         request_file_path = 'no request file'
 
         if request_file.filename != '':
-            if not os.path.isfile(UPLOAD_FOLDER + request_file.filename):
+            if not os.path.isfile(os.path.join(UPLOAD_FOLDER, request_file.filename)):
                 request_file_path = UPLOAD_FOLDER + request_file.filename
                 request_file.save(request_file_path)
             else:
                 if remarks == 'Без замечаний':
-                    remarks = '\nВНИМАНИЕ: данный файл заявки уже существует, файл не был сохранён'
+                    remarks = REQUEST_FILE_EXISTS_ERROR_TEXT
                 else:
-                    remarks += '\nВНИМАНИЕ: данный файл заявки уже существует, файл не был сохранён'
+                    remarks += f'; {REQUEST_FILE_EXISTS_ERROR_TEXT}'
 
         switching_report = SwitchingReport(work_type=work_type, customer=customer, start_time=start_time,
                                            end_time=end_time, source=switching_source, destination=switching_destination,
@@ -108,10 +109,17 @@ def switching_report_update(id):
         request_file = request.files['requestFile']
 
         if request_file.filename != '':
-            if os.path.isfile(request_file.filename):
-                switching_report.remarks += '\nВНИМАНИЕ: данный файл заявки уже существует, файл не был сохранён'
+            if os.path.isfile(os.path.join(UPLOAD_FOLDER,request_file.filename)):
+                if switching_report.remarks == 'Без замечаний':
+                    switching_report.remarks = REQUEST_FILE_EXISTS_ERROR_TEXT
+                else:
+                    switching_report.remarks += f'; {REQUEST_FILE_EXISTS_ERROR_TEXT}'
             else:
                 request_file.save(f'{UPLOAD_FOLDER}' + f'{request_file.filename}')
+                if REQUEST_FILE_EXISTS_ERROR_TEXT in switching_report.remarks:
+                    switching_report.remarks = switching_report.remarks.replace(REQUEST_FILE_EXISTS_ERROR_TEXT, '')
+                    if switching_report.remarks == '':
+                        switching_report.remarks = 'Без замечаний'
                 if switching_report.request_file_path == 'no request file':
                     switching_report.request_file_path = ''
                 switching_report.request_file_path += f'\n{UPLOAD_FOLDER}' + f'{request_file.filename}'
