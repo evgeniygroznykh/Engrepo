@@ -49,25 +49,35 @@
             <h1>Все отчёты о коммутации</h1>
 
             {% if switching_reports|length > 0 %}
-                {% for wt in work_types %}
-                <div id="{{ wt }}">
-                    <h1>{{ wt }}</h1>
-                    {% for sw_rep in switching_reports %}
-                        {% if sw_rep.work_type == wt %}
-                            <div class="report-desc-block">
-                            <h2>{{sw_rep.work_type}} для {{sw_rep.customer}}</h2>
-                            <p><b>Дата создания:</b> {{ sw_rep.date.__format__('%Y-%m-%d %H:%M') }}</p>
-                            <p><b>Состав смены:</b> {{sw_rep.shift_comp}}</p>
-                            <p><b>Начало трансляции:</b> {{sw_rep.start_time}}</p>
-                            <p><b>Окончание трансляции:</b> {{sw_rep.end_time}}</p>
-                            <p><b>Основной источник:</b> {{sw_rep.source}}</p>
-                            <p><b>Основное направление:</b> {{sw_rep.destination}}</p>
-                            <p><b>Резервный источник:</b> {{sw_rep.reserve_source}}</p>
-                            <p><b>Резервное направление:</b> {{sw_rep.reserve_destination}}</p>
-                            <p style="display: none;">{{ sw_rep.remarks }}</p>
-                            <a class="btn btn-warning btn-lg" href="id={{ sw_rep.id }}">Подробнее..</a>
-                            </div>
-                        {% endif %}
+                {% for i in range(14) %}
+                <div>
+                    <p style="font-size: 20px;">{{ (now - time_deltas[i]).__format__('%Y-%m-%d') }}</p>
+                    {% for wt in work_types %}
+                    <div id="{{ wt }}">
+                        <h2>{{ wt }}</h2>
+                        {% for sw_rep in switching_reports %}
+                            {% if (now - sw_rep.date).seconds//3600 > i*24 and sw_rep.work_type == wt %}
+                                    <div class="report-desc-block">
+                                    <h2>{{sw_rep.customer}}</h2>
+                                    <p><b>Дата создания:</b> {{ sw_rep.date.__format__('%Y-%m-%d %H:%M') }}</p>
+                                    <table class="table table-bordered table-dark">
+                                        <tr class="table-success">
+                                            <th style="border-bottom: none;">Начало: {{sw_rep.start_time}}</th>
+                                            <th>{{sw_rep.source}}</th>
+                                            <th>{{sw_rep.reserve_source}}</th>
+                                        </tr>
+                                        <tr class="table-info">
+                                            <th style="border-top: none;">Окончание: {{sw_rep.end_time}}</th>
+                                            <th>{{sw_rep.destination}}</th>
+                                            <th>{{sw_rep.reserve_destination}}</th>
+                                        </tr>
+                                    </table>
+                                    <p style="display: none;">{{ sw_rep.remarks }}</p>
+                                    <a class="btn btn-warning btn-lg" href="id={{ sw_rep.id }}">Подробнее..</a>
+                                    </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                     {% endfor %}
                 </div>
                 {% endfor %}

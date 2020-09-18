@@ -118,3 +118,10 @@ div[id='Коммутация Останкино'] {
     position: relative;
     justify-content: center;
 }
+
+table {
+}
+
+tr, th {
+    color: black;
+}
