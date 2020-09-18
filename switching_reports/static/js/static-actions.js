@@ -34,17 +34,24 @@ function expandOrCollapseVar(){
     document.getElementById("Коммутация VAR").addEventListener("click", function()
     {
         var descs = document.getElementById("Коммутация VAR").getElementsByClassName("report-desc-block");
-        if(flag == 0){
+        if(flag == 0 && document.getElementById("Коммутация VAR").children.length > 1){
             for (var i = 0; i < descs.length; i++){
                 descs[i].style.display = "block";
             }
             flag = 1;
+            document.getElementById("Коммутация VAR").style.background = "white";
         }
           else {
             for (var i = 0; i < descs.length; i++){
                 descs[i].style.display = "none";
             }
             flag = 0;
+          if(document.getElementById("Коммутация VAR").children.length <= 1){
+            document.getElementById("Коммутация VAR").style.background = 'grey';
+          }
+          else{
+            document.getElementById("Коммутация VAR").style.background = "#fcca03";
+          }
         }
     });
 }
@@ -54,17 +61,24 @@ function expandOrCollapseMP(){
     document.getElementById("Коммутация Матч Премьер").addEventListener("click", function()
     {
         var descs = document.getElementById("Коммутация Матч Премьер").getElementsByClassName('report-desc-block');
-        if(flag == 0){
+        if(flag == 0 && document.getElementById("Коммутация Матч Премьер").children.length > 1){
             for (var i = 0; i < descs.length; i++){
                 descs[i].style.display = "block";
             }
             flag = 1;
+            document.getElementById("Коммутация Матч Премьер").style.background = "white";
         }
           else {
             for (var i = 0; i < descs.length; i++){
                 descs[i].style.display = "none";
             }
             flag = 0;
+          if(document.getElementById("Коммутация Матч Премьер").children.length <= 1){
+            document.getElementById("Коммутация Матч Премьер").style.background = 'grey';
+          }
+          else{
+            document.getElementById("Коммутация Матч Премьер").style.background = "#fcca03";
+          }
         }
     });
 }
@@ -74,17 +88,24 @@ function expandOrCollapseRec(){
     document.getElementById("Запись трансляции").addEventListener("click", function()
     {
         var descs = document.getElementById("Запись трансляции").getElementsByClassName('report-desc-block');
-        if(flag == 0){
+        if(flag == 0 && document.getElementById("Запись трансляции").children.length > 1){
             for (var i = 0; i < descs.length; i++){
                 descs[i].style.display = "block";
             }
             flag = 1;
+            document.getElementById("Запись трансляции").style.background = "white";
         }
           else {
             for (var i = 0; i < descs.length; i++){
                 descs[i].style.display = "none";
             }
             flag = 0;
+          if(document.getElementById("Запись трансляции").children.length <= 1){
+            document.getElementById("Запись трансляции").style.background = 'grey';
+          }
+          else{
+            document.getElementById("Запись трансляции").style.background = "#fcca03";
+          }
         }
     });
 }
@@ -94,17 +115,25 @@ function expandOrCollapseOst(){
     document.getElementById("Коммутация Останкино").addEventListener("click", function()
     {
         var descs = document.getElementById("Коммутация Останкино").getElementsByClassName('report-desc-block');
-        if(flag == 0){
+        if(flag == 0 && document.getElementById("Коммутация Останкино").children.length > 1){
             for (var i = 0; i < descs.length; i++){
                 descs[i].style.display = "block";
             }
             flag = 1;
+            document.getElementById("Коммутация Останкино").style.background = "white";
         }
           else {
             for (var i = 0; i < descs.length; i++){
                 descs[i].style.display = "none";
             }
             flag = 0;
+
+          if(document.getElementById("Коммутация Останкино").children.length <= 1){
+            document.getElementById("Коммутация Останкино").style.background = 'grey';
+          }
+          else{
+            document.getElementById("Коммутация Останкино").style.background = "#fcca03";
+          }
         }
     });
 }
