@@ -29,8 +29,88 @@ function setButtonClickActions () {
     });
 }
 
-var flag = 0;
+function expandOrCollapseVar(){
+    var flag = 0;
+    document.getElementById("Коммутация VAR").addEventListener("click", function()
+    {
+        var descs = document.getElementById("Коммутация VAR").getElementsByClassName("report-desc-block");
+        if(flag == 0){
+            for (var i = 0; i < descs.length; i++){
+                descs[i].style.display = "block";
+            }
+            flag = 1;
+        }
+          else {
+            for (var i = 0; i < descs.length; i++){
+                descs[i].style.display = "none";
+            }
+            flag = 0;
+        }
+    });
+}
+
+function expandOrCollapseMP(){
+    var flag = 0;
+    document.getElementById("Коммутация Матч Премьер").addEventListener("click", function()
+    {
+        var descs = document.getElementById("Коммутация Матч Премьер").getElementsByClassName('report-desc-block');
+        if(flag == 0){
+            for (var i = 0; i < descs.length; i++){
+                descs[i].style.display = "block";
+            }
+            flag = 1;
+        }
+          else {
+            for (var i = 0; i < descs.length; i++){
+                descs[i].style.display = "none";
+            }
+            flag = 0;
+        }
+    });
+}
+
+function expandOrCollapseRec(){
+    var flag = 0;
+    document.getElementById("Запись трансляции").addEventListener("click", function()
+    {
+        var descs = document.getElementById("Запись трансляции").getElementsByClassName('report-desc-block');
+        if(flag == 0){
+            for (var i = 0; i < descs.length; i++){
+                descs[i].style.display = "block";
+            }
+            flag = 1;
+        }
+          else {
+            for (var i = 0; i < descs.length; i++){
+                descs[i].style.display = "none";
+            }
+            flag = 0;
+        }
+    });
+}
+
+function expandOrCollapseOst(){
+    var flag = 0;
+    document.getElementById("Коммутация Останкино").addEventListener("click", function()
+    {
+        var descs = document.getElementById("Коммутация Останкино").getElementsByClassName('report-desc-block');
+        if(flag == 0){
+            for (var i = 0; i < descs.length; i++){
+                descs[i].style.display = "block";
+            }
+            flag = 1;
+        }
+          else {
+            for (var i = 0; i < descs.length; i++){
+                descs[i].style.display = "none";
+            }
+            flag = 0;
+        }
+    });
+}
+
 function read(){
+    var flag = 0;
     if(flag == 0){
         document.getElementById("more").style.display="inline";
         document.getElementById("more_link").innerHTML="Скрыть";

@@ -6,10 +6,8 @@
 
 {% block add_scripts %}
     <script>
-        $(document).ready(function(){
-            $("div.report-desc-block:contains('Без замечаний')").css("background", "linear-gradient(to bottom, #339933 0%, #99ff33 100%)");
-            $("div.report-desc-block:not(:contains('Без замечаний'))").css("background", "linear-gradient(to bottom, #ff0000 0%, #ff99cc 100%)");
-        });
+        $(document).ready(styleReportDescriptions).ready(expandOrCollapseVar).ready(expandOrCollapseMP)
+        .ready(expandOrCollapseRec).ready(expandOrCollapseOst);
     </script>
 {% endblock %}
 
@@ -51,19 +49,26 @@
             <h1>Все отчёты о коммутации</h1>
 
             {% if switching_reports|length > 0 %}
-                {% for sw_rep in switching_reports %}
-                <div class="report-desc-block">
-                    <h2>{{sw_rep.work_type}} для {{sw_rep.customer}}</h2>
-                    <p><b>Дата создания:</b> {{ sw_rep.date }}</p>
-                    <p><b>Состав смены:</b> {{sw_rep.shift_comp}}</p>
-                    <p><b>Начало трансляции:</b> {{sw_rep.start_time}}</p>
-                    <p><b>Окончание трансляции:</b> {{sw_rep.end_time}}</p>
-                    <p><b>Основной источник:</b> {{sw_rep.source}}</p>
-                    <p><b>Основное направление:</b> {{sw_rep.destination}}</p>
-                    <p><b>Резервный источник:</b> {{sw_rep.reserve_source}}</p>
-                    <p><b>Резервное направление:</b> {{sw_rep.reserve_destination}}</p>
-                    <p style="display: none;">{{ sw_rep.remarks }}</p>
-                    <a class="btn btn-warning btn-lg" href="id={{ sw_rep.id }}">Подробнее..</a>
+                {% for wt in work_types %}
+                <div id="{{ wt }}">
+                    <h1>{{ wt }}</h1>
+                    {% for sw_rep in switching_reports %}
+                        {% if sw_rep.work_type == wt %}
+                            <div class="report-desc-block">
+                            <h2>{{sw_rep.work_type}} для {{sw_rep.customer}}</h2>
+                            <p><b>Дата создания:</b> {{ sw_rep.date }}</p>
+                            <p><b>Состав смены:</b> {{sw_rep.shift_comp}}</p>
+                            <p><b>Начало трансляции:</b> {{sw_rep.start_time}}</p>
+                            <p><b>Окончание трансляции:</b> {{sw_rep.end_time}}</p>
+                            <p><b>Основной источник:</b> {{sw_rep.source}}</p>
+                            <p><b>Основное направление:</b> {{sw_rep.destination}}</p>
+                            <p><b>Резервный источник:</b> {{sw_rep.reserve_source}}</p>
+                            <p><b>Резервное направление:</b> {{sw_rep.reserve_destination}}</p>
+                            <p style="display: none;">{{ sw_rep.remarks }}</p>
+                            <a class="btn btn-warning btn-lg" href="id={{ sw_rep.id }}">Подробнее..</a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
                 {% endfor %}
             {% else %}

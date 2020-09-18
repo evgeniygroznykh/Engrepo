@@ -43,10 +43,13 @@ button {
 }
 
 .report-desc-block {
-    width: 700px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+    width: 600px;
     border-radius: 40px;
     border: 1px solid white;
     justify-content: center;
+    display: none;
 }
 
 .report-desc-block h2 {
@@ -63,7 +66,6 @@ button {
 .report-desc-block a {
     margin-bottom: 20px;
     position: relative;
-    left: 70%;
 }
 
 .report-desc-block button {
@@ -73,4 +75,45 @@ button {
 .report-desc-block #control-buttons {
     position: relative;
     right: 35%;
+}
+
+div[id='Коммутация VAR'] {
+    margin-top: 20px;
+    width: 750px;
+    background-color: #fcca03;
+    border-radius: 40px;
+    text-align: center;
+    border: 2px solid black;
+    position: relative;
+    justify-content: center;
+}
+div[id='Коммутация Матч Премьер'] {
+    margin-top: 20px;
+    width: 750px;
+    background-color: #fcca03;
+    border-radius: 40px;
+    text-align: center;
+    border: 2px solid black;
+    position: relative;
+    justify-content: center;
+}
+div[id='Запись трансляции'] {
+    margin-top: 20px;
+    width: 750px;
+    background-color: #fcca03;
+    border-radius: 40px;
+    text-align: center;
+    border: 2px solid black;
+    position: relative;
+    justify-content: center;
+}
+div[id='Коммутация Останкино'] {
+    margin-top: 20px;
+    width: 750px;
+    background-color: #fcca03;
+    border-radius: 40px;
+    text-align: center;
+    border: 2px solid black;
+    position: relative;
+    justify-content: center;
 }
