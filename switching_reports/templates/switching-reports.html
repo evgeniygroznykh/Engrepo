@@ -56,7 +56,7 @@
                         {% if sw_rep.work_type == wt %}
                             <div class="report-desc-block">
                             <h2>{{sw_rep.work_type}} для {{sw_rep.customer}}</h2>
-                            <p><b>Дата создания:</b> {{ sw_rep.date }}</p>
+                            <p><b>Дата создания:</b> {{ sw_rep.date.__format__('%Y-%m-%d %H:%M') }}</p>
                             <p><b>Состав смены:</b> {{sw_rep.shift_comp}}</p>
                             <p><b>Начало трансляции:</b> {{sw_rep.start_time}}</p>
                             <p><b>Окончание трансляции:</b> {{sw_rep.end_time}}</p>

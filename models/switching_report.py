@@ -4,7 +4,7 @@ from datetime import datetime
 
 class SwitchingReport(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.DateTime, default=datetime.now())
+    date = db.Column(db.DateTime, default=datetime.utcnow())
     work_type = db.Column(db.String(300), nullable=False)
     shift_comp = db.Column(db.String(300), nullable=False)
     comment = db.Column(db.Text, nullable=False)
