@@ -10,6 +10,12 @@
 {% endblock %}
 
 {% block add_scripts %}
+    <script>
+        $(document).ready(function(){
+            $("div.report-desc-block:contains('Без замечаний')").css("background", "linear-gradient(to bottom, #339933 0%, #99ff33 100%)");
+            $("div.report-desc-block:not(:contains('Без замечаний'))").css("background", "linear-gradient(to bottom, #ff0000 0%, #ff99cc 100%)");
+        });
+    </script>
 {% endblock %}
 
 {% block nav %}
@@ -24,7 +30,7 @@
 {%block body %}
 <div class="container mt-5">
     <h1>{{ report.summary }}</h1>
-    <div class="alert alert-info">
+    <div class="report-desc-block">
         <p id="desc"><b>Подробное описание:</b> {{ report.description[:262] }}<span id="more">{{report.description[262:]}}</span></p>
         <button onclick="read()" id="more_link">Read more..</button>
         <br>

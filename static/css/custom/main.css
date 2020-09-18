@@ -65,3 +65,12 @@ button {
     position: relative;
     left: 70%;
 }
+
+.report-desc-block button {
+    margin-left: 30px;
+}
+
+.report-desc-block #control-buttons {
+    position: relative;
+    right: 35%;
+}
