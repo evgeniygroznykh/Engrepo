@@ -12,7 +12,6 @@ REQUEST_FILE_EXISTS_ERROR_TEXT = 'данный файл заявки уже су
 switching_report_page = Blueprint('switching_report_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_report_page)
 @DBC.verify_db('Engrepo')
-@switching_report_page.route("/", methods=['POST', 'GET'])
 @switching_report_page.route("/create_switching_report/", methods=['POST', 'GET'])
 @switching_report_page.route("/create_switching_report", methods=['POST', 'GET'])
 def switching_report():
@@ -58,6 +57,7 @@ def switching_report():
 switching_reports_page = Blueprint('switching_reports_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_reports_page)
 @DBC.verify_db('Engrepo')
+@switching_report_page.route("/", methods=['POST', 'GET'])
 @switching_reports_page.route("/switching_reports", methods=['POST', 'GET'])
 @switching_reports_page.route("/switching_reports/", methods=['POST', 'GET'])
 def switching_reports():
