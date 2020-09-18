@@ -73,8 +73,9 @@ button {
 }
 
 .report-desc-block #control-buttons {
+    margin-left: 30%;
     position: relative;
-    right: 35%;
+    width: fit-content;
 }
 
 div[id='Коммутация VAR'] {

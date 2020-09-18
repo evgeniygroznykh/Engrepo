@@ -11,10 +11,7 @@
 
 {% block add_scripts %}
     <script>
-        $(document).ready(function(){
-            $("div.report-desc-block:contains('Без замечаний')").css("background", "linear-gradient(to bottom, #339933 0%, #99ff33 100%)");
-            $("div.report-desc-block:not(:contains('Без замечаний'))").css("background", "linear-gradient(to bottom, #ff0000 0%, #ff99cc 100%)");
-        });
+        $(document).ready(styleReportDescriptions)
     </script>
 {% endblock %}
 
@@ -29,8 +26,8 @@
 
 {%block body %}
 <div class="container mt-5">
-    <h1>{{switching_report.work_type}} для {{switching_report.customer}}</h1>
-    <div class="report-desc-block">
+    <div class="report-desc-block" style="display: block;">
+        <h2>{{switching_report.work_type}} для {{switching_report.customer}}</h2>
         <p id="desc"><b>Комментарий:</b> {{ switching_report.comment[:262] }}<span id="more">{{switching_report.comment[262:]}}</span></p>
         <button onclick="read()" id="more_link">Читать подробнее..</button>
         <br>
