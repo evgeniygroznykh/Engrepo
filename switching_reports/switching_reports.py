@@ -1,5 +1,4 @@
-from models.report import db
-from models.switching_report import SwitchingReport
+from models.switching_report import SwitchingReport, db
 from flask import render_template, url_for, request, redirect, Blueprint
 from sqlalchemy import or_, and_
 from models.dbconn import DBContext as DBC
