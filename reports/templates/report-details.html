@@ -37,8 +37,10 @@
         <br>
         <p><b>Замечания:</b> {{ report.remarks }}</p>
         <p><b>Дата создания отчёта: {{report.date}}</b></p>
-        <a href="/reports/reports/id={{ report.id }}/delete" class="btn btn-danger">Удалить</a>
-        <a href="/reports/reports/id={{ report.id }}/update" class="btn btn-success">Редактировать</a>
+        <div id="control-buttons">
+            <a href="/reports/reports/id={{ report.id }}/delete" class="btn btn-danger">Удалить</a>
+            <a href="/reports/reports/id={{ report.id }}/update" class="btn btn-success">Редактировать</a>
+        </div>
     </div>
 </div>
 {% endblock %}
