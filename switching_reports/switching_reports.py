@@ -148,7 +148,7 @@ def sw_search():
                                                  SwitchingReport.comment.ilike(f'%{search_string}%'),
                                                     SwitchingReport.shift_comp.ilike(f'%{search_string}%')))\
                                                     .order_by(SwitchingReport.date.desc()).all()
-        return render_template('switching-reports.html', switching_reports=needed_switching_reports)
+        return render_template('switching-reports.html', switching_reports=needed_switching_reports, work_types = WORK_TYPES)
 
 sw_filter_page = Blueprint('sw_filter_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(sw_filter_page)
@@ -161,4 +161,4 @@ def sw_filter_reports():
 
         filtered_sw_reports = SwitchingReport.query.filter(and_(SwitchingReport.date >= filter_from_date, SwitchingReport.date <= filter_to_date))\
                                                     .order_by(SwitchingReport.date.desc()).all()
-        return render_template('switching-reports.html', switching_reports=filtered_sw_reports)
+        return render_template('switching-reports.html', switching_reports=filtered_sw_reports, work_types = WORK_TYPES)
