@@ -145,8 +145,8 @@ function expandOrCollapseOst(){
     });
 }
 
+var flag = 0;
 function read(){
-    var flag = 0;
     if(flag == 0){
         document.getElementById("more").style.display="inline";
         document.getElementById("more_link").innerHTML="Скрыть";

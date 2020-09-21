@@ -16,6 +16,7 @@ SWITCHING_REPORT_BLUEPRINTS.append(switching_report_page)
 @switching_report_page.route("/create_switching_report", methods=['POST', 'GET'])
 def switching_report():
     if request.method == 'POST':
+        date = dt.datetime.utcnow()
         work_type = request.form['switchingReportWorkType']
         customer = request.form['switchingCustomer']
         shift_comp = request.form['shiftComp']
@@ -40,7 +41,7 @@ def switching_report():
                 else:
                     remarks += f'; {REQUEST_FILE_EXISTS_ERROR_TEXT}'
 
-        switching_report = SwitchingReport(work_type=work_type, customer=customer, start_time=start_time,
+        switching_report = SwitchingReport(date=date, work_type=work_type, customer=customer, start_time=start_time,
                                            end_time=end_time, source=switching_source, destination=switching_destination,
                                            reserve_source = switching_reserve_source, reserve_destination = switching_reserve_destination,
                                            shift_comp=shift_comp, comment=comment, remarks=remarks, request_file_path=request_file_path)
@@ -96,6 +97,7 @@ def switching_report_update(id):
     switching_report = SwitchingReport.query.get(id)
 
     if request.method == 'POST':
+        switching_report.date = dt.datetime.utcnow()
         switching_report.work_type = request.form['switchingReportWorkType']
         switching_report.customer = request.form['switchingCustomer']
         switching_report.shift_comp = request.form['shiftComp']

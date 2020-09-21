@@ -1,10 +1,9 @@
 from models.shared_db import db
-from datetime import datetime
 
 
 class SwitchingReport(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.DateTime, default=datetime.utcnow())
+    date = db.Column(db.DateTime)
     work_type = db.Column(db.String(300), nullable=False)
     shift_comp = db.Column(db.String(300), nullable=False)
     comment = db.Column(db.Text, nullable=False)
