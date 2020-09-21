@@ -25,12 +25,12 @@
             <div style="margin: auto; width: fit-content;">
                 <div style="display: inline-block;">
                         <label for="sortStartTime">С</label><br>
-                        <input type="datetime-local" id="sortStartTime" name="sortStartTime" placeholder="" value="">
+                        <input type="datetime-local" id="sortStartTime" name="sortStartTime" placeholder="" value="{{ default_from_value }}">
                         <br>
                 </div>
                 <div style="display: inline-block;">
                         <label for="sortEndTime">По</label><br>
-                        <input type="datetime-local" id="sortEndTime" name="sortEndTime" placeholder="" value="">
+                        <input type="datetime-local" id="sortEndTime" name="sortEndTime" placeholder="" value="{{ default_to_value }}">
                         <br>
                 </div>
                 <div style="display: inline-block; margin-left: 40px;">
@@ -40,8 +40,9 @@
         </form>
         <div class="container mt-5" style="margin: auto; width: fit-content;">
             <div class="md-form mt-0">
-                <form action="sw_search" method="POST">
-                    <input class="form-control" type="text" placeholder="Искать" aria-label="Search" name="search_string">
+                <form class="form-inline md-form mr-auto mb-4" action="sw_search" method="POST">
+                  <input style="width: 500px;" class="form-control mr-sm-2" type="text" placeholder="Искать" aria-label="Search" name="search_string">
+                  <button class="btn btn-dark btn-lg" type="submit">Искать</button>
                 </form>
             </div>
             <br>

@@ -62,10 +62,15 @@ SWITCHING_REPORT_BLUEPRINTS.append(switching_reports_page)
 @switching_reports_page.route("/switching_reports", methods=['POST', 'GET'])
 @switching_reports_page.route("/switching_reports/", methods=['POST', 'GET'])
 def switching_reports():
+    now = dt.datetime.now()
+    default_to_value = now.__format__("%Y-%m-%dT%H:%M")
+    default_from_value = (now-dt.timedelta(days=14)).__format__("%Y-%m-%dT%H:%M")
+
     switching_reports = SwitchingReport.query.order_by(SwitchingReport.date.desc()).all()
     time_deltas = [dt.timedelta(days=i) for i in range(14)]
     return render_template("switching-reports.html", switching_reports=switching_reports, work_types = WORK_TYPES,
-                           time_deltas=time_deltas, now=dt.datetime.now(), amount_of_days=14, search_string='empty')
+                           time_deltas=time_deltas, now=now, amount_of_days=14, search_string='empty',
+                           default_from_value=default_from_value, default_to_value=default_to_value)
 
 switching_report_details_page = Blueprint('switching_report_details_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_report_details_page)
