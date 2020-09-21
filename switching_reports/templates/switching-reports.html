@@ -51,8 +51,8 @@
             {% if switching_reports|length > 0 %}
                 {% if amount_of_days %}
                     {% for i in range(amount_of_days) %}
-                    <div>
-                        <p style="font-size: 30px;">{{ (now - time_deltas[i]).__format__('%Y-%m-%d') }}</p>
+                    <div class="day-block">
+                        <p>{{ (now - time_deltas[i]).__format__('%Y-%m-%d') }}</p>
                         <hr>
                         {% for wt in work_types %}
                         <div class="work-type-block" id="{{ wt }}_{{ i }}_days_before">
@@ -86,8 +86,8 @@
                     {% endfor %}
                 {% else %}
                     {% for i in range(14) %}
-                    <div>
-                        <p style="font-size: 30px;">{{ (now - time_deltas[i]).__format__('%Y-%m-%d') }}</p>
+                    <div class="day-block">
+                        <p>{{ (now - time_deltas[i]).__format__('%Y-%m-%d') }}</p>
                         <hr>
                         {% for wt in work_types %}
                         <div class="work-type-block" id="{{ wt }}_{{ i }}_days_before">

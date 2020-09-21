@@ -88,6 +88,15 @@ button {
     justify-content: center;
 }
 
+.day-block {
+    width: fit-content;
+}
+
+.day-block p {
+    text-align: center;
+    font-size: 30px;
+}
+
 table {
 }
 
