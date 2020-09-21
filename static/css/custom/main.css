@@ -1,6 +1,3 @@
-button {
-}
-
 #desc {
      word-wrap: break-word;
      text-align: justify;
@@ -51,7 +48,7 @@ button {
 .report-desc-block {
     margin: 0 auto;
     margin-bottom: 50px;
-    width: 700px;
+    width: 500px;
     border: 1px solid white;
     justify-content: center;
     display: none;
@@ -84,12 +81,20 @@ button {
 
 .work-type-block {
     margin-top: 20px;
-    width: 750px;
+    width: 550px;
     border-radius: 40px;
     text-align: center;
     border: 2px solid black;
     position: relative;
     justify-content: center;
+}
+
+.work-type-block:hover{
+    cursor: pointer;
+}
+
+.work-type-block h2 {
+    font-size: 24px;
 }
 
 .day-block {
@@ -108,3 +113,4 @@ tr, td {
     color: black;
     text-align: left;
 }
+

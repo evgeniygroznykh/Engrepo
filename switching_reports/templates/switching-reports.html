@@ -22,23 +22,23 @@
 
 {%block body %}
         <form action='sw_filter_reports' method="POST">
-            <div style="float: left; margin-left:50px;">
-                <div>
+            <div style="margin: auto; width: fit-content;">
+                <div style="display: inline-block;">
                         <label for="sortStartTime">С</label><br>
                         <input type="datetime-local" id="sortStartTime" name="sortStartTime" placeholder="" value="">
                         <br>
                 </div>
-                <div>
+                <div style="display: inline-block;">
                         <label for="sortEndTime">По</label><br>
                         <input type="datetime-local" id="sortEndTime" name="sortEndTime" placeholder="" value="">
                         <br>
                 </div>
-                <div>
-                    <button class="btn btn-dark btn-lg" type="submit" style="margin-top: 15px;">Искать</button>
+                <div style="display: inline-block; margin-left: 40px;">
+                    <button class="btn btn-dark btn-lg" type="submit">Искать</button>
                 </div>
             </div>
         </form>
-        <div class="container mt-5">
+        <div class="container mt-5" style="margin: auto; width: fit-content;">
             <div class="md-form mt-0">
                 <form action="sw_search" method="POST">
                     <input class="form-control" type="text" placeholder="Искать" aria-label="Search" name="search_string">
