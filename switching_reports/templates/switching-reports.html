@@ -49,40 +49,77 @@
             <h1>Все отчёты о коммутации</h1>
 
             {% if switching_reports|length > 0 %}
-                {% for i in range(14) %}
-                <div>
-                    <p style="font-size: 30px;">{{ (now - time_deltas[i]).__format__('%Y-%m-%d') }}</p>
-                    <hr>
-                    {% for wt in work_types %}
-                    <div class="work-type-block" id="{{ wt }}_{{ i }}_days_before">
-                        <h2>{{ wt }}</h2>
-                        {% for sw_rep in switching_reports %}
-                            {% if sw_rep.date.day == (now - time_deltas[i]).day and sw_rep.work_type == wt %}
-                                    <div class="report-desc-block">
-                                    <h2>{{sw_rep.customer}}</h2>
-                                    <p><b>Дата создания:</b> {{ sw_rep.date.__format__('%Y-%m-%d %H:%M') }}</p>
-                                    <table class="table table-bordered table-dark">
-                                        <tr class="table-success">
-                                            <th style="border-bottom: none;">Начало: {{sw_rep.start_time}}</th>
-                                            <th>{{sw_rep.source}}</th>
-                                            <th>{{sw_rep.reserve_source}}</th>
-                                        </tr>
-                                        <tr class="table-info">
-                                            <th style="border-top: none;">Окончание: {{sw_rep.end_time}}</th>
-                                            <th>{{sw_rep.destination}}</th>
-                                            <th>{{sw_rep.reserve_destination}}</th>
-                                        </tr>
-                                    </table>
-                                    <p style="display: none;">{{ sw_rep.remarks }}</p>
-                                    <a class="btn btn-warning btn-lg" href="id={{ sw_rep.id }}">Подробнее..</a>
-                                    </div>
-                            {% endif %}
+                {% if amount_of_days %}
+                    {% for i in range(amount_of_days) %}
+                    <div>
+                        <p style="font-size: 30px;">{{ (now - time_deltas[i]).__format__('%Y-%m-%d') }}</p>
+                        <hr>
+                        {% for wt in work_types %}
+                        <div class="work-type-block" id="{{ wt }}_{{ i }}_days_before">
+                            <h2>{{ wt }}</h2>
+                            {% for sw_rep in switching_reports %}
+                                {% if sw_rep.date.day == (now - time_deltas[i]).day and sw_rep.work_type == wt %}
+                                        <div class="report-desc-block">
+                                        <h2>{{sw_rep.customer}}</h2>
+                                        <p><b>Дата создания:</b> {{ sw_rep.date.__format__('%Y-%m-%d %H:%M') }}</p>
+                                        <table class="table table-bordered table-dark">
+                                            <tr class="table-success">
+                                                <th style="border-bottom: none;">Начало: {{sw_rep.start_time}}</th>
+                                                <th>{{sw_rep.source}}</th>
+                                                <th>{{sw_rep.reserve_source}}</th>
+                                            </tr>
+                                            <tr class="table-info">
+                                                <th style="border-top: none;">Окончание: {{sw_rep.end_time}}</th>
+                                                <th>{{sw_rep.destination}}</th>
+                                                <th>{{sw_rep.reserve_destination}}</th>
+                                            </tr>
+                                        </table>
+                                        <p style="display: none;">{{ sw_rep.remarks }}</p>
+                                        <a class="btn btn-warning btn-lg" href="id={{ sw_rep.id }}">Подробнее..</a>
+                                        </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                         {% endfor %}
                     </div>
+                    <hr>
                     {% endfor %}
-                </div>
-                <hr>
-                {% endfor %}
+                {% else %}
+                    {% for i in range(14) %}
+                    <div>
+                        <p style="font-size: 30px;">{{ (now - time_deltas[i]).__format__('%Y-%m-%d') }}</p>
+                        <hr>
+                        {% for wt in work_types %}
+                        <div class="work-type-block" id="{{ wt }}_{{ i }}_days_before">
+                            <h2>{{ wt }}</h2>
+                            {% for sw_rep in switching_reports %}
+                                {% if sw_rep.date.day == (now - time_deltas[i]).day and sw_rep.work_type == wt %}
+                                        <div class="report-desc-block">
+                                        <h2>{{sw_rep.customer}}</h2>
+                                        <p><b>Дата создания:</b> {{ sw_rep.date.__format__('%Y-%m-%d %H:%M') }}</p>
+                                        <table class="table table-bordered table-dark">
+                                            <tr class="table-success">
+                                                <th style="border-bottom: none;">Начало: {{sw_rep.start_time}}</th>
+                                                <th>{{sw_rep.source}}</th>
+                                                <th>{{sw_rep.reserve_source}}</th>
+                                            </tr>
+                                            <tr class="table-info">
+                                                <th style="border-top: none;">Окончание: {{sw_rep.end_time}}</th>
+                                                <th>{{sw_rep.destination}}</th>
+                                                <th>{{sw_rep.reserve_destination}}</th>
+                                            </tr>
+                                        </table>
+                                        <p style="display: none;">{{ sw_rep.remarks }}</p>
+                                        <a class="btn btn-warning btn-lg" href="id={{ sw_rep.id }}">Подробнее..</a>
+                                        </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <hr>
+                    {% endfor %}
+                {% endif %}
             {% else %}
                 <p>No switching reports were found in database.</p>
             {% endif %}
