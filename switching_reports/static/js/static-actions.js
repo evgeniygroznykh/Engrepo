@@ -32,27 +32,30 @@ function setButtonClickActions () {
 function expandOrCollapseVar(){
     var flag = 0;
 
-    $("div[id^='Коммутация VAR']").each(function() { $(this).on("click", function()
+    $("div[id^='Коммутация VAR']").each(function() { $(this).on("click", function(e)
         {
-            var descs = this.getElementsByClassName("report-desc-block");
-            if(flag == 0 && this.children.length > 1){
-                for (var i = 0; i < descs.length; i++){
-                    descs[i].style.display = "block";
+            if($(e.target).is('a')) {}
+            else {
+                var descs = this.getElementsByClassName("report-desc-block");
+                if(flag == 0 && this.children.length > 1){
+                    for (var i = 0; i < descs.length; i++){
+                        descs[i].style.display = "block";
+                    }
+                    flag = 1;
+                    this.style.background = "white";
                 }
-                flag = 1;
-                this.style.background = "white";
-            }
-              else {
-                for (var i = 0; i < descs.length; i++){
-                    descs[i].style.display = "none";
+                  else {
+                    for (var i = 0; i < descs.length; i++){
+                        descs[i].style.display = "none";
+                    }
+                    flag = 0;
+                  if(this.children.length <= 1){
+                    this.style.background = 'grey';
+                  }
+                  else{
+                    this.style.background = "#fcca03";
+                  }
                 }
-                flag = 0;
-              if(this.children.length <= 1){
-                this.style.background = 'grey';
-              }
-              else{
-                this.style.background = "#fcca03";
-              }
             }
         })
     });
@@ -61,27 +64,30 @@ function expandOrCollapseVar(){
 function expandOrCollapseMP(){
     var flag = 0;
 
-    $("div[id^='Коммутация Матч Премьер']").each(function() { $(this).on("click", function()
+    $("div[id^='Коммутация Матч Премьер']").each(function() { $(this).on("click", function(e)
         {
-            var descs = this.getElementsByClassName("report-desc-block");
-            if(flag == 0 && this.children.length > 1){
-                for (var i = 0; i < descs.length; i++){
-                    descs[i].style.display = "block";
-                }
-                flag = 1;
-                this.style.background = "white";
-            }
-              else {
-                for (var i = 0; i < descs.length; i++){
-                    descs[i].style.display = "none";
-                }
-                flag = 0;
-              if(this.children.length <= 1){
-                this.style.background = 'grey';
-              }
-              else{
-                this.style.background = "#fcca03";
-              }
+                if($(e.target).is('a')) {}
+                else {
+                    var descs = this.getElementsByClassName("report-desc-block");
+                    if(flag == 0 && this.children.length > 1){
+                        for (var i = 0; i < descs.length; i++){
+                            descs[i].style.display = "block";
+                        }
+                        flag = 1;
+                        this.style.background = "white";
+                    }
+                      else {
+                        for (var i = 0; i < descs.length; i++){
+                            descs[i].style.display = "none";
+                        }
+                        flag = 0;
+                      if(this.children.length <= 1){
+                        this.style.background = 'grey';
+                      }
+                      else{
+                        this.style.background = "#fcca03";
+                      }
+                    }
             }
         })
     });
@@ -90,27 +96,30 @@ function expandOrCollapseMP(){
 function expandOrCollapseRec(){
     var flag = 0;
 
-    $("div[id^='Запись трансляции']").each(function() { $(this).on("click", function()
+    $("div[id^='Запись трансляции']").each(function() { $(this).on("click", function(e)
         {
-            var descs = this.getElementsByClassName("report-desc-block");
-            if(flag == 0 && this.children.length > 1){
-                for (var i = 0; i < descs.length; i++){
-                    descs[i].style.display = "block";
+            if($(e.target).is('a')) {}
+            else {
+                var descs = this.getElementsByClassName("report-desc-block");
+                if(flag == 0 && this.children.length > 1){
+                    for (var i = 0; i < descs.length; i++){
+                        descs[i].style.display = "block";
+                    }
+                    flag = 1;
+                    this.style.background = "white";
                 }
-                flag = 1;
-                this.style.background = "white";
-            }
-              else {
-                for (var i = 0; i < descs.length; i++){
-                    descs[i].style.display = "none";
+                  else {
+                    for (var i = 0; i < descs.length; i++){
+                        descs[i].style.display = "none";
+                    }
+                    flag = 0;
+                  if(this.children.length <= 1){
+                    this.style.background = 'grey';
+                  }
+                  else{
+                    this.style.background = "#fcca03";
+                  }
                 }
-                flag = 0;
-              if(this.children.length <= 1){
-                this.style.background = 'grey';
-              }
-              else{
-                this.style.background = "#fcca03";
-              }
             }
         })
     });
@@ -119,27 +128,30 @@ function expandOrCollapseRec(){
 function expandOrCollapseOst(){
     var flag = 0;
 
-    $("div[id^='Коммутация Останкино']").each(function() { $(this).on("click", function()
+    $("div[id^='Коммутация Останкино']").each(function() { $(this).on("click", function(e)
         {
-            var descs = this.getElementsByClassName("report-desc-block");
-            if(flag == 0 && this.children.length > 1){
-                for (var i = 0; i < descs.length; i++){
-                    descs[i].style.display = "block";
+            if($(e.target).is('a')) {}
+            else {
+                var descs = this.getElementsByClassName("report-desc-block");
+                if(flag == 0 && this.children.length > 1){
+                    for (var i = 0; i < descs.length; i++){
+                        descs[i].style.display = "block";
+                    }
+                    flag = 1;
+                    this.style.background = "white";
                 }
-                flag = 1;
-                this.style.background = "white";
-            }
-              else {
-                for (var i = 0; i < descs.length; i++){
-                    descs[i].style.display = "none";
+                  else {
+                    for (var i = 0; i < descs.length; i++){
+                        descs[i].style.display = "none";
+                    }
+                    flag = 0;
+                  if(this.children.length <= 1){
+                    this.style.background = 'grey';
+                  }
+                  else{
+                    this.style.background = "#fcca03";
+                  }
                 }
-                flag = 0;
-              if(this.children.length <= 1){
-                this.style.background = 'grey';
-              }
-              else{
-                this.style.background = "#fcca03";
-              }
             }
         })
     });
