@@ -64,7 +64,7 @@ def switching_reports():
     switching_reports = SwitchingReport.query.order_by(SwitchingReport.date.desc()).all()
     time_deltas = [dt.timedelta(days=i) for i in range(14)]
     return render_template("switching-reports.html", switching_reports=switching_reports, work_types = WORK_TYPES,
-                           time_deltas=time_deltas, now=dt.datetime.now())
+                           time_deltas=time_deltas, now=dt.datetime.now(), amount_of_days=14, search_string='empty')
 
 switching_report_details_page = Blueprint('switching_report_details_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_report_details_page)
@@ -150,7 +150,7 @@ def sw_search():
                                                  SwitchingReport.comment.ilike(f'%{search_string}%'),
                                                     SwitchingReport.shift_comp.ilike(f'%{search_string}%')))\
                                                     .order_by(SwitchingReport.date.desc()).all()
-        return render_template('switching-reports.html', switching_reports=needed_switching_reports, work_types = WORK_TYPES)
+        return render_template('switching-reports.html', switching_reports=needed_switching_reports, work_types = WORK_TYPES, search_string=search_string)
 
 sw_filter_page = Blueprint('sw_filter_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(sw_filter_page)
@@ -167,4 +167,4 @@ def sw_filter_reports():
         filtered_sw_reports = SwitchingReport.query.filter(and_(SwitchingReport.date >= filter_from_date, SwitchingReport.date <= filter_to_date))\
                                                     .order_by(SwitchingReport.date.desc()).all()
         return render_template('switching-reports.html', switching_reports=filtered_sw_reports, work_types = WORK_TYPES,
-                                                            time_deltas=time_deltas, now=dt.datetime.now(), amount_of_days=days)
+                                                            time_deltas=time_deltas, now=dt.datetime.now(), amount_of_days=days, search_string='empty')

@@ -49,7 +49,7 @@
             <h1>Все отчёты о коммутации</h1>
 
             {% if switching_reports|length > 0 %}
-                {% if amount_of_days %}
+                {% if search_string == 'empty' %}
                     {% for i in range(amount_of_days) %}
                     <div class="day-block">
                         <p>{{ (now - time_deltas[i]).__format__('%Y-%m-%d') }}</p>
@@ -85,15 +85,12 @@
                     <hr>
                     {% endfor %}
                 {% else %}
-                    {% for i in range(14) %}
                     <div class="day-block">
-                        <p>{{ (now - time_deltas[i]).__format__('%Y-%m-%d') }}</p>
-                        <hr>
                         {% for wt in work_types %}
                         <div class="work-type-block" id="{{ wt }}_{{ i }}_days_before">
                             <h2>{{ wt }}</h2>
                             {% for sw_rep in switching_reports %}
-                                {% if sw_rep.date.day == (now - time_deltas[i]).day and sw_rep.work_type == wt %}
+                                {% if sw_rep.work_type == wt %}
                                         <div class="report-desc-block">
                                         <h2>{{sw_rep.customer}}</h2>
                                         <p><b>Дата создания:</b> {{ sw_rep.date.__format__('%Y-%m-%d %H:%M') }}</p>
@@ -118,7 +115,6 @@
                         {% endfor %}
                     </div>
                     <hr>
-                    {% endfor %}
                 {% endif %}
             {% else %}
                 <p>No switching reports were found in database.</p>
