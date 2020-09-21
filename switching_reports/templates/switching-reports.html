@@ -51,9 +51,10 @@
             {% if switching_reports|length > 0 %}
                 {% for i in range(14) %}
                 <div>
-                    <p style="font-size: 20px;">{{ (now - time_deltas[i]).__format__('%Y-%m-%d') }}</p>
+                    <p style="font-size: 30px;">{{ (now - time_deltas[i]).__format__('%Y-%m-%d') }}</p>
+                    <hr>
                     {% for wt in work_types %}
-                    <div id="{{ wt }}">
+                    <div id="{{ wt }}_{{ i }}_days_before">
                         <h2>{{ wt }}</h2>
                         {% for sw_rep in switching_reports %}
                             {% if (now - sw_rep.date).seconds//3600 > i*24 and sw_rep.work_type == wt %}
@@ -80,6 +81,7 @@
                     </div>
                     {% endfor %}
                 </div>
+                <hr>
                 {% endfor %}
             {% else %}
                 <p>No switching reports were found in database.</p>

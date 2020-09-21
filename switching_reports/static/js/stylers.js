@@ -4,19 +4,36 @@ function styleReportDescriptions (){
 }
 
 function styleWorkTypeDivs (){
-    if(document.getElementById("Коммутация VAR").children.length <= 1){
-        document.getElementById("Коммутация VAR").style.background = 'grey';
-    }
-
-    if(document.getElementById("Коммутация Матч Премьер").children.length <= 1){
-        document.getElementById("Коммутация Матч Премьер").style.background = 'grey';
-    }
-
-    if(document.getElementById("Запись трансляции").children.length <= 1){
-        document.getElementById("Запись трансляции").style.background = 'grey';
-    }
-
-    if(document.getElementById("Коммутация Останкино").children.length <= 1){
-        document.getElementById("Коммутация Останкино").style.background = 'grey';
-    }
+    $("div[id^='Коммутация VAR']").each(function() {
+            if (this.children.length <= 1){
+                this.style.background = 'grey';
+            }
+            else {
+                this.style.background = '#fcca03';
+            }
+        });
+        $("div[id^='Коммутация Матч Премьер']").each(function() {
+            if (this.children.length <= 1){
+                this.style.background = 'grey';
+            }
+            else {
+                this.style.background = '#fcca03';
+            }
+        });
+            $("div[id^='Запись трансляции']").each(function() {
+            if (this.children.length <= 1){
+                this.style.background = 'grey';
+            }
+            else {
+                this.style.background = '#fcca03';
+            }
+        });
+            $("div[id^='Коммутация Останкино']").each(function() {
+            if (this.children.length <= 1){
+                this.style.background = 'grey';
+            }
+            else {
+                this.style.background = '#fcca03';
+            }
+        });
 }

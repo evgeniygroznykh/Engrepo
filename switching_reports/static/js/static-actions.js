@@ -31,110 +31,117 @@ function setButtonClickActions () {
 
 function expandOrCollapseVar(){
     var flag = 0;
-    document.getElementById("Коммутация VAR").addEventListener("click", function()
-    {
-        var descs = document.getElementById("Коммутация VAR").getElementsByClassName("report-desc-block");
-        if(flag == 0 && document.getElementById("Коммутация VAR").children.length > 1){
-            for (var i = 0; i < descs.length; i++){
-                descs[i].style.display = "block";
+
+    $("div[id^='Коммутация VAR']").each(function() { $(this).on("click", function()
+        {
+            var descs = this.getElementsByClassName("report-desc-block");
+            if(flag == 0 && this.children.length > 1){
+                for (var i = 0; i < descs.length; i++){
+                    descs[i].style.display = "block";
+                }
+                flag = 1;
+                this.style.background = "white";
             }
-            flag = 1;
-            document.getElementById("Коммутация VAR").style.background = "white";
-        }
-          else {
-            for (var i = 0; i < descs.length; i++){
-                descs[i].style.display = "none";
+              else {
+                for (var i = 0; i < descs.length; i++){
+                    descs[i].style.display = "none";
+                }
+                flag = 0;
+              if(this.children.length <= 1){
+                this.style.background = 'grey';
+              }
+              else{
+                this.style.background = "#fcca03";
+              }
             }
-            flag = 0;
-          if(document.getElementById("Коммутация VAR").children.length <= 1){
-            document.getElementById("Коммутация VAR").style.background = 'grey';
-          }
-          else{
-            document.getElementById("Коммутация VAR").style.background = "#fcca03";
-          }
-        }
+        })
     });
 }
 
 function expandOrCollapseMP(){
     var flag = 0;
-    document.getElementById("Коммутация Матч Премьер").addEventListener("click", function()
-    {
-        var descs = document.getElementById("Коммутация Матч Премьер").getElementsByClassName('report-desc-block');
-        if(flag == 0 && document.getElementById("Коммутация Матч Премьер").children.length > 1){
-            for (var i = 0; i < descs.length; i++){
-                descs[i].style.display = "block";
+
+    $("div[id^='Коммутация Матч Премьер']").each(function() { $(this).on("click", function()
+        {
+            var descs = this.getElementsByClassName("report-desc-block");
+            if(flag == 0 && this.children.length > 1){
+                for (var i = 0; i < descs.length; i++){
+                    descs[i].style.display = "block";
+                }
+                flag = 1;
+                this.style.background = "white";
             }
-            flag = 1;
-            document.getElementById("Коммутация Матч Премьер").style.background = "white";
-        }
-          else {
-            for (var i = 0; i < descs.length; i++){
-                descs[i].style.display = "none";
+              else {
+                for (var i = 0; i < descs.length; i++){
+                    descs[i].style.display = "none";
+                }
+                flag = 0;
+              if(this.children.length <= 1){
+                this.style.background = 'grey';
+              }
+              else{
+                this.style.background = "#fcca03";
+              }
             }
-            flag = 0;
-          if(document.getElementById("Коммутация Матч Премьер").children.length <= 1){
-            document.getElementById("Коммутация Матч Премьер").style.background = 'grey';
-          }
-          else{
-            document.getElementById("Коммутация Матч Премьер").style.background = "#fcca03";
-          }
-        }
+        })
     });
 }
 
 function expandOrCollapseRec(){
     var flag = 0;
-    document.getElementById("Запись трансляции").addEventListener("click", function()
-    {
-        var descs = document.getElementById("Запись трансляции").getElementsByClassName('report-desc-block');
-        if(flag == 0 && document.getElementById("Запись трансляции").children.length > 1){
-            for (var i = 0; i < descs.length; i++){
-                descs[i].style.display = "block";
+
+    $("div[id^='Запись трансляции']").each(function() { $(this).on("click", function()
+        {
+            var descs = this.getElementsByClassName("report-desc-block");
+            if(flag == 0 && this.children.length > 1){
+                for (var i = 0; i < descs.length; i++){
+                    descs[i].style.display = "block";
+                }
+                flag = 1;
+                this.style.background = "white";
             }
-            flag = 1;
-            document.getElementById("Запись трансляции").style.background = "white";
-        }
-          else {
-            for (var i = 0; i < descs.length; i++){
-                descs[i].style.display = "none";
+              else {
+                for (var i = 0; i < descs.length; i++){
+                    descs[i].style.display = "none";
+                }
+                flag = 0;
+              if(this.children.length <= 1){
+                this.style.background = 'grey';
+              }
+              else{
+                this.style.background = "#fcca03";
+              }
             }
-            flag = 0;
-          if(document.getElementById("Запись трансляции").children.length <= 1){
-            document.getElementById("Запись трансляции").style.background = 'grey';
-          }
-          else{
-            document.getElementById("Запись трансляции").style.background = "#fcca03";
-          }
-        }
+        })
     });
 }
 
 function expandOrCollapseOst(){
     var flag = 0;
-    document.getElementById("Коммутация Останкино").addEventListener("click", function()
-    {
-        var descs = document.getElementById("Коммутация Останкино").getElementsByClassName('report-desc-block');
-        if(flag == 0 && document.getElementById("Коммутация Останкино").children.length > 1){
-            for (var i = 0; i < descs.length; i++){
-                descs[i].style.display = "block";
-            }
-            flag = 1;
-            document.getElementById("Коммутация Останкино").style.background = "white";
-        }
-          else {
-            for (var i = 0; i < descs.length; i++){
-                descs[i].style.display = "none";
-            }
-            flag = 0;
 
-          if(document.getElementById("Коммутация Останкино").children.length <= 1){
-            document.getElementById("Коммутация Останкино").style.background = 'grey';
-          }
-          else{
-            document.getElementById("Коммутация Останкино").style.background = "#fcca03";
-          }
-        }
+    $("div[id^='Коммутация Останкино']").each(function() { $(this).on("click", function()
+        {
+            var descs = this.getElementsByClassName("report-desc-block");
+            if(flag == 0 && this.children.length > 1){
+                for (var i = 0; i < descs.length; i++){
+                    descs[i].style.display = "block";
+                }
+                flag = 1;
+                this.style.background = "white";
+            }
+              else {
+                for (var i = 0; i < descs.length; i++){
+                    descs[i].style.display = "none";
+                }
+                flag = 0;
+              if(this.children.length <= 1){
+                this.style.background = 'grey';
+              }
+              else{
+                this.style.background = "#fcca03";
+              }
+            }
+        })
     });
 }
 
