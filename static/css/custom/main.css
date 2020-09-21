@@ -51,8 +51,7 @@ button {
 .report-desc-block {
     margin: 0 auto;
     margin-bottom: 50px;
-    width: 600px;
-    border-radius: 40px;
+    width: 700px;
     border: 1px solid white;
     justify-content: center;
     display: none;

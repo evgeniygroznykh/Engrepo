@@ -60,24 +60,29 @@
                             {% for sw_rep in switching_reports %}
                                 {% if sw_rep.date.day == (now - time_deltas[i]).day and sw_rep.work_type == wt %}
                                         <div class="report-desc-block">
-                                        <h2>{{sw_rep.customer}}</h2>
-                                        <p class="creation-date"><b>Дата создания:</b> {{ sw_rep.date.__format__('%Y-%m-%d %H:%M') }}</p>
-                                        <table class="table table-bordered table-dark">
-                                            <tr class="table-success">
-                                                <th style="border-bottom: none; border-right: none;">Начало: </th>
-                                                <th style="border-bottom: none; border-left: none;">{{sw_rep.start_time}}</th>
-                                                <th>{{sw_rep.source}}</th>
-                                                <th>{{sw_rep.reserve_source}}</th>
-                                            </tr>
-                                            <tr class="table-info">
-                                                <th style="border-top: none; border-right: none;">Окончание:</th>
-                                                <th style="border-top: none; border-left: none;">{{sw_rep.end_time}}</th>
-                                                <th>{{sw_rep.destination}}</th>
-                                                <th>{{sw_rep.reserve_destination}}</th>
-                                            </tr>
-                                        </table>
-                                        <p style="display: none;">{{ sw_rep.remarks }}</p>
-                                        <a class="btn btn-warning btn-lg" href="id={{ sw_rep.id }}">Подробнее..</a>
+                                            <h2>{{sw_rep.customer}}</h2>
+                                            <p class="creation-date"><b>Дата создания:</b> {{ sw_rep.date.__format__('%Y-%m-%d %H:%M') }}</p>
+                                            {% if sw_rep.start_time.day == sw_rep.end_time.day %}
+                                            <p class="creation-date"><b>Время трансляции:</b> {{sw_rep.start_time}} - {{ sw_rep.end_time.__format__('%H:%M:%S') }}</p>
+                                            {% else %}
+                                            <p class="creation-date"><b>Время трансляции:</b> {{sw_rep.start_time}} - {{ sw_rep.end_time}}</p>
+                                            {% endif %}
+                                            <table class="table table-bordered table-dark">
+                                                <tr class="table-success">
+                                                    <th style="border-bottom: none; border-right: none;">Основа</th>
+                                                    <th style="border-bottom: none; border-left: none; border-right: none;">{{sw_rep.source}}</th>
+                                                    <th style="border-bottom: none; border-left: none; border-right: none;">→</th>
+                                                    <th style="border-bottom: none; border-left: none; border-right: none;">{{sw_rep.destination}}</th>
+                                                </tr>
+                                                <tr class="table-info">
+                                                    <th style="border-top: none; border-right: none;">Резерв</th>
+                                                    <th style="border-top: none; border-left: none; border-right: none;">{{sw_rep.reserve_source}}</th>
+                                                    <th style="border-top: none; border-left: none; border-right: none;">→</th>
+                                                    <th style="border-top: none; border-left: none; border-right: none;">{{sw_rep.reserve_destination}}</th>
+                                                </tr>
+                                            </table>
+                                            <p style="display: none;">{{ sw_rep.remarks }}</p>
+                                            <a class="btn btn-warning btn-lg" href="id={{ sw_rep.id }}">Подробнее..</a>
                                         </div>
                                 {% endif %}
                             {% endfor %}
@@ -94,24 +99,29 @@
                             {% for sw_rep in switching_reports %}
                                 {% if sw_rep.work_type == wt %}
                                         <div class="report-desc-block">
-                                        <h2>{{sw_rep.customer}}</h2>
+                                            <h2>{{sw_rep.customer}}</h2>
                                             <p class="creation-date"><b>Дата создания:</b> {{ sw_rep.date.__format__('%Y-%m-%d %H:%M') }}</p>
-                                        <table class="table table-bordered table-dark">
-                                            <tr class="table-success">
-                                                <th style="border-bottom: none; border-right: none;">Начало: </th>
-                                                <th style="border-bottom: none; border-left: none;">{{sw_rep.start_time}}</th>
-                                                <th>{{sw_rep.source}}</th>
-                                                <th>{{sw_rep.reserve_source}}</th>
-                                            </tr>
-                                            <tr class="table-info">
-                                                <th style="border-top: none; border-right: none;">Окончание:</th>
-                                                <th style="border-top: none; border-left: none;">{{sw_rep.end_time}}</th>
-                                                <th>{{sw_rep.destination}}</th>
-                                                <th>{{sw_rep.reserve_destination}}</th>
-                                            </tr>
-                                        </table>
-                                        <p style="display: none;">{{ sw_rep.remarks }}</p>
-                                        <a class="btn btn-warning btn-lg" href="id={{ sw_rep.id }}">Подробнее..</a>
+                                            {% if sw_rep.start_time.day == sw_rep.end_time.day %}
+                                            <p class="creation-date"><b>Время трансляции:</b> {{sw_rep.start_time}} - {{ sw_rep.end_time.__format__('%H:%M:%S') }}</p>
+                                            {% else %}
+                                            <p class="creation-date"><b>Время трансляции:</b> {{sw_rep.start_time}} - {{ sw_rep.end_time}}</p>
+                                            {% endif %}
+                                            <table class="table table-bordered table-dark">
+                                                <tr class="table-success">
+                                                    <th style="border-bottom: none; border-right: none;">Основа</th>
+                                                    <th style="border-bottom: none; border-left: none; border-right: none;">{{sw_rep.source}}</th>
+                                                    <th style="border-bottom: none; border-left: none; border-right: none;">→</th>
+                                                    <th style="border-bottom: none; border-left: none; border-right: none;">{{sw_rep.destination}}</th>
+                                                </tr>
+                                                <tr class="table-info">
+                                                    <th style="border-top: none; border-right: none;">Резерв</th>
+                                                    <th style="border-top: none; border-left: none; border-right: none;">{{sw_rep.reserve_source}}</th>
+                                                    <th style="border-top: none; border-left: none; border-right: none;">→</th>
+                                                    <th style="border-top: none; border-left: none; border-right: none;">{{sw_rep.reserve_destination}}</th>
+                                                </tr>
+                                            </table>
+                                            <p style="display: none;">{{ sw_rep.remarks }}</p>
+                                            <a class="btn btn-warning btn-lg" href="id={{ sw_rep.id }}">Подробнее..</a>
                                         </div>
                                 {% endif %}
                             {% endfor %}
