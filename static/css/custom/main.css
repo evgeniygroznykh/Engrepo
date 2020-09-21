@@ -78,40 +78,9 @@ button {
     width: fit-content;
 }
 
-div[id='Коммутация VAR'] {
+.work-type-block {
     margin-top: 20px;
     width: 750px;
-    background-color: #fcca03;
-    border-radius: 40px;
-    text-align: center;
-    border: 2px solid black;
-    position: relative;
-    justify-content: center;
-}
-div[id='Коммутация Матч Премьер'] {
-    margin-top: 20px;
-    width: 750px;
-    background-color: #fcca03;
-    border-radius: 40px;
-    text-align: center;
-    border: 2px solid black;
-    position: relative;
-    justify-content: center;
-}
-div[id='Запись трансляции'] {
-    margin-top: 20px;
-    width: 750px;
-    background-color: #fcca03;
-    border-radius: 40px;
-    text-align: center;
-    border: 2px solid black;
-    position: relative;
-    justify-content: center;
-}
-div[id='Коммутация Останкино'] {
-    margin-top: 20px;
-    width: 750px;
-    background-color: #fcca03;
     border-radius: 40px;
     text-align: center;
     border: 2px solid black;

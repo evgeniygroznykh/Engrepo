@@ -54,7 +54,7 @@
                     <p style="font-size: 30px;">{{ (now - time_deltas[i]).__format__('%Y-%m-%d') }}</p>
                     <hr>
                     {% for wt in work_types %}
-                    <div id="{{ wt }}_{{ i }}_days_before">
+                    <div class="work-type-block" id="{{ wt }}_{{ i }}_days_before">
                         <h2>{{ wt }}</h2>
                         {% for sw_rep in switching_reports %}
                             {% if (now - sw_rep.date).seconds//3600 > i*24 and sw_rep.work_type == wt %}
