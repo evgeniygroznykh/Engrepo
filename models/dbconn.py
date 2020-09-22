@@ -6,7 +6,7 @@ import os
 class DBContext():
     @staticmethod
     def setup_db(app:Flask):
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///EngrepoDB'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://engrepo_test_user:engrepo_test@128.181.10.222/engrepo_db_test'
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     @staticmethod
