@@ -1,16 +1,18 @@
 import json
-from datetime import datetime as dt
+import os
+from models.logger import log_file_not_found_and_reraise
 
 
 def get_json_config():
     try:
+        if not os.path.exists('logs'):
+            os.mkdir('logs')
+
         with open('cfg/config.json', 'r', encoding='utf-8') as read_json_config:
             config_json = json.load(read_json_config)
         return config_json
     except FileNotFoundError as exc:
-        with open('logs/app_log.txt', 'a+', encoding='utf-8') as log_file:
-            print(f"{dt.now()} | Config file was not found. | {exc.strerror} => {exc.filename}", file=log_file)
-        raise
+        log_file_not_found_and_reraise(exc, 'Config file was not found.')
 
 #GLOBALS
 JSON_CONFIG = get_json_config()

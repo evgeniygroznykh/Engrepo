@@ -1,4 +1,6 @@
 from flask import Flask
+from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
+from models.logger import log_db_connection_error_and_reraise
 import os
 
 class DBContext():
@@ -9,10 +11,14 @@ class DBContext():
 
     @staticmethod
     def create_db(database, app:Flask):
-        database.app = app
-        database.init_app(app)
-        database.create_all()
-        return database
+        try:
+            database.app = app
+            database.init_app(app)
+            database.create_all()
+            return database
+        except SQLAlchemyOperationalError as exc:
+            log_db_connection_error_and_reraise(exc, 'Database is not available, check database connection.')
+
 
     @staticmethod
     def verify_db(db_name):
