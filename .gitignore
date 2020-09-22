@@ -6,6 +6,9 @@
 .DS_Store
 .DS-Store
 
+# Config files
+config.json
+
 # Uploads folder
 uploads
 
