@@ -1,12 +1,11 @@
 from flask import Flask
-from cfg.config import DATABASE_URI
 from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
 from models.logger import log_db_connection_error_and_reraise
 import os
 
 class DatabaseContext:
-    def setupApplicationDatabase(app:Flask):
-        app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
+    def setupApplicationDatabase(app:Flask, config):
+        app.config['SQLALCHEMY_DATABASE_URI'] = config['database-uri']
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     def initializeDatabaseAndCreateTables(database, app:Flask):
