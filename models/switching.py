@@ -8,8 +8,8 @@ class Switching:
     reserve_source : str
     reserve_destination : str
 
-    def main_switching(self):
+    def mainSwitchingAsString(self):
         return f'{self.main_source} -> {self.main_destination}'
 
-    def reserve_switching(self):
+    def reserveSwitchingAsString(self):
         return f'{self.reserve_source} -> {self.reserve_destination}'

@@ -2,12 +2,28 @@ from datetime import datetime as dt
 from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
 
 
-def log_file_not_found_and_reraise(exc:FileNotFoundError, message:str):
+def createLogFilesDirIfNotExists(logged_func:func):
+	def wrapper():
+		try:
+		    if not os.path.exists('logs'):
+		    	os.mkdir('logs')
+		    func()
+		    return wrapper
+		except OSError as exc:
+			print(f'An error occured on operation system level. {exc.strerror}')
+
+@createLogFilesDirIfNotExists
+def logFileNotFoundErrorAndReraise(exc:FileNotFoundError, message:str):
     with open('logs/app_log.txt', 'a+', encoding='utf-8') as log_file:
         print(f"{dt.now()} | {message} | {exc.strerror} => {exc.filename}", file=log_file)
     raise
 
-def log_db_connection_error_and_reraise(exc:SQLAlchemyOperationalError, message:str):
+@createLogFilesDirIfNotExists
+def logDBConnectionErrorAndReraise(exc:SQLAlchemyOperationalError, message:str):
     with open('logs/app_log.txt', 'a+', encoding='utf-8') as log_file:
         print(f"{dt.now()} | {message} | {exc.args}", file=log_file)
     raise
+
+@createLogFilesDirIfNotExists
+def logOSErrorAndReraise(exc:OSError, message:str):
+	with open('')

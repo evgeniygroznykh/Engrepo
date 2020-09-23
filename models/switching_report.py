@@ -21,8 +21,8 @@ class SwitchingReport(db.Model):
     def __repr__(self):
         return '<Switching report %r' % self.id
 
-    def format_translation_start_time_for_jinja(self):
+    def formatTranslationEndTimeForJinja(self):
         return dt.strftime(self.translation_start_time, '%Y-%m-%dT%H:%M')
 
-    def format_translation_end_time_for_jinja(self):
+    def formatTranslationEndTimeForJinja(self):
         return dt.strftime(self.translation_end_time, '%Y-%m-%dT%H:%M')
