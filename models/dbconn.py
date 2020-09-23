@@ -1,12 +1,13 @@
 from flask import Flask
+from cfg.config import DATABASE_URI
 from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
 from models.logger import log_db_connection_error_and_reraise
 import os
 
-class DBContext():
+class DBContext:
     @staticmethod
     def setup_db(app:Flask):
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://engrepo_test_user:engrepo_test@128.181.10.222/engrepo_db_test'
+        app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     @staticmethod

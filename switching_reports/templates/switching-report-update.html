@@ -129,21 +129,21 @@
                     </div>
 
                     <label for="translationStartTime">Начало трансляции</label><br>
-                    <input type="datetime-local" id="translationStartTime" name="translationStartTime" placeholder="" value="{{ start_time }}" required="">
+                    <input type="datetime-local" id="translationStartTime" name="translationStartTime" placeholder="" value="{{ switching_report.format_translation_start_time_for_jinja() }}" required="">
                     <div class="invalid-feedback">
                       Необходимо ввести время начала трансляции.
                     </div>
                     <br>
 
                     <label for="translationEndTime">Окончание трансляции</label><br>
-                    <input type="datetime-local"  id="translationEndTime" name="translationEndTime" placeholder="" value="{{ end_time }}" required="">
+                    <input type="datetime-local"  id="translationEndTime" name="translationEndTime" placeholder="" value="{{ switching_report.format_translation_end_time_for_jinja() }}" required="">
                     <div class="invalid-feedback">
                       Необходимо ввести время окончания трансляции.
                     </div>
                     <br>
 
                     <label for="switchingSource">Источник</label>
-                    <input type="text" class="form-control" id="switchingSource" name="switchingSource" placeholder="" value="{{ switching_report.source }}" required="" maxlength="50">
+                    <input type="text" class="form-control" id="switchingSource" name="switchingSource" placeholder="" value="{{ switching_report.main_source }}" required="" maxlength="50">
                     <div class="invalid-feedback">
                       Необходимо ввести основной источник для данной коммутации.
                     </div>
@@ -152,7 +152,7 @@
                     <br>
 
                     <label for="switchingDestination">Направление</label>
-                    <input type="text" class="form-control" id="switchingDestination" name="switchingDestination" placeholder="" value="{{ switching_report.destination }}" required="" maxlength="50">
+                    <input type="text" class="form-control" id="switchingDestination" name="switchingDestination" placeholder="" value="{{ switching_report.main_destination }}" required="" maxlength="50">
                     <div class="invalid-feedback">
                       Необходимо ввести резервное направление для данной коммутации.
                     </div>

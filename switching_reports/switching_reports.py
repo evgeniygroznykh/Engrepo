@@ -1,4 +1,6 @@
 from models.switching_report import SwitchingReport, db
+from models.translation import Translation
+from models.switching import Switching
 from flask import render_template, url_for, request, redirect, Blueprint
 from sqlalchemy import or_, and_
 from models.dbconn import DBContext as DBC
@@ -14,18 +16,23 @@ SWITCHING_REPORT_BLUEPRINTS.append(switching_report_page)
 @DBC.verify_db('Engrepo')
 @switching_report_page.route("/create_switching_report/", methods=['POST', 'GET'])
 @switching_report_page.route("/create_switching_report", methods=['POST', 'GET'])
-def switching_report():
+def create_switching_report():
     if request.method == 'POST':
         date = dt.datetime.now()
         work_type = request.form['switchingReportWorkType']
         customer = request.form['switchingCustomer']
-        shift_comp = request.form['shiftComp']
+        shift_composition = request.form['shiftComp']
+
         start_time = dt.datetime.strptime(request.form['translationStartTime'], '%Y-%m-%dT%H:%M')
         end_time = dt.datetime.strptime(request.form['translationEndTime'], '%Y-%m-%dT%H:%M')
+        translation = Translation(start_time, end_time)
+
         switching_source = request.form['switchingSource']
         switching_destination = request.form['switchingDestination']
         switching_reserve_source = request.form['reserveSwitchingSource']
         switching_reserve_destination = request.form['reserveSwitchingDestination']
+        switching = Switching(switching_source, switching_destination, switching_reserve_source, switching_reserve_destination)
+
         comment = request.form['switchingReportComment']
         remarks = request.form['switchingReportRemarks']
         request_file = request.files['requestFile']
@@ -41,10 +48,10 @@ def switching_report():
                 else:
                     remarks += f'; {REQUEST_FILE_EXISTS_ERROR_TEXT}'
 
-        switching_report = SwitchingReport(date=date, work_type=work_type, customer=customer, start_time=start_time,
-                                           end_time=end_time, source=switching_source, destination=switching_destination,
-                                           reserve_source = switching_reserve_source, reserve_destination = switching_reserve_destination,
-                                           shift_comp=shift_comp, comment=comment, remarks=remarks, request_file_path=request_file_path)
+        switching_report = SwitchingReport(date=date, work_type=work_type, customer=customer, translation_start_time=translation.stringify_start_time(),
+                                           translation_end_time=translation.stringify_end_time(), main_source=switching.main_source, main_destination = switching.main_destination,
+                                           reserve_source=switching.reserve_source, reserve_destination=switching.reserve_destination,
+                                           shift_comp=shift_composition, comment=comment, remarks=remarks, request_file_path=request_file_path)
 
         try:
             db.session.add(switching_report)
@@ -106,12 +113,21 @@ def switching_report_update(id):
         switching_report.work_type = request.form['switchingReportWorkType']
         switching_report.customer = request.form['switchingCustomer']
         switching_report.shift_comp = request.form['shiftComp']
-        switching_report.start_time = dt.datetime.strptime(request.form['translationStartTime'], '%Y-%m-%dT%H:%M')
-        switching_report.end_time = dt.datetime.strptime(request.form['translationEndTime'], '%Y-%m-%dT%H:%M')
-        switching_report.source = request.form['switchingSource']
-        switching_report.destination = request.form['switchingDestination']
-        switching_report.reserve_source = request.form['reserveSwitchingSource']
-        switching_report.reserve_destination = request.form['reserveSwitchingDestination']
+
+        start_time = dt.datetime.strptime(request.form['translationStartTime'], '%Y-%m-%dT%H:%M')
+        end_time = dt.datetime.strptime(request.form['translationEndTime'], '%Y-%m-%dT%H:%M')
+        translation = Translation(start_time, end_time)
+        switching_report.translation_start_time, switching_report.translation_end_time = translation.start_time, translation.end_time
+
+        switching_source = request.form['switchingSource']
+        switching_destination = request.form['switchingDestination']
+        switching_reserve_source = request.form['reserveSwitchingSource']
+        switching_reserve_destination = request.form['reserveSwitchingDestination']
+        switching = Switching(switching_source, switching_destination, switching_reserve_source,
+                              switching_reserve_destination)
+        switching_report.main_source, switching_report.main_destination  = switching.main_source, switching.main_destination
+        switching_report.reserve_source, switching_report.reserve_destination = switching.reserve_source, switching.reserve_destination
+
         switching_report.comment = request.form['switchingReportComment']
         switching_report.remarks = request.form['switchingReportRemarks']
         request_file = request.files['requestFile']
@@ -138,13 +154,9 @@ def switching_report_update(id):
         except:
             return "При обновлении отчета произошла ошибка"
     else:
-        formatted_start_time = dt.datetime.strftime(switching_report.start_time, '%Y-%m-%dT%H:%M')
-        formatted_end_time = dt.datetime.strftime(switching_report.end_time,'%Y-%m-%dT%H:%M')
         return render_template("switching-report-update.html", switching_report=switching_report,
-                                                                start_time=formatted_start_time,
-                                                                end_time=formatted_end_time,
-                                                                work_types=WORK_TYPES, customers=CUSTOMERS,
-                                                                shifts=SHIFTS, sources=SOURCES, destinations=DESTINATIONS)
+                                                                        work_types=WORK_TYPES, customers=CUSTOMERS,
+                                                                        shifts=SHIFTS, sources=SOURCES, destinations=DESTINATIONS)
 
 sw_search_page = Blueprint('sw_search_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(sw_search_page)
