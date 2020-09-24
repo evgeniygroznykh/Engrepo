@@ -69,7 +69,7 @@ switching_report_details_page = Blueprint('switching_report_details_page', __nam
 SWITCHING_REPORT_BLUEPRINTS.append(switching_report_details_page)
 @switching_report_details_page.route("/switching_reports/id=<int:id>")
 def switching_report_details(id):
-    switching_report = SwitchingReport.query.get(id)
+    switching_report = SwitchingReport.query.get_or_404(id)
     return render_template("switching-report-details.html", switching_report=switching_report)
 
 switching_report_delete_page = Blueprint('switching_report_delete_page', __name__, static_folder='static', template_folder='templates')
@@ -84,7 +84,7 @@ switching_report_update_page = Blueprint('switching_report_update_page', __name_
 SWITCHING_REPORT_BLUEPRINTS.append(switching_report_update_page)
 @switching_report_update_page.route("/switching_reports/id=<int:id>/update", methods=['POST', 'GET'])
 def switching_report_update(id):
-    switching_report = SwitchingReport.query.get(id)
+    switching_report = SwitchingReport.query.get_or_404(id)
 
     if request.method == 'POST':
         switching_report_service_data = HttpRequestHandler.getSwitchingReportServiceDataFromReqForm()

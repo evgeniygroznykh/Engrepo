@@ -1,11 +1,16 @@
 import os
 from switching_reports.models.switching_report_request_file import SwitchingReportRequestFile
+from models.logger import logAttributeErrorAndReraise
 
 
 class FileHandler:
     @staticmethod
     def isFileInRequestForm(request_file:SwitchingReportRequestFile):
-        return request_file.request_file_instance.filename == ''
+        try:
+            return request_file.request_file_instance.filename == ''
+        except AttributeError as exc:
+            logAttributeErrorAndReraise(exc, "Request file was NoneType, while trying to get it from request form.")
+
 
     @staticmethod
     def isRequestFileExistsInUploadFolder(upload_folder:str, request_file:SwitchingReportRequestFile):
