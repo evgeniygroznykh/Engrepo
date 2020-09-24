@@ -36,7 +36,7 @@ def create_switching_report():
 
         if not FileHandler.isFileInRequestForm(sw_report_request_file):
             sw_report_request_file.setRequestFilePath(UPLOAD_FOLDER)
-            if not FileHandler.isRequestFileExists(sw_report_request_file):
+            if not FileHandler.isRequestFileExistsInUploadFolder(sw_report_request_file):
                 FileHandler.uploadRequestFile(sw_report_request_file)
         else:
             SwitchingReport.formatRemarksOnReportCreationOrUpdate(switching_report_service_data.remarks, REQUEST_FILE_EXISTS_ERROR_TEXT)
@@ -107,14 +107,10 @@ def switching_report_update(id):
 
                 switching_report.updateRequestFilePath(sw_report_request_file)
 
-#TODO: think about better way to update switching report data
-        switching_report.translation_start_time = translation.stringifyStartTime()
-        switching_report.translation_end_time = translation.stringifyEndTime()
-        switching_report.main_source = switching.main_source
-        switching_report.main_destination = switching.main_destination
-        switching_report.reserve_source = switching.reserve_source
-        switching_report.reserve_destination = switching.reserve_destination
-
+        switching_report.updateServiceData(switching_report_service_data)
+        switching_report.updateTranslationData(translation)
+        switching_report.updateSwitchingData(switching)
+        
         DatabaseContext.databaseSessionCommitChanges(app_db)
         return redirect('/switching_reports/switching_reports')
     else:
@@ -139,11 +135,11 @@ SWITCHING_REPORT_BLUEPRINTS.append(sw_filter_page)
 @sw_filter_page.route("/switching_reports/sw_filter_reports", methods=['POST', 'GET'])
 def sw_filter_reports():
     if request.method == 'POST':
-        filter_from_date = dt.datetime.strptime(request.form['sortStartTime'], '%Y-%m-%dT%H:%M')
-        filter_to_date = dt.datetime.strptime(request.form['sortEndTime'], '%Y-%m-%dT%H:%M')
+        filter_from_date = dt.strptime(request.form['sortStartTime'], '%Y-%m-%dT%H:%M')
+        filter_to_date = dt.strptime(request.form['sortEndTime'], '%Y-%m-%dT%H:%M')
         days = (filter_to_date - filter_from_date).days
 
-        time_deltas = [dt.timedelta(days=i) for i in range(days)]
+        time_deltas = SwitchingReport.getTimeDeltas(days)
 
         filtered_sw_reports = SwitchingReport.query.filter(and_(SwitchingReport.date >= filter_from_date, SwitchingReport.date <= filter_to_date))\
                                                     .order_by(SwitchingReport.date.desc()).all()

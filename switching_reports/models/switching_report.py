@@ -1,5 +1,8 @@
 from models.shared_db import application_database as app_db
 from switching_reports.models.switching_report_request_file import SwitchingReportRequestFile
+from switching_reports.models.switching_report_service_data import SwitchingReportServiceData
+from switching_reports.models.switching import Switching
+from switching_reports.models.translation import Translation
 from datetime import datetime as dt
 from datetime import timedelta
 
@@ -28,6 +31,24 @@ class SwitchingReport(app_db.Model):
                 replace('no request file', switching_report_request_file.request_file_path)
         else:
             self.request_file_path += f'; {switching_report_request_file.request_file_path}'
+
+    def updateServiceData(self, new_service_data:SwitchingReportServiceData):
+        self.date = new_service_data.date
+        self.work_type = new_service_data.work_type
+        self.customer = new_service_data.customer
+        self.shift_comp = new_service_data.shift_composition
+        self.comment = new_service_data.comment
+        self.remark = new_service_data.remarks
+
+    def updateTranslationData(self, translation_data:Translation):
+        self.translation_start_time = translation_data.stringifyStartTime()
+        self.translation_end_time = translation_data.stringifyEndTime()
+
+    def updateSwitchingData(self, switching_data:Switching):
+        self.main_source = switching_data.main_source
+        self.main_destination = switching_data.main_destination
+        self.reserve_source = switching_data.reserve_source
+        self.reserve_destination = switching_data.reserve_destination
 
     def formatTranslationStartTimeForJinja(self):
         return dt.strftime(self.translation_start_time, '%Y-%m-%dT%H:%M')
