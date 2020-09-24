@@ -3,17 +3,23 @@ from models.translation import Translation
 from models.switching import Switching
 from flask import render_template, url_for, request, redirect, Blueprint
 from sqlalchemy import or_, and_
-from models.dbconn import DBContext as DBC
 import datetime as dt
 import os
-from cfg.config import CUSTOMERS, WORK_TYPES, SHIFTS, SOURCES, DESTINATIONS, UPLOAD_FOLDER
+from cfg.external_config import external_config
+
+
+CUSTOMERS = external_config['customers']
+WORK_TYPES = external_config['work_types']
+SHIFTS = external_config['sources']
+SOURCES = external_config['sources']
+DESTINATIONS = external_config['destinations']
+UPLOAD_FOLDER = external_config['upload_folder']
 
 SWITCHING_REPORT_BLUEPRINTS = []
 REQUEST_FILE_EXISTS_ERROR_TEXT = 'данный файл заявки уже существует, файл не был сохранён'
 
 switching_report_page = Blueprint('switching_report_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_report_page)
-@DBC.verify_db('Engrepo')
 @switching_report_page.route("/create_switching_report/", methods=['POST', 'GET'])
 @switching_report_page.route("/create_switching_report", methods=['POST', 'GET'])
 def create_switching_report():
@@ -64,7 +70,6 @@ def create_switching_report():
 
 switching_reports_page = Blueprint('switching_reports_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_reports_page)
-@DBC.verify_db('Engrepo')
 @switching_report_page.route("/", methods=['POST', 'GET'])
 @switching_reports_page.route("/switching_reports", methods=['POST', 'GET'])
 @switching_reports_page.route("/switching_reports/", methods=['POST', 'GET'])
@@ -81,7 +86,6 @@ def switching_reports():
 
 switching_report_details_page = Blueprint('switching_report_details_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_report_details_page)
-@DBC.verify_db('Engrepo')
 @switching_report_details_page.route("/switching_reports/id=<int:id>")
 def switching_report_details(id):
     switching_report = SwitchingReport.query.get(id)
@@ -89,7 +93,6 @@ def switching_report_details(id):
 
 switching_report_delete_page = Blueprint('switching_report_delete_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_report_delete_page)
-@DBC.verify_db('Engrepo')
 @switching_report_delete_page.route("/switching_reports/id=<int:id>/delete")
 def switching_report_delete(id):
     switching_report = SwitchingReport.query.get_or_404(id)
@@ -103,7 +106,6 @@ def switching_report_delete(id):
 
 switching_report_update_page = Blueprint('switching_report_update_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_report_update_page)
-@DBC.verify_db('Engrepo')
 @switching_report_update_page.route("/switching_reports/id=<int:id>/update", methods=['POST', 'GET'])
 def switching_report_update(id):
     switching_report = SwitchingReport.query.get(id)
@@ -160,7 +162,6 @@ def switching_report_update(id):
 
 sw_search_page = Blueprint('sw_search_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(sw_search_page)
-@DBC.verify_db('Engrepo')
 @sw_search_page.route("/switching_reports/sw_search", methods=['POST', 'GET'])
 def sw_search():
     if request.method == 'POST':
@@ -173,7 +174,6 @@ def sw_search():
 
 sw_filter_page = Blueprint('sw_filter_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(sw_filter_page)
-@DBC.verify_db('Engrepo')
 @sw_filter_page.route("/switching_reports/sw_filter_reports", methods=['POST', 'GET'])
 def sw_filter_reports():
     if request.method == 'POST':

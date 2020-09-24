@@ -1,14 +1,14 @@
 from models.report import Report, db
 from flask import render_template, url_for, request, redirect, Blueprint
 from sqlalchemy import or_, and_
-from models.dbconn import DBContext as DBC
-from cfg.config import TAGS, USERS
+from cfg.external_config import external_config
 
+TAGS = external_config['tags']
+USERS = external_config['users']
 REPORT_BLUEPRINTS = []
 
 report_page = Blueprint('report_page', __name__, static_folder='static', template_folder='templates')
 REPORT_BLUEPRINTS.append(report_page)
-@DBC.verify_db('Engrepo')
 @report_page.route("/", methods=['POST', 'GET'])
 @report_page.route("/create_report", methods=['POST', 'GET'])
 @report_page.route("/create_report/", methods=['POST', 'GET'])
@@ -36,7 +36,6 @@ def report():
 
 reports_page = Blueprint('reports_page', __name__, static_folder='static', template_folder='templates')
 REPORT_BLUEPRINTS.append(reports_page)
-@DBC.verify_db('Engrepo')
 @reports_page.route("/reports", methods=['POST', 'GET'])
 @reports_page.route("/reports/", methods=['POST', 'GET'])
 def reports():
@@ -45,7 +44,6 @@ def reports():
 
 report_details_page = Blueprint('report_details_page', __name__, static_folder='static', template_folder='templates')
 REPORT_BLUEPRINTS.append(report_details_page)
-@DBC.verify_db('Engrepo')
 @report_details_page.route("/reports/id=<int:id>")
 def report_details(id):
     report = Report.query.get(id)
@@ -53,7 +51,6 @@ def report_details(id):
 
 report_delete_page = Blueprint('report_delete_page', __name__, static_folder='static', template_folder='templates')
 REPORT_BLUEPRINTS.append(report_delete_page)
-@DBC.verify_db('Engrepo')
 @report_delete_page.route("/reports/id=<int:id>/delete")
 def report_delete(id):
     report = Report.query.get_or_404(id)
@@ -67,7 +64,6 @@ def report_delete(id):
 
 report_update_page = Blueprint('report_update_page', __name__, static_folder='static', template_folder='templates')
 REPORT_BLUEPRINTS.append(report_update_page)
-@DBC.verify_db('Engrepo')
 @report_update_page.route("/reports/id=<int:id>/update", methods=['POST', 'GET'])
 def report_update(id):
     report = Report.query.get(id)
@@ -88,7 +84,6 @@ def report_update(id):
 
 search_page = Blueprint('search_page', __name__, static_folder='static', template_folder='templates')
 REPORT_BLUEPRINTS.append(search_page)
-@DBC.verify_db('Engrepo')
 @search_page.route("/reports/search", methods=['POST', 'GET'])
 def search():
     if request.method == 'POST':
@@ -100,7 +95,6 @@ def search():
 
 search_by_tag_page = Blueprint('search_by_tag_page', __name__, static_folder='static', template_folder='templates')
 REPORT_BLUEPRINTS.append(search_by_tag_page)
-@DBC.verify_db('Engrepo')
 @search_by_tag_page.route('/reports/search_by_tag', methods=['POST', 'GET'])
 def search_by_tag():
     if request.method == 'POST':
@@ -113,7 +107,6 @@ def search_by_tag():
 
 filter_page = Blueprint('filter_page', __name__, static_folder='static', template_folder='templates')
 REPORT_BLUEPRINTS.append(filter_page)
-@DBC.verify_db('Engrepo')
 @filter_page.route("/reports/filter_reports", methods=['POST', 'GET'])
 def filter_reports():
     if request.method == 'POST':

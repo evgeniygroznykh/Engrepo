@@ -1,13 +1,15 @@
 from flask import Flask
 from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
-from models.logger import log_db_connection_error_and_reraise
-import os
+from models.logger import logDBConnectionErrorAndReraise
+
 
 class DatabaseContext:
+    @staticmethod
     def setupApplicationDatabase(app:Flask, config):
         app.config['SQLALCHEMY_DATABASE_URI'] = config['database-uri']
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+    @staticmethod
     def initializeDatabaseAndCreateTables(database, app:Flask):
         try:
             database.app = app
@@ -15,7 +17,4 @@ class DatabaseContext:
             database.create_all()
             return database
         except SQLAlchemyOperationalError as exc:
-            log_db_connection_error_and_reraise(exc, 'Database is not available, check database connection.')
-
-
-
+            logDBConnectionErrorAndReraise(exc, 'Database is not available, check database connection.')
