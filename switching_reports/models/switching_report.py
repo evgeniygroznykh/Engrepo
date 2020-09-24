@@ -21,8 +21,12 @@ class SwitchingReport(db.Model):
     def __repr__(self):
         return '<Switching report %r' % self.id
 
-    def formatTranslationEndTimeForJinja(self):
+    def formatTranslationStartTimeForJinja(self):
         return dt.strftime(self.translation_start_time, '%Y-%m-%dT%H:%M')
 
     def formatTranslationEndTimeForJinja(self):
         return dt.strftime(self.translation_end_time, '%Y-%m-%dT%H:%M')
+
+    @staticmethod
+    def formatRemarks(remarks:str, error_template:str):
+        remarks = error_template if remarks == 'Без замечаний' else remarks + f'; {error_template}'

@@ -1,7 +1,10 @@
-from models.switching_report import SwitchingReport, db
-from models.translation import Translation
-from models.switching import Switching
-from flask import render_template, url_for, request, redirect, Blueprint
+from switching_reports.models.switching_report import SwitchingReport, db
+from switching_reports.models.translation import Translation
+from switching_reports.models.switching import Switching
+from switching_reports.models.http_request_handler import HttpRequestHandler
+from switching_reports.models.file_handler import FileHandler
+from models.dbconn import DatabaseContext
+from flask import render_template, request, redirect, Blueprint
 from sqlalchemy import or_, and_
 import datetime as dt
 import os
@@ -10,7 +13,7 @@ from cfg.external_config import external_config
 
 CUSTOMERS = external_config['customers']
 WORK_TYPES = external_config['work_types']
-SHIFTS = external_config['sources']
+SHIFTS = external_config['shifts']
 SOURCES = external_config['sources']
 DESTINATIONS = external_config['destinations']
 UPLOAD_FOLDER = external_config['upload_folder']
@@ -24,47 +27,27 @@ SWITCHING_REPORT_BLUEPRINTS.append(switching_report_page)
 @switching_report_page.route("/create_switching_report", methods=['POST', 'GET'])
 def create_switching_report():
     if request.method == 'POST':
-        date = dt.datetime.now()
-        work_type = request.form['switchingReportWorkType']
-        customer = request.form['switchingCustomer']
-        shift_composition = request.form['shiftComp']
+        switching_report_service_data = HttpRequestHandler.getSwitchingReportServiceDataFromReqForm()
+        sw_report_request_file = HttpRequestHandler.getRequestFileInstanceFromReqForm()
+        translation = HttpRequestHandler.getTranslationInstanceFromReqForm()
+        switching = HttpRequestHandler.getSwitchingInstanceFromReqForm()
 
-        start_time = dt.datetime.strptime(request.form['translationStartTime'], '%Y-%m-%dT%H:%M')
-        end_time = dt.datetime.strptime(request.form['translationEndTime'], '%Y-%m-%dT%H:%M')
-        translation = Translation(start_time, end_time)
+        if not FileHandler.isFileInRequestForm(sw_report_request_file):
+            if not FileHandler.isRequestFileExists(sw_report_request_file):
+                FileHandler.uploadRequestFile(sw_report_request_file)
+        else:
+            SwitchingReport.formatRemarks(switching_report_service_data.remarks, REQUEST_FILE_EXISTS_ERROR_TEXT)
 
-        switching_source = request.form['switchingSource']
-        switching_destination = request.form['switchingDestination']
-        switching_reserve_source = request.form['reserveSwitchingSource']
-        switching_reserve_destination = request.form['reserveSwitchingDestination']
-        switching = Switching(switching_source, switching_destination, switching_reserve_source, switching_reserve_destination)
-
-        comment = request.form['switchingReportComment']
-        remarks = request.form['switchingReportRemarks']
-        request_file = request.files['requestFile']
-        request_file_path = 'no request file'
-
-        if request_file.filename != '':
-            if not os.path.isfile(os.path.join(UPLOAD_FOLDER, request_file.filename)):
-                request_file_path = UPLOAD_FOLDER + request_file.filename
-                request_file.save(request_file_path)
-            else:
-                if remarks == 'Без замечаний':
-                    remarks = REQUEST_FILE_EXISTS_ERROR_TEXT
-                else:
-                    remarks += f'; {REQUEST_FILE_EXISTS_ERROR_TEXT}'
-
-        switching_report = SwitchingReport(date=date, work_type=work_type, customer=customer, translation_start_time=translation.stringify_start_time(),
-                                           translation_end_time=translation.stringify_end_time(), main_source=switching.main_source, main_destination = switching.main_destination,
+        switching_report = SwitchingReport(date=switching_report_service_data.date, work_type=switching_report_service_data.work_type, customer=switching_report_service_data.customer,
+                                           translation_start_time=translation.stringifyStartTime(), translation_end_time=translation.stringifyEndTime(),
+                                           main_source=switching.main_source, main_destination = switching.main_destination,
                                            reserve_source=switching.reserve_source, reserve_destination=switching.reserve_destination,
-                                           shift_comp=shift_composition, comment=comment, remarks=remarks, request_file_path=request_file_path)
+                                           shift_comp=switching_report_service_data.shift_composition, comment=switching_report_service_data.comment,
+                                           remarks=switching_report_service_data.remarks, request_file_path=sw_report_request_file.request_file_path)
 
-        try:
-            db.session.add(switching_report)
-            db.session.commit()
-            return redirect('/switching_reports/switching_reports')
-        except Exception as exc:
-            return 'Args: %s; Error: %s;' % (exc.args, exc)
+        DatabaseContext.addSwitchingReportToDatabase(db, switching_report)
+        return redirect('/switching_reports/switching_reports')
+
     else:
         return render_template("create-switching-report.html", work_types=WORK_TYPES, customers=CUSTOMERS, shifts=SHIFTS, remarks='Без замечаний', sources=SOURCES, destinations=DESTINATIONS)
 

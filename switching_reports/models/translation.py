@@ -10,7 +10,7 @@ class Translation:
     def stringifyStartTime(self):
         return datetime.strftime(self.start_time, '%Y-%m-%dT%H:%M')
 
-    def stringifyStartTime(self):
+    def stringifyEndTime(self):
         return datetime.strftime(self.end_time, '%Y-%m-%dT%H:%M')
 
     def getTranslationDuration(self):

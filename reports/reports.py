@@ -1,5 +1,5 @@
-from models.report import Report, db
-from flask import render_template, url_for, request, redirect, Blueprint
+from reports.models.report import Report, db
+from flask import render_template, request, redirect, Blueprint
 from sqlalchemy import or_, and_
 from cfg.external_config import external_config
 

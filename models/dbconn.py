@@ -1,6 +1,7 @@
 from flask import Flask
 from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
 from models.logger import logDBConnectionErrorAndReraise
+from switching_reports.models.switching_report import SwitchingReport
 
 
 class DatabaseContext:
@@ -15,6 +16,13 @@ class DatabaseContext:
             database.app = app
             database.init_app(app)
             database.create_all()
-            return database
         except SQLAlchemyOperationalError as exc:
             logDBConnectionErrorAndReraise(exc, 'Database is not available, check database connection.')
+
+    @staticmethod
+    def addSwitchingReportToDatabase(database, switching_report:SwitchingReport):
+        try:
+            database.session.add(switching_report)
+            database.session.commit()
+        except Exception as exc:
+            return 'Args: %s; Error: %s;' % (exc.args, exc)
