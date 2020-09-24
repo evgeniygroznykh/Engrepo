@@ -102,7 +102,7 @@
                                         <div class="report-desc-block">
                                             <h2>{{sw_rep.customer}}</h2>
                                             <p class="creation-date"><b>Дата создания:</b> {{ sw_rep.date.__format__('%Y-%m-%d %H:%M') }}</p>
-                                            {% if sw_rep.start_time.day == sw_rep.end_time.day %}
+                                            {% if sw_rep.translation_start_time.day == sw_rep.translation_end_time.day %}
                                             <p class="creation-date"><b>Время трансляции:</b> {{sw_rep.translation_start_time}} - {{ sw_rep.translation_end_time.__format__('%H:%M:%S') }}</p>
                                             {% else %}
                                             <p class="creation-date"><b>Время трансляции:</b> {{sw_rep.translation_start_time}} - {{ sw_rep.translation_end_time}}</p>

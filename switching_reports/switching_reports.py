@@ -1,15 +1,11 @@
 from switching_reports.models.switching_report import SwitchingReport, app_db
-from switching_reports.models.translation import Translation
-from switching_reports.models.switching import Switching
 from switching_reports.models.http_request_handler import HttpRequestHandler
 from switching_reports.models.file_handler import FileHandler
 from models.dbconn import DatabaseContext
 from flask import render_template, request, redirect, Blueprint
-from sqlalchemy import or_, and_
 from datetime import datetime as dt
-from datetime import timedelta
-import os
 from cfg.external_config import external_config
+import models.db_queries as Queries
 
 
 CUSTOMERS = external_config['customers']
@@ -121,24 +117,20 @@ def switching_report_update(id):
 sw_search_page = Blueprint('sw_search_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(sw_search_page)
 @sw_search_page.route("/switching_reports/sw_search", methods=['POST', 'GET'])
-def sw_search():
+def switching_report_search():
     if request.method == 'POST':
-        search_string = request.form['search_string']
-        needed_switching_reports = SwitchingReport.query.filter(or_(SwitchingReport.work_type.ilike(f'%{search_string}%'),
-                                                 SwitchingReport.comment.ilike(f'%{search_string}%'),
-                                                    SwitchingReport.shift_comp.ilike(f'%{search_string}%')))\
-                                                    .order_by(SwitchingReport.date.desc()).all()
+        search_string = HttpRequestHandler.getSearchStringFromSearchForm()
+        needed_switching_reports = Queries.getSwitchingReportsFromDatabaseUsingSearchString(search_string)
         return render_template('switching-reports.html', switching_reports=needed_switching_reports, work_types = WORK_TYPES, search_string=search_string)
 
 sw_filter_page = Blueprint('sw_filter_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(sw_filter_page)
 @sw_filter_page.route("/switching_reports/sw_filter_reports", methods=['POST', 'GET'])
-def sw_filter_reports():
+def switching_reports_filter():
     if request.method == 'POST':
         filter_from_date, filter_to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()
         time_deltas = SwitchingReport.getTimeDeltas(days)
 
-        filtered_sw_reports = SwitchingReport.query.filter(and_(SwitchingReport.date >= filter_from_date, SwitchingReport.date <= filter_to_date))\
-                                                    .order_by(SwitchingReport.date.desc()).all()
-        return render_template('switching-reports.html', switching_reports=filtered_sw_reports, work_types = WORK_TYPES,
+        filtered_switching_reports = Queries.getSwitchingReportsFromDatabaseUsingDateFilter(filter_from_date, filter_to_date)
+        return render_template('switching-reports.html', switching_reports=filtered_switching_reports, work_types = WORK_TYPES,
                                                             time_deltas=time_deltas, now=dt.now(), amount_of_days=days, search_string='empty')

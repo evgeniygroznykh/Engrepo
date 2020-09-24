@@ -46,3 +46,7 @@ class HttpRequestHandler:
         days = (filter_to_date - filter_from_date).days
         return (filter_from_date, filter_to_date, days)
 
+    @staticmethod
+    def getSearchStringFromSearchForm():
+        return request.form['search_string']
+
