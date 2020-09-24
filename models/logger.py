@@ -15,14 +15,14 @@ def createLogFilesDirIfNotExists(logged_func):
 			print(f'An error occured on operation system level. {exc.strerror}')
 
 def logFileUnavailableHandler(error_message):
-	def wrapper(func):
-		def printErrorMessage():
+	def printErrorMessage(func):
+		def wrapper(*args, **kwargs):
 			try:
 				func()
 			except:
 				print(error_message)
-		return printErrorMessage()
-	return wrapper
+		return wrapper
+	return printErrorMessage
 
 @createLogFilesDirIfNotExists
 @logFileUnavailableHandler("Log file is unavailable. An occured 'file not found' error wasn't logged.")

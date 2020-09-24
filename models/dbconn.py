@@ -4,16 +4,15 @@ from models.logger import logDBConnectionErrorAndReraise
 from switching_reports.models.switching_report import SwitchingReport
 
 
-class DatabaseContext:
-    @staticmethod
-    def databaseConnectionHandler(func):
-        def wrapper():
-            try:
-                func()
-            except SQLAlchemyOperationalError as exc:
-                logDBConnectionErrorAndReraise(exc, 'Database is not available, check database connection.')
-        return wrapper
+def databaseConnectionHandler(func):
+    def wrapper(*args, **kwargs):
+        try:
+            func(*args, **kwargs)
+        except SQLAlchemyOperationalError as exc:
+            logDBConnectionErrorAndReraise(exc, 'Database is not available, check database connection.')
+    return wrapper
 
+class DatabaseContext:
     @staticmethod
     def setupApplicationDatabase(app:Flask, config):
         app.config['SQLALCHEMY_DATABASE_URI'] = config['database-uri']
