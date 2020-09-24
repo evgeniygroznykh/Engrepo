@@ -6,7 +6,8 @@ from switching_reports.models.file_handler import FileHandler
 from models.dbconn import DatabaseContext
 from flask import render_template, request, redirect, Blueprint
 from sqlalchemy import or_, and_
-import datetime as dt
+from datetime import datetime as dt
+from datetime import timedelta
 import os
 from cfg.external_config import external_config
 
@@ -18,6 +19,7 @@ SOURCES = external_config['sources']
 DESTINATIONS = external_config['destinations']
 UPLOAD_FOLDER = external_config['upload_folder']
 REQUEST_FILE_EXISTS_ERROR_TEXT = external_config['file_exists_error_template']
+REPORTING_PERIOD_IN_DAYS = external_config['reporting_period_in_days']
 
 SWITCHING_REPORT_BLUEPRINTS = []
 
@@ -57,15 +59,14 @@ SWITCHING_REPORT_BLUEPRINTS.append(switching_reports_page)
 @switching_reports_page.route("/switching_reports", methods=['POST', 'GET'])
 @switching_reports_page.route("/switching_reports/", methods=['POST', 'GET'])
 def switching_reports():
-    now = dt.datetime.now()
-    default_to_value = now.__format__("%Y-%m-%dT%H:%M")
-    default_from_value = (now-dt.timedelta(days=14)).__format__("%Y-%m-%dT%H:%M")
+    reporting_period = SwitchingReport.getReportingPeriodAsTuple(REPORTING_PERIOD_IN_DAYS)
+    reporting_from, reporting_to = reporting_period
+    time_deltas = SwitchingReport.getTimeDeltas(REPORTING_PERIOD_IN_DAYS)
 
     switching_reports = SwitchingReport.query.order_by(SwitchingReport.date.desc()).all()
-    time_deltas = [dt.timedelta(days=i) for i in range(14)]
     return render_template("switching-reports.html", switching_reports=switching_reports, work_types = WORK_TYPES,
-                           time_deltas=time_deltas, now=now, amount_of_days=14, search_string='empty',
-                           default_from_value=default_from_value, default_to_value=default_to_value)
+                           time_deltas=time_deltas, now=dt.now(), amount_of_days=14, search_string='empty',
+                           default_from_value = reporting_from, default_to_value = reporting_to)
 
 switching_report_details_page = Blueprint('switching_report_details_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_report_details_page)
@@ -94,13 +95,13 @@ def switching_report_update(id):
     switching_report = SwitchingReport.query.get(id)
 
     if request.method == 'POST':
-        switching_report.date = dt.datetime.now()
+        switching_report.date = dt.now()
         switching_report.work_type = request.form['switchingReportWorkType']
         switching_report.customer = request.form['switchingCustomer']
         switching_report.shift_comp = request.form['shiftComp']
 
-        start_time = dt.datetime.strptime(request.form['translationStartTime'], '%Y-%m-%dT%H:%M')
-        end_time = dt.datetime.strptime(request.form['translationEndTime'], '%Y-%m-%dT%H:%M')
+        start_time = dt.strptime(request.form['translationStartTime'], '%Y-%m-%dT%H:%M')
+        end_time = dt.strptime(request.form['translationEndTime'], '%Y-%m-%dT%H:%M')
         translation = Translation(start_time, end_time)
         switching_report.translation_start_time, switching_report.translation_end_time = translation.start_time, translation.end_time
 

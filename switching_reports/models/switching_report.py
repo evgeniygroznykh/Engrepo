@@ -1,6 +1,6 @@
 from models.shared_db import db
 from datetime import datetime as dt
-
+from datetime import timedelta
 
 class SwitchingReport(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -30,3 +30,14 @@ class SwitchingReport(db.Model):
     @staticmethod
     def formatRemarks(remarks:str, error_template:str):
         remarks = error_template if remarks == 'Без замечаний' else remarks + f'; {error_template}'
+
+    @staticmethod
+    def getReportingPeriodAsTuple(period_in_days:int):
+        now = dt.now()
+        default_to_value = now.__format__("%Y-%m-%dT%H:%M")
+        default_from_value = (now-timedelta(days=period_in_days)).__format__("%Y-%m-%dT%H:%M")
+        return (default_to_value, default_from_value)
+
+    @staticmethod
+    def getTimeDeltas(period_in_days:int):
+        return [timedelta(days=i) for i in range(period_in_days)]
