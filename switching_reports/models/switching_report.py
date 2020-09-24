@@ -76,7 +76,7 @@ class SwitchingReport(app_db.Model):
         now = dt.now()
         default_to_value = now.__format__("%Y-%m-%dT%H:%M")
         default_from_value = (now-timedelta(days=period_in_days)).__format__("%Y-%m-%dT%H:%M")
-        return (default_to_value, default_from_value)
+        return (default_from_value, default_to_value)
 
     @staticmethod
     def getTimeDeltas(period_in_days:int):

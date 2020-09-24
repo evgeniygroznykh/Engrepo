@@ -5,7 +5,7 @@ from models.dbconn import DatabaseContext
 from flask import render_template, request, redirect, Blueprint
 from datetime import datetime as dt
 from cfg.external_config import external_config
-import models.db_queries as Queries
+from sqlalchemy import or_, and_
 
 
 CUSTOMERS = external_config['customers']
@@ -120,7 +120,13 @@ SWITCHING_REPORT_BLUEPRINTS.append(sw_search_page)
 def switching_report_search():
     if request.method == 'POST':
         search_string = HttpRequestHandler.getSearchStringFromSearchForm()
-        needed_switching_reports = Queries.getSwitchingReportsFromDatabaseUsingSearchString(search_string)
+
+        needed_switching_reports = SwitchingReport.query.filter(or_(SwitchingReport.work_type.ilike(f'%{search_string}%'),
+                                                                   SwitchingReport.comment.ilike(f'%{search_string}%'),
+                                                                   SwitchingReport.shift_comp.ilike(
+                                                                       f'%{search_string}%'))) \
+                                                                        .order_by(SwitchingReport.date.desc()).all()
+
         return render_template('switching-reports.html', switching_reports=needed_switching_reports, work_types = WORK_TYPES, search_string=search_string)
 
 sw_filter_page = Blueprint('sw_filter_page', __name__, static_folder='static', template_folder='templates')
@@ -131,6 +137,9 @@ def switching_reports_filter():
         filter_from_date, filter_to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()
         time_deltas = SwitchingReport.getTimeDeltas(days)
 
-        filtered_switching_reports = Queries.getSwitchingReportsFromDatabaseUsingDateFilter(filter_from_date, filter_to_date)
+        filtered_switching_reports = SwitchingReport.query.filter(
+            and_(SwitchingReport.date >= filter_from_date, SwitchingReport.date <= filter_to_date)) \
+            .order_by(SwitchingReport.date.desc()).all()
+
         return render_template('switching-reports.html', switching_reports=filtered_switching_reports, work_types = WORK_TYPES,
                                                             time_deltas=time_deltas, now=dt.now(), amount_of_days=days, search_string='empty')
