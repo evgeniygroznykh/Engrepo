@@ -34,3 +34,10 @@ class DatabaseContext:
             database.session.commit()
         except:
             return "При удалении отчета произошла ошибка"
+
+    @staticmethod
+    def databaseSessionCommitChanges(database):
+        try:
+            database.session.commit()
+        except:
+            return "При обновлении отчета произошла ошибка"

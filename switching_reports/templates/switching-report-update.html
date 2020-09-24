@@ -129,14 +129,14 @@
                     </div>
 
                     <label for="translationStartTime">Начало трансляции</label><br>
-                    <input type="datetime-local" id="translationStartTime" name="translationStartTime" placeholder="" value="{{ switching_report.format_translation_start_time_for_jinja() }}" required="">
+                    <input type="datetime-local" id="translationStartTime" name="translationStartTime" placeholder="" value="{{ switching_report.formatTranslationStartTimeForJinja() }}" required="">
                     <div class="invalid-feedback">
                       Необходимо ввести время начала трансляции.
                     </div>
                     <br>
 
                     <label for="translationEndTime">Окончание трансляции</label><br>
-                    <input type="datetime-local"  id="translationEndTime" name="translationEndTime" placeholder="" value="{{ switching_report.format_translation_end_time_for_jinja() }}" required="">
+                    <input type="datetime-local"  id="translationEndTime" name="translationEndTime" placeholder="" value="{{ switching_report.formatTranslationEndTimeForJinja() }}" required="">
                     <div class="invalid-feedback">
                       Необходимо ввести время окончания трансляции.
                     </div>

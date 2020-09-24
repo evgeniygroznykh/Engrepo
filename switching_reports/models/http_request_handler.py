@@ -24,9 +24,9 @@ class HttpRequestHandler:
         return switching
 
     @staticmethod
-    def getRequestFileInstanceFromReqForm(request_file_path='no request file'):
-        request_file = request.files['requestFile']
-        return SwitchingReportRequestFile(request_file, request_file_path)
+    def getRequestFileInstanceFromReqForm():
+        request_file_from_form = request.files['requestFile']
+        return SwitchingReportRequestFile(request_file_from_form)
 
     @staticmethod
     def getSwitchingReportServiceDataFromReqForm():

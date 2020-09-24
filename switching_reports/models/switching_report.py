@@ -1,4 +1,5 @@
 from models.shared_db import application_database as app_db
+from switching_reports.models.switching_report_request_file import SwitchingReportRequestFile
 from datetime import datetime as dt
 from datetime import timedelta
 
@@ -21,15 +22,29 @@ class SwitchingReport(app_db.Model):
     def __repr__(self):
         return '<Switching report %r' % self.id
 
+    def updateRequestFilePath(self, switching_report_request_file:SwitchingReportRequestFile):
+        if self.request_file_path == 'no request file':
+            self.request_file_path = self.request_file_path. \
+                replace('no request file', switching_report_request_file.request_file_path)
+        else:
+            self.request_file_path += f'; {switching_report_request_file.request_file_path}'
+
     def formatTranslationStartTimeForJinja(self):
         return dt.strftime(self.translation_start_time, '%Y-%m-%dT%H:%M')
 
     def formatTranslationEndTimeForJinja(self):
         return dt.strftime(self.translation_end_time, '%Y-%m-%dT%H:%M')
 
-    @staticmethod
-    def formatRemarks(remarks:str, error_template:str):
-        remarks = error_template if remarks == 'Без замечаний' else remarks + f'; {error_template}'
+    def formatRemarksOnRequestFileExistsErrorFix(self, error_template:str):
+        if error_template in self.remarks:
+            self.remarks = self.remarks.replace(error_template, '')
+
+    def formatRemarksIfNoRemarks(self):
+        if self.remarks == '':
+            self.remarks = 'Без замечаний'
+
+    def formatRemarksOnReportCreationOrUpdate(self, error_template:str):
+        self.remarks = error_template if self.remarks == 'Без замечаний' else self.remarks + f'; {error_template}'
 
     @staticmethod
     def getReportingPeriodAsTuple(period_in_days:int):

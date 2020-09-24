@@ -8,11 +8,10 @@ class FileHandler:
         return request_file.request_file_instance.filename == ''
 
     @staticmethod
-    def isRequestFileExists(request_file:SwitchingReportRequestFile):
-        return os.path.isfile(request_file.request_file_path)
+    def isRequestFileExistsInUploadFolder(upload_folder:str, request_file:SwitchingReportRequestFile):
+        return os.path.isfile(os.path.join(upload_folder, request_file.request_file_instance.filename))
 
     @staticmethod
     def uploadRequestFile(request_file:SwitchingReportRequestFile):
         request_file.request_file_instance.save(request_file.request_file_path)
-
 

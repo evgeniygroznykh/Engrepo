@@ -35,10 +35,11 @@ def create_switching_report():
         switching = HttpRequestHandler.getSwitchingInstanceFromReqForm()
 
         if not FileHandler.isFileInRequestForm(sw_report_request_file):
+            sw_report_request_file.setRequestFilePath(UPLOAD_FOLDER)
             if not FileHandler.isRequestFileExists(sw_report_request_file):
                 FileHandler.uploadRequestFile(sw_report_request_file)
         else:
-            SwitchingReport.formatRemarks(switching_report_service_data.remarks, REQUEST_FILE_EXISTS_ERROR_TEXT)
+            SwitchingReport.formatRemarksOnReportCreationOrUpdate(switching_report_service_data.remarks, REQUEST_FILE_EXISTS_ERROR_TEXT)
 
         switching_report = SwitchingReport(date=switching_report_service_data.date, work_type=switching_report_service_data.work_type, customer=switching_report_service_data.customer,
                                            translation_start_time=translation.stringifyStartTime(), translation_end_time=translation.stringifyEndTime(),
@@ -90,50 +91,32 @@ def switching_report_update(id):
     switching_report = SwitchingReport.query.get(id)
 
     if request.method == 'POST':
-        switching_report.date = dt.now()
-        switching_report.work_type = request.form['switchingReportWorkType']
-        switching_report.customer = request.form['switchingCustomer']
-        switching_report.shift_comp = request.form['shiftComp']
+        switching_report_service_data = HttpRequestHandler.getSwitchingReportServiceDataFromReqForm()
+        sw_report_request_file = HttpRequestHandler.getRequestFileInstanceFromReqForm()
+        translation = HttpRequestHandler.getTranslationInstanceFromReqForm()
+        switching = HttpRequestHandler.getSwitchingInstanceFromReqForm()
 
-        start_time = dt.strptime(request.form['translationStartTime'], '%Y-%m-%dT%H:%M')
-        end_time = dt.strptime(request.form['translationEndTime'], '%Y-%m-%dT%H:%M')
-        translation = Translation(start_time, end_time)
-        switching_report.translation_start_time, switching_report.translation_end_time = translation.start_time, translation.end_time
-
-        switching_source = request.form['switchingSource']
-        switching_destination = request.form['switchingDestination']
-        switching_reserve_source = request.form['reserveSwitchingSource']
-        switching_reserve_destination = request.form['reserveSwitchingDestination']
-        switching = Switching(switching_source, switching_destination, switching_reserve_source,
-                              switching_reserve_destination)
-        switching_report.main_source, switching_report.main_destination  = switching.main_source, switching.main_destination
-        switching_report.reserve_source, switching_report.reserve_destination = switching.reserve_source, switching.reserve_destination
-
-        switching_report.comment = request.form['switchingReportComment']
-        switching_report.remarks = request.form['switchingReportRemarks']
-        request_file = request.files['requestFile']
-
-        if request_file.filename != '':
-            if os.path.isfile(os.path.join(UPLOAD_FOLDER,request_file.filename)):
-                if switching_report.remarks == 'Без замечаний':
-                    switching_report.remarks = REQUEST_FILE_EXISTS_ERROR_TEXT
-                else:
-                    switching_report.remarks += f'; {REQUEST_FILE_EXISTS_ERROR_TEXT}'
+        if not FileHandler.isFileInRequestForm(sw_report_request_file):
+            if FileHandler.isRequestFileExistsInUploadFolder(UPLOAD_FOLDER, sw_report_request_file):
+                switching_report.formatRemarksOnReportCreationOrUpdate(REQUEST_FILE_EXISTS_ERROR_TEXT)
             else:
-                request_file.save(f'{UPLOAD_FOLDER}' + f'{request_file.filename}')
-                if REQUEST_FILE_EXISTS_ERROR_TEXT in switching_report.remarks:
-                    switching_report.remarks = switching_report.remarks.replace(REQUEST_FILE_EXISTS_ERROR_TEXT, '')
-                    if switching_report.remarks == '':
-                        switching_report.remarks = 'Без замечаний'
-                if switching_report.request_file_path == 'no request file':
-                    switching_report.request_file_path = ''
-                switching_report.request_file_path += f'\n{UPLOAD_FOLDER}' + f'{request_file.filename}'
+                sw_report_request_file.setFilePath(UPLOAD_FOLDER)
+                FileHandler.uploadRequestFile(sw_report_request_file)
+                switching_report.formatRemarksOnRequestFileExistsErrorFix(REQUEST_FILE_EXISTS_ERROR_TEXT)
+                switching_report.formatRemarksIfNoRemarks()
 
-        try:
-            db.session.commit()
-            return redirect('/switching_reports/switching_reports')
-        except:
-            return "При обновлении отчета произошла ошибка"
+                switching_report.updateRequestFilePath(sw_report_request_file)
+
+#TODO: think about better way to update switching report data
+        switching_report.translation_start_time = translation.stringifyStartTime()
+        switching_report.translation_end_time = translation.stringifyEndTime()
+        switching_report.main_source = switching.main_source
+        switching_report.main_destination = switching.main_destination
+        switching_report.reserve_source = switching.reserve_source
+        switching_report.reserve_destination = switching.reserve_destination
+
+        DatabaseContext.databaseSessionCommitChanges(app_db)
+        return redirect('/switching_reports/switching_reports')
     else:
         return render_template("switching-report-update.html", switching_report=switching_report,
                                                                         work_types=WORK_TYPES, customers=CUSTOMERS,
