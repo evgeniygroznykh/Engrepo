@@ -51,6 +51,7 @@ def logOSErrorAndReraise(exc:OSError, message:str):
 def logAttributeErrorAndReraise(exc:AttributeError, message:str):
 	with open('logs/app_log.txt', 'a+', encoding='utf-8') as log_file:
 		print(f"{dt.now()} | {message} | {exc.args}", file=log_file)
+		print(traceback.print_exc(), file=log_file)
 	raise
 
 @createLogFilesDirIfNotExists
