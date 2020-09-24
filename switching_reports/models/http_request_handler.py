@@ -38,3 +38,11 @@ class HttpRequestHandler:
         remarks = request.form['switchingReportRemarks']
         service_data = SwitchingReportServiceData(date, work_type, customer, shift_composition, comment, remarks)
         return service_data
+
+    @staticmethod
+    def getReportingPeriodFromFilterForm():
+        filter_from_date = dt.strptime(request.form['sortStartTime'], '%Y-%m-%dT%H:%M')
+        filter_to_date = dt.strptime(request.form['sortEndTime'], '%Y-%m-%dT%H:%M')
+        days = (filter_to_date - filter_from_date).days
+        return (filter_from_date, filter_to_date, days)
+
