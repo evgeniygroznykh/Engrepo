@@ -1,4 +1,4 @@
-from switching_reports.models.switching_report import SwitchingReport, db
+from switching_reports.models.switching_report import SwitchingReport, app_db
 from switching_reports.models.translation import Translation
 from switching_reports.models.switching import Switching
 from switching_reports.models.http_request_handler import HttpRequestHandler
@@ -47,7 +47,7 @@ def create_switching_report():
                                            shift_comp=switching_report_service_data.shift_composition, comment=switching_report_service_data.comment,
                                            remarks=switching_report_service_data.remarks, request_file_path=sw_report_request_file.request_file_path)
 
-        DatabaseContext.addSwitchingReportToDatabase(db, switching_report)
+        DatabaseContext.addSwitchingReportToDatabase(app_db, switching_report)
         return redirect('/switching_reports/switching_reports')
 
     else:
@@ -65,7 +65,7 @@ def switching_reports():
 
     switching_reports = SwitchingReport.query.order_by(SwitchingReport.date.desc()).all()
     return render_template("switching-reports.html", switching_reports=switching_reports, work_types = WORK_TYPES,
-                           time_deltas=time_deltas, now=dt.now(), amount_of_days=14, search_string='empty',
+                           time_deltas=time_deltas, now=dt.now(), amount_of_days=REPORTING_PERIOD_IN_DAYS, search_string='empty',
                            default_from_value = reporting_from, default_to_value = reporting_to)
 
 switching_report_details_page = Blueprint('switching_report_details_page', __name__, static_folder='static', template_folder='templates')
@@ -80,13 +80,8 @@ SWITCHING_REPORT_BLUEPRINTS.append(switching_report_delete_page)
 @switching_report_delete_page.route("/switching_reports/id=<int:id>/delete")
 def switching_report_delete(id):
     switching_report = SwitchingReport.query.get_or_404(id)
-
-    try:
-        db.session.delete(switching_report)
-        db.session.commit()
-        return redirect('/switching_reports/switching_reports')
-    except:
-        return "При удалении отчета произошла ошибка"
+    DatabaseContext.deleteSwitchingReportFromDatabase(app_db, switching_report)
+    return redirect('/switching_reports/switching_reports')
 
 switching_report_update_page = Blueprint('switching_report_update_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_report_update_page)

@@ -26,3 +26,11 @@ class DatabaseContext:
             database.session.commit()
         except Exception as exc:
             return 'Args: %s; Error: %s;' % (exc.args, exc)
+
+    @staticmethod
+    def deleteSwitchingReportFromDatabase(database, switching_report:SwitchingReport):
+        try:
+            database.session.delete(switching_report)
+            database.session.commit()
+        except:
+            return "При удалении отчета произошла ошибка"

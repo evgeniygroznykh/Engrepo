@@ -1,22 +1,22 @@
-from models.shared_db import db
+from models.shared_db import application_database as app_db
 from datetime import datetime as dt
 from datetime import timedelta
 
-class SwitchingReport(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.DateTime)
-    work_type = db.Column(db.String(300), nullable=False)
-    shift_comp = db.Column(db.String(300), nullable=False)
-    comment = db.Column(db.Text, nullable=False)
-    translation_start_time = db.Column(db.DateTime, nullable=False)
-    translation_end_time = db.Column(db.DateTime, nullable=False)
-    main_source = db.Column(db.String(50), nullable=False)
-    reserve_source = db.Column(db.String(50), nullable=False)
-    main_destination = db.Column(db.String(50), nullable=False)
-    reserve_destination = db.Column(db.String(50), nullable=False)
-    customer = db.Column(db.String(50), nullable=False)
-    remarks = db.Column(db.Text, default='Без замечаний')
-    request_file_path = db.Column(db.Text)
+class SwitchingReport(app_db.Model):
+    id = app_db.Column(app_db.Integer, primary_key=True)
+    date = app_db.Column(app_db.DateTime)
+    work_type = app_db.Column(app_db.String(300), nullable=False)
+    shift_comp = app_db.Column(app_db.String(300), nullable=False)
+    comment = app_db.Column(app_db.Text, nullable=False)
+    translation_start_time = app_db.Column(app_db.DateTime, nullable=False)
+    translation_end_time = app_db.Column(app_db.DateTime, nullable=False)
+    main_source = app_db.Column(app_db.String(50), nullable=False)
+    reserve_source = app_db.Column(app_db.String(50), nullable=False)
+    main_destination = app_db.Column(app_db.String(50), nullable=False)
+    reserve_destination = app_db.Column(app_db.String(50), nullable=False)
+    customer = app_db.Column(app_db.String(50), nullable=False)
+    remarks = app_db.Column(app_db.Text, default='Без замечаний')
+    request_file_path = app_db.Column(app_db.Text)
 
     def __repr__(self):
         return '<Switching report %r' % self.id

@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from models.shared_db import db
+from models.shared_db import application_database
 from reports.reports import REPORT_BLUEPRINTS
 from switching_reports.switching_reports import SWITCHING_REPORT_BLUEPRINTS
 from models.dbconn import DatabaseContext as DBC
@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] =  external_config['upload_folder']
 
 DBC.setupApplicationDatabase(app, external_config)
-DBC.initializeDatabaseAndCreateTables(db, app)
+DBC.initializeDatabaseAndCreateTables(application_database, app)
 
 registerReportServiceBlueprints(app, REPORT_BLUEPRINTS)
 registerSwitchingReportServiceBlueprints(app, SWITCHING_REPORT_BLUEPRINTS)

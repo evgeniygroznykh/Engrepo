@@ -1,4 +1,4 @@
-from models.shared_db import db
+from models.shared_db import application_database as db
 from datetime import datetime
 
 
