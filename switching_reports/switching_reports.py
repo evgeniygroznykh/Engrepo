@@ -17,9 +17,9 @@ SHIFTS = external_config['shifts']
 SOURCES = external_config['sources']
 DESTINATIONS = external_config['destinations']
 UPLOAD_FOLDER = external_config['upload_folder']
+REQUEST_FILE_EXISTS_ERROR_TEXT = external_config['file_exists_error_template']
 
 SWITCHING_REPORT_BLUEPRINTS = []
-REQUEST_FILE_EXISTS_ERROR_TEXT = 'данный файл заявки уже существует, файл не был сохранён'
 
 switching_report_page = Blueprint('switching_report_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_report_page)
