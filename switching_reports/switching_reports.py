@@ -31,11 +31,11 @@ def create_switching_report():
         switching = HttpRequestHandler.getSwitchingInstanceFromReqForm()
 
         if not FileHandler.isFileInRequestForm(sw_report_request_file):
-            sw_report_request_file.setRequestFilePath(UPLOAD_FOLDER)
-            if not FileHandler.isRequestFileExistsInUploadFolder(sw_report_request_file):
+            sw_report_request_file.setFilePath(UPLOAD_FOLDER)
+            if not FileHandler.isRequestFileExistsInUploadFolder(UPLOAD_FOLDER, sw_report_request_file):
                 FileHandler.uploadRequestFile(sw_report_request_file)
         else:
-            SwitchingReport.formatRemarksOnReportCreationOrUpdate(switching_report_service_data.remarks, REQUEST_FILE_EXISTS_ERROR_TEXT)
+            SwitchingReport.formatRemarksOnReportCreation(switching_report_service_data.remarks, REQUEST_FILE_EXISTS_ERROR_TEXT)
 
         switching_report = SwitchingReport(date=switching_report_service_data.date, work_type=switching_report_service_data.work_type, customer=switching_report_service_data.customer,
                                            translation_start_time=translation.stringifyStartTime(), translation_end_time=translation.stringifyEndTime(),
@@ -94,7 +94,7 @@ def switching_report_update(id):
 
         if not FileHandler.isFileInRequestForm(sw_report_request_file):
             if FileHandler.isRequestFileExistsInUploadFolder(UPLOAD_FOLDER, sw_report_request_file):
-                switching_report.formatRemarksOnReportCreationOrUpdate(REQUEST_FILE_EXISTS_ERROR_TEXT)
+                switching_report.formatRemarksOnReportUpdate(REQUEST_FILE_EXISTS_ERROR_TEXT)
             else:
                 sw_report_request_file.setFilePath(UPLOAD_FOLDER)
                 FileHandler.uploadRequestFile(sw_report_request_file)

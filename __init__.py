@@ -1,13 +1,14 @@
 from flask import Flask, render_template
 from models.shared_db import application_database
-from reports.reports import REPORT_BLUEPRINTS
-from switching_reports.switching_reports import SWITCHING_REPORT_BLUEPRINTS
 from models.dbconn import DatabaseContext as DBC
 from cfg.external_config import external_config
 from cfg.flask_config import registerReportServiceBlueprints, registerSwitchingReportServiceBlueprints, addUrlRules
+from reports.reports import REPORT_BLUEPRINTS
+from switching_reports.switching_reports import SWITCHING_REPORT_BLUEPRINTS
+
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] =  external_config['upload_folder']
+app.config['UPLOAD_FOLDER'] = external_config['upload_folder']
 
 DBC.setupApplicationDatabase(app, external_config)
 DBC.initializeDatabaseAndCreateTables(application_database, app)

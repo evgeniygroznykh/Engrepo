@@ -3,6 +3,7 @@ from flask import render_template, request, redirect, Blueprint
 from sqlalchemy import or_, and_
 from cfg.external_config import external_config
 
+
 TAGS = external_config['tags']
 USERS = external_config['users']
 REPORT_BLUEPRINTS = []

@@ -64,8 +64,12 @@ class SwitchingReport(app_db.Model):
         if self.remarks == '':
             self.remarks = 'Без замечаний'
 
-    def formatRemarksOnReportCreationOrUpdate(self, error_template:str):
+    def formatRemarksOnReportUpdate(self, error_template:str):
         self.remarks = error_template if self.remarks == 'Без замечаний' else self.remarks + f'; {error_template}'
+
+    @staticmethod
+    def formatRemarksOnReportCreation(remarks:str, error_template:str):
+        remarks = error_template if remarks == 'Без замечаний' else remarks + f'; {error_template}'
 
     @staticmethod
     def getReportingPeriodAsTuple(period_in_days:int):
