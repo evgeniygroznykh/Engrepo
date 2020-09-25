@@ -1,6 +1,6 @@
 from flask import Flask
 from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
-from models.logger import logDBConnectionErrorAndReraise
+from models.logger import logDBConnectionError
 from switching_reports.models.switching_report import SwitchingReport
 
 
@@ -9,7 +9,7 @@ def databaseConnectionHandler(func):
         try:
             func(*args, **kwargs)
         except SQLAlchemyOperationalError as exc:
-            logDBConnectionErrorAndReraise(exc, 'Database is not available, check database connection.')
+            logDBConnectionError(exc, 'Database is not available, check database connection.')
     return wrapper
 
 class DatabaseContext:

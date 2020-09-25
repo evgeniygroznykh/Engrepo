@@ -1,6 +1,6 @@
 import os
 from switching_reports.models.switching_report_request_file import SwitchingReportRequestFile
-from models.logger import logAttributeErrorAndReraise
+from models.logger import logAttributeError
 
 
 class FileHandler:
@@ -9,7 +9,7 @@ class FileHandler:
         try:
             return request_file.request_file_instance.filename == ''
         except AttributeError as exc:
-            logAttributeErrorAndReraise(exc, "Request file was NoneType, while trying to get it from request form.")
+            logAttributeError(exc, "Request file was NoneType, while trying to get it from request form.")
 
 
     @staticmethod

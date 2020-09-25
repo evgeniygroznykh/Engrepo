@@ -134,12 +134,15 @@ SWITCHING_REPORT_BLUEPRINTS.append(sw_filter_page)
 @sw_filter_page.route("/switching_reports/sw_filter_reports", methods=['POST', 'GET'])
 def switching_reports_filter():
     if request.method == 'POST':
-        filter_from_date, filter_to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()
-        time_deltas = SwitchingReport.getTimeDeltas(days)
+        if not HttpRequestHandler.getReportingPeriodFromFilterForm() == None:
+            filter_from_date, filter_to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()
+            time_deltas = SwitchingReport.getTimeDeltas(days)
 
-        filtered_switching_reports = SwitchingReport.query.filter(
-            and_(SwitchingReport.date >= filter_from_date, SwitchingReport.date <= filter_to_date)) \
-            .order_by(SwitchingReport.date.desc()).all()
+            filtered_switching_reports = SwitchingReport.query.filter(
+                and_(SwitchingReport.date >= filter_from_date, SwitchingReport.date <= filter_to_date)) \
+                .order_by(SwitchingReport.date.desc()).all()
 
-        return render_template('switching-reports.html', switching_reports=filtered_switching_reports, work_types = WORK_TYPES,
-                                                            time_deltas=time_deltas, now=dt.now(), amount_of_days=days, search_string='empty')
+            return render_template('switching-reports.html', switching_reports=filtered_switching_reports, work_types = WORK_TYPES,
+                                                                time_deltas=time_deltas, now=dt.now(), amount_of_days=days, search_string='empty')
+        else:
+            return redirect('/switching_reports/switching_reports')

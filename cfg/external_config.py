@@ -1,5 +1,5 @@
 import json
-from models.logger import logFileNotFoundErrorAndReraise
+from models.logger import logFileNotFoundError
 
 
 def getConfigFromJson():
@@ -8,7 +8,7 @@ def getConfigFromJson():
             config_json = json.load(read_json_config)
         return config_json
     except FileNotFoundError as exc:
-        logFileNotFoundErrorAndReraise(exc, "Log file wasn't found.")
+        logFileNotFoundError(exc, "Log file wasn't found.")
 
 
 external_config = getConfigFromJson()
