@@ -40,15 +40,15 @@ class SwitchingReport(app_db.Model):
         self.comment = new_service_data.comment
         self.remark = new_service_data.remarks
 
-    def updateTranslationData(self, translation_data:Translation):
-        self.translation_start_time = translation_data.stringifyStartTime()
-        self.translation_end_time = translation_data.stringifyEndTime()
+    def updateTranslationData(self, new_translation_data:Translation):
+        self.translation_start_time = new_translation_data.stringifyStartTime()
+        self.translation_end_time = new_translation_data.stringifyEndTime()
 
-    def updateSwitchingData(self, switching_data:Switching):
-        self.main_source = switching_data.main_source
-        self.main_destination = switching_data.main_destination
-        self.reserve_source = switching_data.reserve_source
-        self.reserve_destination = switching_data.reserve_destination
+    def updateSwitchingData(self, new_switching_data:Switching):
+        self.main_source = new_switching_data.main_source
+        self.main_destination = new_switching_data.main_destination
+        self.reserve_source = new_switching_data.reserve_source
+        self.reserve_destination = new_switching_data.reserve_destination
 
     def formatTranslationStartTimeForJinja(self):
         return dt.strftime(self.translation_start_time, '%Y-%m-%dT%H:%M')

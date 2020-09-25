@@ -43,6 +43,7 @@
     right: 14px;
     font-size: 42px;
     transform: rotate(45deg);
+    cursor: pointer;
 }
 
 .report-desc-block {
