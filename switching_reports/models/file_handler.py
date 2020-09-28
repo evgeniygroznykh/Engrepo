@@ -19,4 +19,3 @@ class FileHandler:
     @staticmethod
     def uploadRequestFile(request_file:SwitchingReportRequestFile):
         request_file.request_file_instance.save(request_file.request_file_path)
-

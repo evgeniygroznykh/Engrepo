@@ -2,10 +2,12 @@ from switching_reports.models.switching_report import SwitchingReport, app_db
 from switching_reports.models.http_request_handler import HttpRequestHandler
 from switching_reports.models.file_handler import FileHandler
 from models.dbconn import DatabaseContext
+from models.custom_http_response import CustomResponse
 from flask import render_template, request, redirect, Blueprint
 from datetime import datetime as dt
 from cfg.external_config import external_config
 from sqlalchemy import or_, and_
+from switching_reports.models.csv_handler import getDataframeFromSwitchingReports, writeDataframeToCsv, getReadableFilenameFromDates
 
 
 CUSTOMERS = external_config['customers']
@@ -134,15 +136,30 @@ SWITCHING_REPORT_BLUEPRINTS.append(sw_filter_page)
 @sw_filter_page.route("/switching_reports/sw_filter_reports", methods=['POST', 'GET'])
 def switching_reports_filter():
     if request.method == 'POST':
-        if not HttpRequestHandler.getReportingPeriodFromFilterForm() == None:
-            filter_from_date, filter_to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()
-            time_deltas = SwitchingReport.getTimeDeltas(days)
+        if 'filter_button' in request.form:
+            if not HttpRequestHandler.getReportingPeriodFromFilterForm() == None:
+                filter_from_date, filter_to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()
+                time_deltas = SwitchingReport.getTimeDeltas(days)
 
-            filtered_switching_reports = SwitchingReport.query.filter(
-                and_(SwitchingReport.date >= filter_from_date, SwitchingReport.date <= filter_to_date)) \
-                .order_by(SwitchingReport.date.desc()).all()
+                filtered_switching_reports = SwitchingReport.query.filter(
+                    and_(SwitchingReport.date >= filter_from_date, SwitchingReport.date <= filter_to_date)) \
+                    .order_by(SwitchingReport.date.desc()).all()
 
-            return render_template('switching-reports.html', switching_reports=filtered_switching_reports, work_types = WORK_TYPES,
-                                                                time_deltas=time_deltas, now=dt.now(), amount_of_days=days, search_string='empty')
-        else:
-            return redirect('/switching_reports/switching_reports')
+                return render_template('switching-reports.html', switching_reports=filtered_switching_reports, work_types = WORK_TYPES,
+                                                                    time_deltas=time_deltas, now=dt.now(), amount_of_days=days, search_string='empty')
+            else:
+                return ('', 204)
+        if 'download_button' in request.form:
+            if not HttpRequestHandler.getReportingPeriodFromFilterForm() == None:
+                from_date, to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()
+                filtered_switching_reports = SwitchingReport.query.filter(
+                    and_(SwitchingReport.date >= from_date, SwitchingReport.date <= to_date)) \
+                    .order_by(SwitchingReport.date.desc()).all()
+
+                file_name = getReadableFilenameFromDates(from_date, to_date)
+                dataframe = getDataframeFromSwitchingReports(filtered_switching_reports)
+                response = CustomResponse(writeDataframeToCsv(dataframe), mimetype='text/csv; charset=utf-16')
+                response.headers["Content-Disposition"] = f"attachment; filename={file_name}"
+                return response
+            else:
+                return ('', 204)

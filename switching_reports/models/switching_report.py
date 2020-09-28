@@ -25,6 +25,19 @@ class SwitchingReport(app_db.Model):
     def __repr__(self):
         return '<Switching report %r' % self.id
 
+    def to_dict(self):
+        return {
+            'Дата':self.date,
+            'Комментарий':self.comment,
+            'Виды работ':self.work_type,
+            'Начало трансляции':self.translation_start_time,
+            'Окончание трансляции':self.translation_end_time,
+            'Источник':f'{self.main_source} {self.reserve_source}',
+            'Направление':f'{self.main_destination} {self.reserve_destination}',
+            'Заказчик':self.customer,
+            'Исполнители':self.shift_comp
+        }
+
     def updateRequestFilePath(self, switching_report_request_file:SwitchingReportRequestFile):
         if self.request_file_path == 'no request file':
             self.request_file_path = self.request_file_path. \
