@@ -50,7 +50,13 @@ def create_switching_report():
         return redirect('/switching_reports/switching_reports')
 
     else:
-        return render_template("create-switching-report.html", work_types=WORK_TYPES, customers=CUSTOMERS, shifts=SHIFTS, remarks='Без замечаний', sources=SOURCES, destinations=DESTINATIONS)
+        default_translation_start_time = dt.now()
+        default_translation_end_time = dt.now()
+        return render_template("create-switching-report.html", work_types=WORK_TYPES, customers=CUSTOMERS,
+                               shifts=SHIFTS, remarks='Без замечаний',
+                               sources=SOURCES, destinations=DESTINATIONS,
+                               default_start_time=dt.strftime(default_translation_start_time, '%Y-%m-%dT%H:%M'),
+                                default_end_time=dt.strftime(default_translation_end_time, '%Y-%m-%dT%H:%M'))
 
 switching_reports_page = Blueprint('switching_reports_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_reports_page)

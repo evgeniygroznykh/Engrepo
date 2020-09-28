@@ -129,14 +129,14 @@
                     </div>
 
                     <label for="translationStartTime">Начало трансляции</label><br>
-                    <input type="datetime-local" id="translationStartTime" name="translationStartTime" placeholder="" value="" required="">
+                    <input type="datetime-local" id="translationStartTime" name="translationStartTime" placeholder="" value="{{ default_start_time }}" required="">
                     <div class="invalid-feedback">
                       Необходимо ввести время начала трансляции.
                     </div>
                     <br>
 
                     <label for="translationEndTime">Окончание трансляции</label><br>
-                    <input type="datetime-local"  id="translationEndTime" name="translationEndTime" placeholder="" value="" required="">
+                    <input type="datetime-local"  id="translationEndTime" name="translationEndTime" placeholder="" value="{{ default_end_time }}" required="">
                     <div class="invalid-feedback">
                       Необходимо ввести время окончания трансляции.
                     </div>
