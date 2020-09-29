@@ -8,7 +8,7 @@ def getConfigFromJson():
             config_json = json.load(read_json_config)
         return config_json
     except FileNotFoundError as exc:
-        logFileNotFoundError(exc, "Log file wasn't found.")
+        handleGeneralExceptions(exc, "Log file wasn't found.")
 
 
 external_config = getConfigFromJson()

@@ -25,7 +25,7 @@ def logFileUnavailableHandler(error_message):
 	return wrapper
 
 @createLogFilesDirIfNotExists
-@logFileUnavailableHandler
+@logFileUnavailableHandler("Log file is unavailable. Please check permissions and that log file exists and it has correct format.")
 def handleGeneralExceptions(exc:Exception, message:str):
 	with open('logs/app_log.txt', 'a+', encoding='utf-8') as log_file:
 		if exc is FileNotFoundError:

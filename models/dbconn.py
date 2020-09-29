@@ -9,7 +9,7 @@ def databaseConnectionHandler(func):
         try:
             func(*args, **kwargs)
         except SQLAlchemyOperationalError as exc:
-            logDBConnectionError(exc, 'Database is not available, check database connection.')
+            handleGeneralExceptions(exc, 'Database is not available, check database connection.')
     return wrapper
 
 class DatabaseContext:

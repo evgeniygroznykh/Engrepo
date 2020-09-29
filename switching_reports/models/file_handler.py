@@ -9,7 +9,7 @@ class FileHandler:
         try:
             return request_file.request_file_instance.filename == ''
         except AttributeError as exc:
-            logAttributeError(exc, "Request file was NoneType, while trying to get it from request form.")
+            handleGeneralExceptions(exc, "Request file was NoneType, while trying to get it from request form.")
 
 
     @staticmethod
