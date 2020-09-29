@@ -1,8 +1,8 @@
 from switching_reports.models.switching_report import SwitchingReport, app_db
 from switching_reports.models.http_request_handler import HttpRequestHandler
 from switching_reports.models.file_handler import FileHandler
-from models.dbconn import DatabaseContext
-from models.custom_http_response import CustomResponse
+from models.database_context import DatabaseContext
+from models.custom_http_response import CustomHttpResponse
 from flask import render_template, request, redirect, Blueprint
 from datetime import datetime as dt
 from cfg.external_config import external_config

@@ -1,6 +1,6 @@
 import os
 from switching_reports.models.switching_report_request_file import SwitchingReportRequestFile
-from models.logger import logAttributeError
+from models.logger import handleGeneralExceptions
 
 
 class FileHandler:

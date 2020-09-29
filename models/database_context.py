@@ -1,8 +1,12 @@
 from flask import Flask
 from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
-from models.logger import logDBConnectionError
+from models.logger import handleGeneralExceptions
 from switching_reports.models.switching_report import SwitchingReport
 
+
+#GLOBALS
+CONFIG_DATABASE_URI_KEY = 'database-uri'
+#ENDGLOBALS
 
 def databaseConnectionHandler(func):
     def wrapper(*args, **kwargs):
@@ -15,7 +19,7 @@ def databaseConnectionHandler(func):
 class DatabaseContext:
     @staticmethod
     def setupApplicationDatabase(app:Flask, config):
-        app.config['SQLALCHEMY_DATABASE_URI'] = config['database-uri']
+        app.config['SQLALCHEMY_DATABASE_URI'] = config[CONFIG_DATABASE_URI_KEY]
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     @staticmethod
@@ -29,13 +33,13 @@ class DatabaseContext:
     @databaseConnectionHandler
     def addSwitchingReportToDatabase(database, switching_report:SwitchingReport):
         database.session.add(switching_report)
-        database.session.commit()
+        databaseSessionCommitChanges(database)
 
     @staticmethod
     @databaseConnectionHandler
     def deleteSwitchingReportFromDatabase(database, switching_report:SwitchingReport):
         database.session.delete(switching_report)
-        database.session.commit()
+        databaseSessionCommitChanges(database)
 
     @staticmethod
     @databaseConnectionHandler

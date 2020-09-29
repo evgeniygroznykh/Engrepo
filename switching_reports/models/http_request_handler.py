@@ -4,7 +4,7 @@ from switching_reports.models.switching import Switching
 from switching_reports.models.translation import Translation
 from switching_reports.models.switching_report_request_file import SwitchingReportRequestFile
 from switching_reports.models.switching_report_service_data import SwitchingReportServiceData
-from models.logger import logKeyError, logValueError
+from models.logger import handleGeneralExceptions
 
 
 class HttpRequestHandler:

@@ -1,4 +1,4 @@
-from models.dbconn import databaseConnectionHandler
+from models.database_context import databaseConnectionHandler
 from sqlalchemy import or_, and_
 
 

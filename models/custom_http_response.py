@@ -1,5 +1,5 @@
 from flask import Response
 
 
-class CustomResponse(Response):
+class CustomHttpResponse(Response):
     charset = 'utf-16'
