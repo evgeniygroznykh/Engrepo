@@ -1,7 +1,6 @@
 import os
 import traceback
 from datetime import datetime as dt
-from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
 
 
 def createLogFilesDirIfNotExists(logged_func):
@@ -26,38 +25,12 @@ def logFileUnavailableHandler(error_message):
 	return wrapper
 
 @createLogFilesDirIfNotExists
-@logFileUnavailableHandler("Log file is unavailable. An occured 'file not found' error wasn't logged.")
-def logFileNotFoundError(exc:FileNotFoundError, message:str):
+@logFileUnavailableHandler
+def handleGeneralExceptions(exc:Exception, message:str):
 	with open('logs/app_log.txt', 'a+', encoding='utf-8') as log_file:
-		print(f"{dt.now()} | {message} | {exc.strerror} => {exc.filename}", file=log_file)
-
-@createLogFilesDirIfNotExists
-@logFileUnavailableHandler("Log file is unavailable. An occured 'database connection' error wasn't logged.")
-def logDBConnectionError(exc:SQLAlchemyOperationalError, message:str):
-	with open('logs/app_log.txt', 'a+', encoding='utf-8') as log_file:
-		print(f"{dt.now()} | {message} | {exc.args}", file=log_file)
-
-@createLogFilesDirIfNotExists
-@logFileUnavailableHandler("Log file is unavailable. An occured 'operating system' error wasn't logged.")
-def logOSError(exc:OSError, message:str):
-	with open('logs/app_log.txt', 'a+', encoding='utf-8') as log_file:
-		print(f"{dt.now()} | {message} | {exc.strerror}", file=log_file)
-
-@createLogFilesDirIfNotExists
-@logFileUnavailableHandler("Log file is unavailable. An occured 'attribute' error wasn't logged.")
-def logAttributeError(exc:AttributeError, message:str):
-	with open('logs/app_log.txt', 'a+', encoding='utf-8') as log_file:
-		print(f"{dt.now()} | {message} | {exc.args}", file=log_file)
-		print(traceback.print_exc(), file=log_file)
-
-@createLogFilesDirIfNotExists
-@logFileUnavailableHandler("Log file is unavailable. An occured 'key' error wasn't logged.")
-def logKeyError(exc:KeyError, message:str):
-	with open('logs/app_log.txt', 'a+', encoding='utf-8') as log_file:
-		print(f"{dt.now()} | {message} | {exc.args}", file=log_file)
-
-@createLogFilesDirIfNotExists
-@logFileUnavailableHandler("Log file is unavailable. An occured 'value' error wasn't logged.")
-def logValueError(exc:ValueError, message:str):
-	with open('logs/app_log.txt', 'a+', encoding='utf-8') as log_file:
-		print(f"{dt.now()} | {message} | {exc.args}", file=log_file)
+		if exc is FileNotFoundError:
+			print(f"{dt.now()} | {message} | {exc.strerror} => {exc.filename}", file=log_file)
+		elif exc is OSError:
+			print(f"{dt.now()} | {message} | {exc.strerror}", file=log_file)
+		else:
+			print(f"{dt.now()} | {message} | {exc.args}", file=log_file)
