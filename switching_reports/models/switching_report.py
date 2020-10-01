@@ -51,7 +51,7 @@ class SwitchingReport(app_db.Model):
         self.customer = new_service_data.customer
         self.shift_comp = new_service_data.shift_composition
         self.comment = new_service_data.comment
-        self.remark = new_service_data.remarks
+        self.remarks = new_service_data.remarks
 
     def updateTranslationData(self, new_translation_data:Translation):
         self.translation_start_time = new_translation_data.stringifyStartTime()
