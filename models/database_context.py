@@ -16,6 +16,9 @@ def databaseConnectionHandler(func):
             handleGeneralExceptions(exc, 'Database is not available, check database connection.')
     return wrapper
 
+def databaseSessionCommitChanges(database):
+    database.session.commit()
+
 class DatabaseContext:
     @staticmethod
     def setupApplicationDatabase(app:Flask, config):
@@ -31,6 +34,11 @@ class DatabaseContext:
 
     @staticmethod
     @databaseConnectionHandler
+    def databaseSessionCommitChanges(database):
+        database.session.commit()
+
+    @staticmethod
+    @databaseConnectionHandler
     def addSwitchingReportToDatabase(database, switching_report:SwitchingReport):
         database.session.add(switching_report)
         databaseSessionCommitChanges(database)
@@ -40,8 +48,3 @@ class DatabaseContext:
     def deleteSwitchingReportFromDatabase(database, switching_report:SwitchingReport):
         database.session.delete(switching_report)
         databaseSessionCommitChanges(database)
-
-    @staticmethod
-    @databaseConnectionHandler
-    def databaseSessionCommitChanges(database):
-        database.session.commit()

@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from models.shared_db import application_database
-from models.dbconn import DatabaseContext as DBC
+from models.database_context import DatabaseContext as DBC
 from cfg.external_config import external_config
 from cfg.flask_config import registerReportServiceBlueprints, registerSwitchingReportServiceBlueprints, addUrlRules
 from reports.reports import REPORT_BLUEPRINTS

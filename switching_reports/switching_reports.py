@@ -164,7 +164,7 @@ def switching_reports_filter():
 
                 file_name = getReadableFilenameFromDates(from_date, to_date)
                 dataframe = getDataframeFromSwitchingReports(filtered_switching_reports)
-                response = CustomResponse(writeDataframeToCsv(dataframe), mimetype='text/csv; charset=utf-16')
+                response = CustomHttpResponse(writeDataframeToCsv(dataframe), mimetype='text/csv; charset=utf-16')
                 response.headers["Content-Disposition"] = f"attachment; filename={file_name}"
                 return response
             else:

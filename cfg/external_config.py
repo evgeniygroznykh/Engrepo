@@ -1,5 +1,5 @@
 import json
-from models.logger import logFileNotFoundError
+from models.logger import handleGeneralExceptions
 
 
 def getConfigFromJson():
