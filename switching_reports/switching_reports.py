@@ -100,9 +100,9 @@ def switching_report_update(id):
 
         if not FileHandler.isFileInRequestForm(sw_report_request_file):
             sw_report_request_file.setFilePath(UPLOAD_FOLDER)
-            switching_report.updateRequestFilePath(sw_report_request_file)
             if not FileHandler.isRequestFileExistsInUploadFolder(UPLOAD_FOLDER, sw_report_request_file):
                 FileHandler.uploadRequestFile(sw_report_request_file)
+                switching_report.updateRequestFilePath(sw_report_request_file)
                 switching_report.formatRemarksIfNoRemarks()
 
         switching_report.updateServiceData(switching_report_service_data)
