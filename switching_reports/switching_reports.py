@@ -99,12 +99,11 @@ def switching_report_update(id):
         switching = HttpRequestHandler.getSwitchingInstanceFromReqForm()
 
         if not FileHandler.isFileInRequestForm(sw_report_request_file):
+            sw_report_request_file.setFilePath(UPLOAD_FOLDER)
+            switching_report.updateRequestFilePath(sw_report_request_file)
             if not FileHandler.isRequestFileExistsInUploadFolder(UPLOAD_FOLDER, sw_report_request_file):
-                sw_report_request_file.setFilePath(UPLOAD_FOLDER)
                 FileHandler.uploadRequestFile(sw_report_request_file)
                 switching_report.formatRemarksIfNoRemarks()
-
-                switching_report.updateRequestFilePath(sw_report_request_file)
 
         switching_report.updateServiceData(switching_report_service_data)
         switching_report.updateTranslationData(translation)
