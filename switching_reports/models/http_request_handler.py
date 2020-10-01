@@ -1,5 +1,6 @@
 from flask import request
 from datetime import datetime as dt
+from switching_reports.models.switching_report import SwitchingReport
 from switching_reports.models.switching import Switching
 from switching_reports.models.translation import Translation
 from switching_reports.models.switching_report_request_file import SwitchingReportRequestFile
@@ -40,15 +41,21 @@ class HttpRequestHandler:
             handleGeneralExceptions(key_exc, "'requestFile' wasn't found in request form.")
 
     @staticmethod
-    def getSwitchingReportServiceDataFromReqForm():
+    def getSwitchingReportServiceDataFromReqForm(is_update:bool, switching_report:SwitchingReport=None):
         try:
-            date = dt.now()
+            if not is_update:
+                creation_date = dt.now()
+                modified_date = None
+            else:
+                modified_date = dt.now()
+                creation_date = switching_report.creation_date
+
             work_type = request.form['switchingReportWorkType']
             customer = request.form['switchingCustomer']
             shift_composition = request.form['shiftComp']
             comment = request.form['switchingReportComment']
             remarks = request.form['switchingReportRemarks']
-            service_data = SwitchingReportServiceData(date, work_type, customer, shift_composition, comment, remarks)
+            service_data = SwitchingReportServiceData(creation_date, modified_date, work_type, customer, shift_composition, comment, remarks)
             return service_data
         except KeyError as key_exc:
             handleGeneralExceptions(key_exc, "Some of the service data keys weren't found in request form.")

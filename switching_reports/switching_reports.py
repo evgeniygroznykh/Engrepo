@@ -27,7 +27,7 @@ SWITCHING_REPORT_BLUEPRINTS.append(switching_report_page)
 @switching_report_page.route("/create_switching_report", methods=['POST', 'GET'])
 def create_switching_report():
     if request.method == 'POST':
-        switching_report_service_data = HttpRequestHandler.getSwitchingReportServiceDataFromReqForm()
+        switching_report_service_data = HttpRequestHandler.getSwitchingReportServiceDataFromReqForm(is_update=False)
         sw_report_request_file = HttpRequestHandler.getRequestFileInstanceFromReqForm()
         translation = HttpRequestHandler.getTranslationInstanceFromReqForm()
         switching = HttpRequestHandler.getSwitchingInstanceFromReqForm()
@@ -37,7 +37,7 @@ def create_switching_report():
             if not FileHandler.isRequestFileExistsInUploadFolder(UPLOAD_FOLDER, sw_report_request_file):
                 FileHandler.uploadRequestFile(sw_report_request_file)
 
-        switching_report = SwitchingReport(date=switching_report_service_data.date, work_type=switching_report_service_data.work_type, customer=switching_report_service_data.customer,
+        switching_report = SwitchingReport(creation_date=switching_report_service_data.creation_date, work_type=switching_report_service_data.work_type, customer=switching_report_service_data.customer,
                                            translation_start_time=translation.stringifyStartTime(), translation_end_time=translation.stringifyEndTime(),
                                            main_source=switching.main_source, main_destination = switching.main_destination,
                                            reserve_source=switching.reserve_source, reserve_destination=switching.reserve_destination,
@@ -66,7 +66,7 @@ def switching_reports():
     reporting_from, reporting_to = reporting_period
     time_deltas = SwitchingReport.getTimeDeltas(REPORTING_PERIOD_IN_DAYS)
 
-    switching_reports = SwitchingReport.query.order_by(SwitchingReport.date.desc()).all()
+    switching_reports = SwitchingReport.query.order_by(SwitchingReport.creation_date.desc()).all()
     return render_template("switching-reports.html", switching_reports=switching_reports, work_types = WORK_TYPES,
                            time_deltas=time_deltas, now=dt.now(), amount_of_days=REPORTING_PERIOD_IN_DAYS, search_string='empty',
                            default_from_value = reporting_from, default_to_value = reporting_to)
@@ -93,7 +93,7 @@ def switching_report_update(id):
     switching_report = SwitchingReport.query.get_or_404(id)
 
     if request.method == 'POST':
-        switching_report_service_data = HttpRequestHandler.getSwitchingReportServiceDataFromReqForm()
+        switching_report_service_data = HttpRequestHandler.getSwitchingReportServiceDataFromReqForm(is_update=True, switching_report=switching_report)
         sw_report_request_file = HttpRequestHandler.getRequestFileInstanceFromReqForm()
         translation = HttpRequestHandler.getTranslationInstanceFromReqForm()
         switching = HttpRequestHandler.getSwitchingInstanceFromReqForm()
@@ -127,7 +127,7 @@ def switching_report_search():
                                                                    SwitchingReport.comment.ilike(f'%{search_string}%'),
                                                                    SwitchingReport.shift_comp.ilike(
                                                                        f'%{search_string}%'))) \
-                                                                        .order_by(SwitchingReport.date.desc()).all()
+                                                                        .order_by(SwitchingReport.creation_date.desc()).all()
 
         return render_template('switching-reports.html', switching_reports=needed_switching_reports, work_types = WORK_TYPES, search_string=search_string)
 
@@ -142,8 +142,8 @@ def switching_reports_filter():
                 time_deltas = SwitchingReport.getTimeDeltas(days)
 
                 filtered_switching_reports = SwitchingReport.query.filter(
-                    and_(SwitchingReport.date >= filter_from_date, SwitchingReport.date <= filter_to_date)) \
-                    .order_by(SwitchingReport.date.desc()).all()
+                    and_(SwitchingReport.creation_date >= filter_from_date, SwitchingReport.creation_date <= filter_to_date)) \
+                    .order_by(SwitchingReport.creation_date.desc()).all()
 
                 return render_template('switching-reports.html', switching_reports=filtered_switching_reports, work_types = WORK_TYPES,
                                                                     time_deltas=time_deltas, now=dt.now(), amount_of_days=days, search_string='empty')
@@ -153,8 +153,8 @@ def switching_reports_filter():
             if not HttpRequestHandler.getReportingPeriodFromFilterForm() == None:
                 from_date, to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()
                 filtered_switching_reports = SwitchingReport.query.filter(
-                    and_(SwitchingReport.date >= from_date, SwitchingReport.date <= to_date)) \
-                    .order_by(SwitchingReport.date.desc()).all()
+                    and_(SwitchingReport.creation_date >= from_date, SwitchingReport.creation_date <= to_date)) \
+                    .order_by(SwitchingReport.creation_date.desc()).all()
 
                 file_name = getReadableFilenameFromDates(from_date, to_date)
                 dataframe = getDataframeFromSwitchingReports(filtered_switching_reports)
@@ -181,7 +181,7 @@ def use_as_template(id):
             if not FileHandler.isRequestFileExistsInUploadFolder(UPLOAD_FOLDER, sw_report_request_file):
                 FileHandler.uploadRequestFile(sw_report_request_file)
 
-        switching_report = SwitchingReport(date=switching_report_service_data.date,
+        switching_report = SwitchingReport(creation_date=dt.now(),
                                            work_type=switching_report_service_data.work_type,
                                            customer=switching_report_service_data.customer,
                                            translation_start_time=translation.stringifyStartTime(),

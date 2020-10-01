@@ -8,7 +8,8 @@ from datetime import timedelta
 
 class SwitchingReport(app_db.Model):
     id = app_db.Column(app_db.Integer, primary_key=True)
-    date = app_db.Column(app_db.DateTime)
+    creation_date = app_db.Column(app_db.DateTime)
+    modified_date = app_db.Column(app_db.DateTime)
     work_type = app_db.Column(app_db.String(300), nullable=False)
     shift_comp = app_db.Column(app_db.String(300), nullable=False)
     comment = app_db.Column(app_db.Text, nullable=False)
@@ -27,7 +28,8 @@ class SwitchingReport(app_db.Model):
 
     def to_dict(self):
         return {
-            'Дата':self.date,
+            'Дата создания':self.creation_date,
+            'Дата редактирования':self.modified_date,
             'Комментарий':self.comment,
             'Виды работ':self.work_type,
             'Начало трансляции':self.translation_start_time,
@@ -46,7 +48,8 @@ class SwitchingReport(app_db.Model):
             self.request_file_path += f'; {switching_report_request_file.request_file_path}'
 
     def updateServiceData(self, new_service_data:SwitchingReportServiceData):
-        self.date = new_service_data.date
+        self.creation_date = new_service_data.creation_date
+        self.modified_date = new_service_data.modified_date
         self.work_type = new_service_data.work_type
         self.customer = new_service_data.customer
         self.shift_comp = new_service_data.shift_composition

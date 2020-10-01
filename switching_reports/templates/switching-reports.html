@@ -62,10 +62,15 @@
                         <div class="work-type-block" id="{{ wt }}_{{ i }}_days_before">
                             <h2>{{ wt }}</h2>
                             {% for sw_rep in switching_reports %}
-                                {% if sw_rep.date.day == (now - time_deltas[i]).day and sw_rep.work_type == wt %}
+                                {% if sw_rep.creation_date.day == (now - time_deltas[i]).day and sw_rep.work_type == wt %}
                                         <div class="report-desc-block">
                                             <h2>{{sw_rep.customer}}</h2>
-                                            <p class="creation-date"><b>Дата создания:</b> {{ sw_rep.date.__format__('%Y-%m-%d %H:%M') }}</p>
+                                            <p class="creation-date"><b>Дата создания:</b> {{ sw_rep.creation_date.__format__('%Y-%m-%d %H:%M') }}</p>
+                                            {% if sw_rep.modified_date %}
+                                            <p class="creation-date"><b>Дата редактирования:</b> {{ sw_rep.modified_date.__format__('%Y-%m-%d %H:%M') }}</p>
+                                            {% else %}
+                                            <p class="creation-date"><b>Дата редактирования:</b> -</p>
+                                            {% endif %}
                                             {% if sw_rep.translation_start_time.day == sw_rep.translation_end_time.day %}
                                             <p class="creation-date"><b>Время трансляции:</b> {{sw_rep.translation_start_time.__format__('%Y-%m-%d')}}&emsp;{{sw_rep.translation_start_time.__format__('%H:%M:%S')}} - {{ sw_rep.translation_end_time.__format__('%H:%M:%S')}}</p>
                                             {% else %}
@@ -105,7 +110,12 @@
                                 {% if sw_rep.work_type == wt %}
                                         <div class="report-desc-block">
                                             <h2>{{sw_rep.customer}}</h2>
-                                            <p class="creation-date"><b>Дата создания:</b> {{ sw_rep.date.__format__('%Y-%m-%d %H:%M') }}</p>
+                                            <p class="creation-date"><b>Дата создания:</b> {{ sw_rep.creation_date.__format__('%Y-%m-%d %H:%M') }}</p>
+                                            {% if sw_rep.modified_date %}
+                                            <p class="creation-date"><b>Дата редактирования:</b> {{ sw_rep.modified_date.__format__('%Y-%m-%d %H:%M') }}</p>
+                                            {% else %}
+                                            <p class="creation-date"><b>Дата редактирования:</b> -</p>
+                                            {% endif %}
                                             {% if sw_rep.translation_start_time.day == sw_rep.translation_end_time.day %}
                                             <p class="creation-date"><b>Время трансляции:</b> {{sw_rep.translation_start_time}} - {{ sw_rep.translation_end_time.__format__('%H:%M:%S') }}</p>
                                             {% else %}

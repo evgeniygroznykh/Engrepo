@@ -4,7 +4,8 @@ from datetime import datetime
 
 @dataclass
 class SwitchingReportServiceData:
-    date : datetime
+    creation_date : datetime
+    modified_date : datetime
     work_type : str
     customer : str
     shift_composition : str
