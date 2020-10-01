@@ -180,8 +180,6 @@ def use_as_template(id):
             sw_report_request_file.setFilePath(UPLOAD_FOLDER)
             if not FileHandler.isRequestFileExistsInUploadFolder(UPLOAD_FOLDER, sw_report_request_file):
                 FileHandler.uploadRequestFile(sw_report_request_file)
-        else:
-            SwitchingReport.formatRemarksOnReportCreation(switching_report_service_data.remarks, REQUEST_FILE_EXISTS_ERROR_TEXT)
 
         switching_report = SwitchingReport(date=switching_report_service_data.date,
                                            work_type=switching_report_service_data.work_type,
