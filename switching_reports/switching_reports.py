@@ -169,3 +169,47 @@ def switching_reports_filter():
                 return response
             else:
                 return ('', 204)
+
+sw_template_page = Blueprint('sw_template_page', __name__, static_folder='static', template_folder='templates')
+SWITCHING_REPORT_BLUEPRINTS.append(sw_template_page)
+@sw_template_page.route("/switching_reports/id=<int:id>/use_as_template", methods=['POST', 'GET'])
+def use_as_template(id):
+    switching_report = SwitchingReport.query.get_or_404(id)
+
+    if request.method == 'POST':
+        switching_report_service_data = HttpRequestHandler.getSwitchingReportServiceDataFromReqForm()
+        sw_report_request_file = HttpRequestHandler.getRequestFileInstanceFromReqForm()
+        translation = HttpRequestHandler.getTranslationInstanceFromReqForm()
+        switching = HttpRequestHandler.getSwitchingInstanceFromReqForm()
+
+        if not FileHandler.isFileInRequestForm(sw_report_request_file):
+            if FileHandler.isRequestFileExistsInUploadFolder(UPLOAD_FOLDER, sw_report_request_file):
+                switching_report.formatRemarksOnReportUpdate(REQUEST_FILE_EXISTS_ERROR_TEXT)
+            else:
+                sw_report_request_file.setFilePath(UPLOAD_FOLDER)
+                FileHandler.uploadRequestFile(sw_report_request_file)
+                switching_report.formatRemarksOnRequestFileExistsErrorFix(REQUEST_FILE_EXISTS_ERROR_TEXT)
+                switching_report.formatRemarksIfNoRemarks()
+
+                switching_report.updateRequestFilePath(sw_report_request_file)
+
+        switching_report = SwitchingReport(date=switching_report_service_data.date,
+                                           work_type=switching_report_service_data.work_type,
+                                           customer=switching_report_service_data.customer,
+                                           translation_start_time=translation.stringifyStartTime(),
+                                           translation_end_time=translation.stringifyEndTime(),
+                                           main_source=switching.main_source,
+                                           main_destination=switching.main_destination,
+                                           reserve_source=switching.reserve_source,
+                                           reserve_destination=switching.reserve_destination,
+                                           shift_comp=switching_report_service_data.shift_composition,
+                                           comment=switching_report_service_data.comment,
+                                           remarks=switching_report_service_data.remarks,
+                                           request_file_path=sw_report_request_file.request_file_path)
+
+        DatabaseContext.addSwitchingReportToDatabase(app_db, switching_report)
+        return redirect('/switching_reports/switching_reports')
+    else:
+        return render_template("switching-report-use-as-template.html", switching_report=switching_report,
+                                                                        work_types=WORK_TYPES, customers=CUSTOMERS,
+                                                                        shifts=SHIFTS, sources=SOURCES, destinations=DESTINATIONS)

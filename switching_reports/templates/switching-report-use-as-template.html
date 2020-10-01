@@ -1,0 +1,193 @@
+{% extends 'switching-report-base.html'%}
+
+{% block my_styles %}
+{{super()}}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom/main.css') }}">
+{% endblock %}
+
+{% block title %}
+Обновить отчёт о коммутации
+{% endblock %}
+
+{% block add_scripts %}
+        <script>
+            $(document).ready(setButtonClickActions);
+        </script>
+{% endblock %}
+
+{% block nav %}
+<li class="nav-item active">
+    <a class="nav-link" href="/switching_reports/create_switching_report">Создать отчёт о коммутации</a>
+</li>
+<li class="nav-item active">
+    <a class="nav-link" href="/switching_reports/switching_reports">Отчёты о коммутации</a>
+</li>
+{% endblock %}
+
+{%block body %}
+        <div class="main-srcs-bg-modal">
+            <div class="main-srcs-modal-content">
+              <div class="main-srcs-close-btn">+</div>
+              <form class="form-container">
+                <h1>Sources (main)</h1>
+                  {% if sources|length > 0 %}
+                      {% for src in sources %}
+                        <button type="button" style="margin: 5px;" class="btn btn-primary" onclick="selectMainSource(this)">{{ src }}</button>
+                      {% endfor %}
+                  {% else %}
+                    <h2>No sources</h2>
+                  {% endif %}
+              </form>
+            </div>
+        </div>
+        <div class="main-dests-bg-modal">
+            <div class="main-dests-modal-content">
+              <div class="main-dests-close-btn">+</div>
+              <form class="form-container">
+                <h1>Destinations (main)</h1>
+                  {% if destinations|length > 0 %}
+                      {% for dest in destinations %}
+                        <button type="button" style="margin: 5px;" class="btn btn-primary" onclick=selectMainDest(this)>{{ dest }}</button>
+                      {% endfor %}
+                  {% else %}
+                    <h2>No destinations</h2>
+                  {% endif %}
+              </form>
+            </div>
+        </div>
+        <div class="res-srcs-bg-modal">
+            <div class="res-srcs-modal-content">
+              <div class="res-srcs-close-btn">+</div>
+              <form class="form-container">
+                <h1>Sources (reserve)</h1>
+                  {% if sources|length > 0 %}
+                      {% for src in sources %}
+                        <button type="button" style="margin: 5px;" class="btn btn-primary" onclick="selectResSource(this)">{{ src }}</button>
+                      {% endfor %}
+                  {% else %}
+                    <h2>No sources</h2>
+                  {% endif %}
+              </form>
+            </div>
+        </div>
+        <div class="res-dests-bg-modal">
+            <div class="res-dests-modal-content">
+              <div class="res-dests-close-btn">+</div>
+              <form class="res-container">
+                <h1>Destinations (reserve)</h1>
+                  {% if destinations|length > 0 %}
+                      {% for dest in destinations %}
+                        <button type="button" style="margin: 5px;" class="btn btn-primary" onclick=selectResDest(this)>{{ dest }}</button>
+                      {% endfor %}
+                  {% else %}
+                    <h2>No destinations</h2>
+                  {% endif %}
+              </form>
+            </div>
+        </div>
+        <div class="container">
+            <form method="post" enctype="multipart/form-data">
+                <div id='input-form-2' class="col-md-6 mb-3" style="float: right;">
+                    <label for="switchingReportRemarks">Замечания</label>
+                    <textarea class="form-control" id="switchingReportRemarks" name="switchingReportRemarks" rows="13" cols="50" placeholder="">{{ switching_report.remarks }}</textarea>
+                </div>
+                <div id='input-form' class="col-md-6 mb-3">
+                    <label for="switchingReportWorkType">Тип работ</label>
+                    <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="switchingReportWorkType" name="switchingReportWorkType" placeholder="Выберите тип работ" value="{{ switching_report.work_type }}" required="" maxlength="50">
+                    </div>
+
+                    {% if work_types|length > 0 %}
+                        {% for work_type in work_types%}
+                            <button class="btn btn-warning" type="button" onclick="chooseWorkType(this)" name="{{work_type}}_button">{{ work_type }}</button>
+                        {% endfor %}
+                    {% endif %}
+                    <br>
+                    <hr class="mb-4">
+
+                    <label for="switchingCustomer">Заказчик</label>
+                    <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="switchingCustomer" name="switchingCustomer" placeholder="Выберите заказчика" value="{{ switching_report.customer }}" required="" maxlength="50">
+                    </div>
+
+                    {% if customers|length > 0 %}
+                        {% for cust in customers%}
+                            <button class="btn btn-warning" type="button" onclick="chooseCustomer(this)" name="{{cust}}_button">{{ cust }}</button>
+                        {% endfor %}
+                    {% endif %}
+                    <br>
+                    <hr class="mb-4">
+
+                    <label for="shiftComp">Состав смены</label>
+                    <div class="input-group mb-3">
+                      <select class="custom-select" id="shiftComp" name="shiftComp">
+                          <option selected>{{ switching_report.shift_comp }}</option>
+                        {% for shift in shifts %}
+                            <option value="{{ shift }}">{{ shift }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <label for="translationStartTime">Начало трансляции</label><br>
+                    <input type="datetime-local" id="translationStartTime" name="translationStartTime" placeholder="" value="{{ switching_report.formatTranslationStartTimeForJinja() }}" required="">
+                    <div class="invalid-feedback">
+                      Необходимо ввести время начала трансляции.
+                    </div>
+                    <br>
+
+                    <label for="translationEndTime">Окончание трансляции</label><br>
+                    <input type="datetime-local"  id="translationEndTime" name="translationEndTime" placeholder="" value="{{ switching_report.formatTranslationEndTimeForJinja() }}" required="">
+                    <div class="invalid-feedback">
+                      Необходимо ввести время окончания трансляции.
+                    </div>
+                    <br>
+
+                    <label for="switchingSource">Источник</label>
+                    <input type="text" class="form-control" id="switchingSource" name="switchingSource" placeholder="" value="{{ switching_report.main_source }}" required="" maxlength="50">
+                    <div class="invalid-feedback">
+                      Необходимо ввести основной источник для данной коммутации.
+                    </div>
+
+                    <button id="main-sources-button" type="button" class="btn btn-dark">Sources</button>
+                    <br>
+
+                    <label for="switchingDestination">Направление</label>
+                    <input type="text" class="form-control" id="switchingDestination" name="switchingDestination" placeholder="" value="{{ switching_report.main_destination }}" required="" maxlength="50">
+                    <div class="invalid-feedback">
+                      Необходимо ввести резервное направление для данной коммутации.
+                    </div>
+
+                    <button id="main-dests-button" type="button" class="btn btn-dark">Destinations</button>
+                    <br>
+
+                    <label for="reserveSwitchingSource">Резервный источник</label>
+                    <input type="text" class="form-control" id="reserveSwitchingSource" name="reserveSwitchingSource" placeholder="no reserve" value="{{ switching_report.reserve_source }}" maxlength="50">
+                    <div class="invalid-feedback">
+                      Необходимо ввести основной источник для данной коммутации.
+                    </div>
+
+                    <button id="res-sources-button" type="button" class="btn btn-dark">Sources</button>
+                    <br>
+
+                    <label for="reserveSwitchingDestination">Резервное направление</label>
+                    <input type="text" class="form-control" id="reserveSwitchingDestination" name="reserveSwitchingDestination" placeholder="no reserve" value="{{ switching_report.reserve_destination }}" maxlength="50">
+                    <div class="invalid-feedback">
+                      Необходимо ввести резервное направление для данной коммутации.
+                    </div>
+
+                    <button id="res-dests-button" type="button" class="btn btn-dark">Destinations</button>
+                    <br>
+
+                    <label for="switchingReportComment">Комментарий</label>
+                    <textarea class="form-control" id="switchingReportComment" name="switchingReportComment" rows="10" cols="50" placeholder="">{{ switching_report.comment }}</textarea>
+
+                    <br>
+                    <br>
+                    <input type="file" class="form-control-file" id="requestFile" name="requestFile" value="">
+
+                    <hr class="mb-4">
+                    <button class="btn btn-dark btn-lg btn-block" type="submit">Отправить отчёт</button>
+                </div>
+            </form>
+        </div>
+{% endblock %}
