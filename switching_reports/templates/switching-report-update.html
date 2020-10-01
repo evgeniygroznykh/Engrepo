@@ -181,6 +181,9 @@
                     <label for="switchingReportComment">Комментарий</label>
                     <textarea class="form-control" id="switchingReportComment" name="switchingReportComment" rows="10" cols="50" placeholder="">{{ switching_report.comment }}</textarea>
 
+                    <label for="switchingReportRequestFiles">Прикреплённые файлы заявки</label>
+                    <textarea class="form-control" style="resize: none;" id="switchingReportRequestFiles" name="switchingReportRequestFiles" rows="10" cols="50" placeholder="" readonly>{{ switching_report.request_file_path }}</textarea>
+
                     <br>
                     <br>
                     <input type="file" class="form-control-file" id="requestFile" name="requestFile" value="">
