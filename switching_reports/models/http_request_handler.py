@@ -16,7 +16,7 @@ class HttpRequestHandler:
             translation = Translation(start_time, end_time)
             return translation
         except KeyError as key_exc:
-            handleGeneralExceptions(exc, "Some of the translation data keys weren't found in request form.")
+            handleGeneralExceptions(key_exc, "Some of the translation data keys weren't found in request form.")
 
     @staticmethod
     def getSwitchingInstanceFromReqForm():
@@ -28,7 +28,7 @@ class HttpRequestHandler:
             switching = Switching(switching_source, switching_destination, switching_reserve_source, switching_reserve_destination)
             return switching
         except KeyError as key_exc:
-            handleGeneralExceptions(exc, "Some of the switching data keys weren't found in request form.")
+            handleGeneralExceptions(key_exc, "Some of the switching data keys weren't found in request form.")
 
 
     @staticmethod
@@ -37,7 +37,7 @@ class HttpRequestHandler:
             request_file_from_form = request.files['requestFile']
             return SwitchingReportRequestFile(request_file_from_form)
         except KeyError as key_exc:
-            handleGeneralExceptions(exc, "'requestFile' wasn't found in request form.")
+            handleGeneralExceptions(key_exc, "'requestFile' wasn't found in request form.")
 
     @staticmethod
     def getSwitchingReportServiceDataFromReqForm():
@@ -51,7 +51,7 @@ class HttpRequestHandler:
             service_data = SwitchingReportServiceData(date, work_type, customer, shift_composition, comment, remarks)
             return service_data
         except KeyError as key_exc:
-            handleGeneralExceptions(exc, "Some of the service data keys weren't found in request form.")
+            handleGeneralExceptions(key_exc, "Some of the service data keys weren't found in request form.")
 
     @staticmethod
     def getReportingPeriodFromFilterForm():
@@ -70,4 +70,4 @@ class HttpRequestHandler:
         try:
             return request.form['search_string']
         except KeyError as key_exc:
-            handleGeneralExceptions(exc, "'search_string' wasn't found in request form.")
+            handleGeneralExceptions(key_exc, "'search_string' wasn't found in request form.")
