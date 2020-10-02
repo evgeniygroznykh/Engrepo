@@ -16,6 +16,8 @@ WORK_TYPES = external_config['work_types']
 SHIFTS = external_config['shifts']
 SOURCES = external_config['sources']
 DESTINATIONS = external_config['destinations']
+VAR_SOURCES = external_config['var_sources']
+VAR_DESTINATIONS = external_config['var_destinations']
 UPLOAD_FOLDER = external_config['upload_folder']
 REQUEST_FILE_EXISTS_ERROR_TEXT = external_config['file_exists_error_template']
 REPORTING_PERIOD_IN_DAYS = external_config['reporting_period_in_days']
@@ -49,6 +51,7 @@ def create_switching_report():
         return render_template("create-switching-report.html", work_types=WORK_TYPES, customers=CUSTOMERS,
                                shifts=SHIFTS, remarks='Без замечаний',
                                sources=SOURCES, destinations=DESTINATIONS,
+                               var_sources=VAR_SOURCES, var_destinations=VAR_DESTINATIONS,
                                default_start_time=dt.strftime(default_translation_start_time, '%Y-%m-%dT%H:%M'),
                                 default_end_time=dt.strftime(default_translation_end_time, '%Y-%m-%dT%H:%M'))
 

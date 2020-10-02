@@ -1,9 +1,42 @@
 function setButtonClickActions () {
     document.getElementById('main-sources-button').addEventListener('click', function() {
-        document.querySelector('.main-srcs-bg-modal').style.display = 'flex';
+        var select = document.getElementById('switchingReportWorkType');
+        if (select.value == 'Коммутация VAR') {
+            document.querySelector('.main-var-srcs-bg-modal').style.display = 'flex';
+        }
+        else {
+            document.querySelector('.main-srcs-bg-modal').style.display = 'flex';
+        }
     });
+
     document.getElementById('main-dests-button').addEventListener('click', function() {
-        document.querySelector('.main-dests-bg-modal').style.display = 'flex';
+        var select = document.getElementById('switchingReportWorkType');
+        if (select.value == 'Коммутация VAR') {
+            document.querySelector('.main-var-dests-bg-modal').style.display = 'flex';
+        }
+        else {
+            document.querySelector('.main-dests-bg-modal').style.display = 'flex';
+        }
+    });
+
+    document.getElementById('res-sources-button').addEventListener('click', function() {
+        var select = document.getElementById('switchingReportWorkType');
+        if (select.value == 'Коммутация VAR') {
+            document.querySelector('.res-var-srcs-bg-modal').style.display = 'flex';
+        }
+        else {
+            document.querySelector('.res-srcs-bg-modal').style.display = 'flex';
+        }
+    });
+
+    document.getElementById('res-dests-button').addEventListener('click', function() {
+        var select = document.getElementById('switchingReportWorkType');
+        if (select.value == 'Коммутация VAR') {
+            document.querySelector('.res-var-dests-bg-modal').style.display = 'flex';
+        }
+        else {
+            document.querySelector('.res-dests-bg-modal').style.display = 'flex';
+        }
     });
 
     document.querySelector('.main-srcs-close-btn').addEventListener('click', function() {
@@ -13,11 +46,13 @@ function setButtonClickActions () {
     document.querySelector('.main-dests-close-btn').addEventListener('click', function() {
         document.querySelector(".main-dests-bg-modal").style.display = 'none';
     });
-    document.getElementById('res-sources-button').addEventListener('click', function() {
-        document.querySelector('.res-srcs-bg-modal').style.display = 'flex';
+
+    document.querySelector('.main-var-srcs-close-btn').addEventListener('click', function() {
+        document.querySelector(".main-var-srcs-bg-modal").style.display = 'none';
     });
-    document.getElementById('res-dests-button').addEventListener('click', function() {
-        document.querySelector('.res-dests-bg-modal').style.display = 'flex';
+
+    document.querySelector('.main-var-dests-close-btn').addEventListener('click', function() {
+        document.querySelector(".main-var-dests-bg-modal").style.display = 'none';
     });
 
     document.querySelector('.res-srcs-close-btn').addEventListener('click', function() {
@@ -26,6 +61,14 @@ function setButtonClickActions () {
 
     document.querySelector('.res-dests-close-btn').addEventListener('click', function() {
         document.querySelector(".res-dests-bg-modal").style.display = 'none';
+    });
+
+    document.querySelector('.res-var-srcs-close-btn').addEventListener('click', function() {
+        document.querySelector(".res-var-srcs-bg-modal").style.display = 'none';
+    });
+
+    document.querySelector('.res-var-dests-close-btn').addEventListener('click', function() {
+        document.querySelector(".res-var-dests-bg-modal").style.display = 'none';
     });
 }
 

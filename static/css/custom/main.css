@@ -13,7 +13,8 @@
 }
 
 
-.main-srcs-bg-modal, .main-dests-bg-modal, .res-srcs-bg-modal, .res-dests-bg-modal {
+.main-srcs-bg-modal, .main-dests-bg-modal, .res-srcs-bg-modal, .res-dests-bg-modal,
+ .main-var-srcs-bg-modal, .main-var-dests-bg-modal, .res-var-srcs-bg-modal, .res-var-dests-bg-modal {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0);
@@ -25,7 +26,8 @@
     z-index: 9999;
 }
 
-.main-srcs-modal-content, .main-dests-modal-content, .res-srcs-modal-content, .res-dests-modal-content {
+.main-srcs-modal-content, .main-dests-modal-content, .res-srcs-modal-content, .res-dests-modal-content,
+ .main-var-srcs-modal-content, .main-var-dests-modal-content, .res-var-srcs-modal-content, .res-var-dests-modal-content {
     width: 500px;
     height: fit-content;
     background-color: white;
@@ -37,10 +39,11 @@
     display: inline-block;
 }
 
-.main-srcs-close-btn, .main-dests-close-btn, .res-srcs-close-btn, .res-dests-close-btn {
+.main-srcs-close-btn, .main-dests-close-btn, .res-srcs-close-btn, .res-dests-close-btn,
+.main-var-srcs-close-btn, .main-var-dests-close-btn, .res-var-srcs-close-btn, .res-var-dests-close-btn {
     position: absolute;
-    top: 0;
-    right: 14px;
+    top: -15px;
+    right: 0px;
     font-size: 42px;
     transform: rotate(45deg);
     cursor: pointer;
