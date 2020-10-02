@@ -5,6 +5,7 @@ from switching_reports.models.switching import Switching
 from switching_reports.models.translation import Translation
 from datetime import datetime as dt
 from datetime import timedelta
+import os
 
 class SwitchingReport(app_db.Model):
     id = app_db.Column(app_db.Integer, primary_key=True)
@@ -21,7 +22,7 @@ class SwitchingReport(app_db.Model):
     reserve_destination = app_db.Column(app_db.String(50))
     customer = app_db.Column(app_db.String(50), nullable=False)
     remarks = app_db.Column(app_db.Text, default='Без замечаний')
-    coord_request_file_path = app_db.Column(app_db.Text)
+    coord_request_file_paths = app_db.Column(app_db.Text)
 
     def __repr__(self):
         return '<Switching report %r' % self.id
@@ -41,11 +42,11 @@ class SwitchingReport(app_db.Model):
         }
 
     def updateRequestFilePath(self, switching_report_request_file:SwitchingReportRequestFile):
-        if self.coord_request_file_path == 'no request file':
-            self.coord_request_file_path = self.coord_request_file_path. \
+        if self.coord_request_file_paths == 'no request file':
+            self.coord_request_file_paths = self.coord_request_file_paths. \
                 replace('no request file', switching_report_request_file.request_file_path)
         else:
-            self.coord_request_file_path += f'; {switching_report_request_file.request_file_path}'
+            self.coord_request_file_paths += f'; {switching_report_request_file.request_file_path}'
 
     def updateServiceData(self, new_service_data:SwitchingReportServiceData):
         self.creation_date = new_service_data.creation_date
@@ -83,6 +84,9 @@ class SwitchingReport(app_db.Model):
     def formatRemarksOnReportUpdate(self, error_template:str):
         self.remarks = error_template if self.remarks == 'Без замечаний' else self.remarks + f'; {error_template}'
 
+    def formatCoordRequestFilePathsForJinja(self):
+        return '; '.join(list(os.path.basename(filename) for filename in self.coord_request_file_paths.split(';')))
+
     @staticmethod
     def createSwitchingReport(service_data:SwitchingReportServiceData, translation:Translation,
                               switching:Switching, request_file):
@@ -93,7 +97,7 @@ class SwitchingReport(app_db.Model):
                                            main_source=switching.main_source, main_destination=switching.main_destination,
                                            reserve_source=switching.reserve_source, reserve_destination=switching.reserve_destination,
                                            shift_comp=service_data.shift_composition, comment=service_data.comment,
-                                           remarks=service_data.remarks, coord_request_file_path=request_file.request_file_path)
+                                           remarks=service_data.remarks, coord_request_file_paths=request_file.request_file_path)
 
     @staticmethod
     def formatRemarksOnReportCreation(remarks:str, error_template:str):
