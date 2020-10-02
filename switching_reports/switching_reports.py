@@ -7,7 +7,8 @@ from flask import render_template, request, redirect, Blueprint
 from datetime import datetime as dt
 from cfg.external_config import external_config
 from sqlalchemy import or_, and_
-from switching_reports.models.csv_handler import getDataframeFromSwitchingReports, writeDataframeToCsv, getReadableFilenameFromDates
+from switching_reports.models.csv_handler import getDataframeFromSwitchingReports, writeDataframeToCsv, \
+                                                    getReadableFilenameFromDates
 
 
 CUSTOMERS = external_config['customers']
@@ -37,12 +38,7 @@ def create_switching_report():
             if not FileHandler.isRequestFileExistsInUploadFolder(UPLOAD_FOLDER, sw_report_request_file):
                 FileHandler.uploadRequestFile(sw_report_request_file)
 
-        switching_report = SwitchingReport(creation_date=switching_report_service_data.creation_date, work_type=switching_report_service_data.work_type, customer=switching_report_service_data.customer,
-                                           translation_start_time=translation.stringifyStartTime(), translation_end_time=translation.stringifyEndTime(),
-                                           main_source=switching.main_source, main_destination = switching.main_destination,
-                                           reserve_source=switching.reserve_source, reserve_destination=switching.reserve_destination,
-                                           shift_comp=switching_report_service_data.shift_composition, comment=switching_report_service_data.comment,
-                                           remarks=switching_report_service_data.remarks, request_file_path=sw_report_request_file.request_file_path)
+        switching_report = SwitchingReport.createSwitchingReport(switching_report_service_data, translation, switching, sw_report_request_file)
 
         DatabaseContext.addSwitchingReportToDatabase(app_db, switching_report)
         return redirect('/switching_reports/switching_reports')
@@ -137,7 +133,7 @@ SWITCHING_REPORT_BLUEPRINTS.append(sw_filter_page)
 def switching_reports_filter():
     if request.method == 'POST':
         if 'filter_button' in request.form:
-            if not HttpRequestHandler.getReportingPeriodFromFilterForm() == None:
+            if not HttpRequestHandler.getReportingPeriodFromFilterForm():
                 filter_from_date, filter_to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()
                 time_deltas = SwitchingReport.getTimeDeltas(days)
 
@@ -150,7 +146,7 @@ def switching_reports_filter():
             else:
                 return ('', 204)
         if 'download_button' in request.form:
-            if not HttpRequestHandler.getReportingPeriodFromFilterForm() == None:
+            if not HttpRequestHandler.getReportingPeriodFromFilterForm():
                 from_date, to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()
                 filtered_switching_reports = SwitchingReport.query.filter(
                     and_(SwitchingReport.creation_date >= from_date, SwitchingReport.creation_date <= to_date)) \
@@ -171,7 +167,7 @@ def use_as_template(id):
     switching_report = SwitchingReport.query.get_or_404(id)
 
     if request.method == 'POST':
-        switching_report_service_data = HttpRequestHandler.getSwitchingReportServiceDataFromReqForm()
+        switching_report_service_data = HttpRequestHandler.getSwitchingReportServiceDataFromReqForm(is_update=False)
         sw_report_request_file = HttpRequestHandler.getRequestFileInstanceFromReqForm()
         translation = HttpRequestHandler.getTranslationInstanceFromReqForm()
         switching = HttpRequestHandler.getSwitchingInstanceFromReqForm()
@@ -181,19 +177,8 @@ def use_as_template(id):
             if not FileHandler.isRequestFileExistsInUploadFolder(UPLOAD_FOLDER, sw_report_request_file):
                 FileHandler.uploadRequestFile(sw_report_request_file)
 
-        switching_report = SwitchingReport(creation_date=dt.now(),
-                                           work_type=switching_report_service_data.work_type,
-                                           customer=switching_report_service_data.customer,
-                                           translation_start_time=translation.stringifyStartTime(),
-                                           translation_end_time=translation.stringifyEndTime(),
-                                           main_source=switching.main_source,
-                                           main_destination=switching.main_destination,
-                                           reserve_source=switching.reserve_source,
-                                           reserve_destination=switching.reserve_destination,
-                                           shift_comp=switching_report_service_data.shift_composition,
-                                           comment=switching_report_service_data.comment,
-                                           remarks=switching_report_service_data.remarks,
-                                           request_file_path=sw_report_request_file.request_file_path)
+        switching_report = SwitchingReport.createSwitchingReport(switching_report_service_data, translation, switching,
+                                                                 sw_report_request_file)
 
         DatabaseContext.addSwitchingReportToDatabase(app_db, switching_report)
         return redirect('/switching_reports/switching_reports')

@@ -17,6 +17,7 @@ registerReportServiceBlueprints(app, REPORT_BLUEPRINTS)
 registerSwitchingReportServiceBlueprints(app, SWITCHING_REPORT_BLUEPRINTS)
 addUrlRules(app)
 
+
 @app.route('/')
 def main():
     return render_template('index.html')

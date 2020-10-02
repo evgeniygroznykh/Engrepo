@@ -84,6 +84,18 @@ class SwitchingReport(app_db.Model):
         self.remarks = error_template if self.remarks == 'Без замечаний' else self.remarks + f'; {error_template}'
 
     @staticmethod
+    def createSwitchingReport(service_data:SwitchingReportServiceData, translation:Translation,
+                              switching:Switching, request_file):
+        return SwitchingReport(creation_date=service_data.creation_date,
+                                           work_type=service_data.work_type,
+                                           customer=service_data.customer,
+                                           translation_start_time=translation.stringifyStartTime(), translation_end_time=translation.stringifyEndTime(),
+                                           main_source=switching.main_source, main_destination=switching.main_destination,
+                                           reserve_source=switching.reserve_source, reserve_destination=switching.reserve_destination,
+                                           shift_comp=service_data.shift_composition, comment=service_data.comment,
+                                           remarks=service_data.remarks, request_file_path=request_file.request_file_path)
+
+    @staticmethod
     def formatRemarksOnReportCreation(remarks:str, error_template:str):
         remarks = error_template if remarks == 'Без замечаний' else remarks + f'; {error_template}'
 
