@@ -21,7 +21,7 @@ class SwitchingReport(app_db.Model):
     reserve_destination = app_db.Column(app_db.String(50))
     customer = app_db.Column(app_db.String(50), nullable=False)
     remarks = app_db.Column(app_db.Text, default='Без замечаний')
-    request_file_path = app_db.Column(app_db.Text)
+    coord_request_file_path = app_db.Column(app_db.Text)
 
     def __repr__(self):
         return '<Switching report %r' % self.id
@@ -41,11 +41,11 @@ class SwitchingReport(app_db.Model):
         }
 
     def updateRequestFilePath(self, switching_report_request_file:SwitchingReportRequestFile):
-        if self.request_file_path == 'no request file':
-            self.request_file_path = self.request_file_path. \
+        if self.coord_request_file_path == 'no request file':
+            self.coord_request_file_path = self.coord_request_file_path. \
                 replace('no request file', switching_report_request_file.request_file_path)
         else:
-            self.request_file_path += f'; {switching_report_request_file.request_file_path}'
+            self.coord_request_file_path += f'; {switching_report_request_file.request_file_path}'
 
     def updateServiceData(self, new_service_data:SwitchingReportServiceData):
         self.creation_date = new_service_data.creation_date
@@ -93,7 +93,7 @@ class SwitchingReport(app_db.Model):
                                            main_source=switching.main_source, main_destination=switching.main_destination,
                                            reserve_source=switching.reserve_source, reserve_destination=switching.reserve_destination,
                                            shift_comp=service_data.shift_composition, comment=service_data.comment,
-                                           remarks=service_data.remarks, request_file_path=request_file.request_file_path)
+                                           remarks=service_data.remarks, coord_request_file_path=request_file.request_file_path)
 
     @staticmethod
     def formatRemarksOnReportCreation(remarks:str, error_template:str):
