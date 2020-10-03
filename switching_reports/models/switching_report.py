@@ -7,6 +7,7 @@ from datetime import datetime as dt
 from datetime import timedelta
 import os
 
+
 class SwitchingReport(app_db.Model):
     id = app_db.Column(app_db.Integer, primary_key=True)
     creation_date = app_db.Column(app_db.DateTime)
