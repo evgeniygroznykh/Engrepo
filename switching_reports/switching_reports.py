@@ -129,10 +129,10 @@ def switching_report_search():
 
         return render_template('switching-reports.html', switching_reports=needed_switching_reports, work_types = WORK_TYPES, search_string=search_string)
 
-sw_filter_page = Blueprint('sw_filter_page', __name__, static_folder='static', template_folder='templates')
-SWITCHING_REPORT_BLUEPRINTS.append(sw_filter_page)
-@sw_filter_page.route("/switching_reports/sw_filter_reports", methods=['POST', 'GET'])
-def switching_reports_filter():
+sw_filter_or_download_page = Blueprint('sw_filter_or_download_page', __name__, static_folder='static', template_folder='templates')
+SWITCHING_REPORT_BLUEPRINTS.append(sw_filter_or_download_page)
+@sw_filter_or_download_page.route("/switching_reports/sw_filter_or_download_reports", methods=['POST', 'GET'])
+def switching_reports_filter_or_download():
     if request.method == 'POST':
         if HttpRequestHandler.isFilterButtonPressed():
             if HttpRequestHandler.isReportingPeriodSet():
@@ -147,6 +147,7 @@ def switching_reports_filter():
                                                                     time_deltas=time_deltas, now=dt.now(), amount_of_days=days, search_string='empty')
             else:
                 return ('', 204)
+
         if HttpRequestHandler.isDownloadButtonPressed():
             if HttpRequestHandler.isReportingPeriodSet():
                 from_date, to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()

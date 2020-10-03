@@ -21,7 +21,7 @@
 {% endblock %}
 
 {%block body %}
-        <form action='sw_filter_reports' method="POST">
+        <form action='sw_filter_or_download_reports' method="POST">
             <div style="margin: auto; width: fit-content;">
                 <div style="display: inline-block;">
                         <label for="sortStartTime">С</label><br>
@@ -41,6 +41,7 @@
                 </div>
             </div>
         </form>
+
         <div class="container mt-5" style="margin: auto; width: fit-content;">
             <div class="md-form mt-0">
                 <form class="form-inline md-form mr-auto mb-4" action="sw_search" method="POST">
