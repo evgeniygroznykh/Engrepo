@@ -1,5 +1,4 @@
 from switching_reports.models.switching_report import SwitchingReport, app_db
-from switching_reports.models.http_request_handler import HttpRequestHandler
 from switching_reports.models.file_handler import FileHandler
 from models.database_context import DatabaseContext
 from models.custom_http_response import CustomHttpResponse
@@ -9,7 +8,7 @@ from cfg.external_config import external_config
 from sqlalchemy import or_, and_
 from switching_reports.models.csv_handler import getDataframeFromSwitchingReports, writeDataframeToCsv, \
                                                     getReadableFilenameFromDates
-
+import switching_reports.models.http_request_handler as HttpRequestHandler
 
 CUSTOMERS = external_config['customers']
 WORK_TYPES = external_config['work_types']
@@ -135,8 +134,8 @@ SWITCHING_REPORT_BLUEPRINTS.append(sw_filter_page)
 @sw_filter_page.route("/switching_reports/sw_filter_reports", methods=['POST', 'GET'])
 def switching_reports_filter():
     if request.method == 'POST':
-        if 'filter_button' in request.form:
-            if not HttpRequestHandler.getReportingPeriodFromFilterForm():
+        if HttpRequestHandler.isFilterButtonPressed():
+            if HttpRequestHandler.isReportingPeriodSet():
                 filter_from_date, filter_to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()
                 time_deltas = SwitchingReport.getTimeDeltas(days)
 
@@ -148,8 +147,8 @@ def switching_reports_filter():
                                                                     time_deltas=time_deltas, now=dt.now(), amount_of_days=days, search_string='empty')
             else:
                 return ('', 204)
-        if 'download_button' in request.form:
-            if not HttpRequestHandler.getReportingPeriodFromFilterForm():
+        if HttpRequestHandler.isDownloadButtonPressed():
+            if HttpRequestHandler.isReportingPeriodSet():
                 from_date, to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()
                 filtered_switching_reports = SwitchingReport.query.filter(
                     and_(SwitchingReport.creation_date >= from_date, SwitchingReport.creation_date <= to_date)) \
