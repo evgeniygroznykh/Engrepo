@@ -10,6 +10,7 @@ from switching_reports.models.csv_handler import getDataframeFromSwitchingReport
                                                     getReadableFilenameFromDates
 import switching_reports.models.http_request_handler as HttpRequestHandler
 
+
 CUSTOMERS = external_config['customers']
 WORK_TYPES = external_config['work_types']
 SHIFTS = external_config['shifts']

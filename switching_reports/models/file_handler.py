@@ -11,7 +11,6 @@ class FileHandler:
         except AttributeError as exc:
             handleGeneralExceptions(exc, "Request file was NoneType, while trying to get it from request form.")
 
-
     @staticmethod
     def isRequestFileExistsInUploadFolder(upload_folder:str, request_file:SwitchingReportRequestFile):
         return os.path.isfile(os.path.join(upload_folder, request_file.request_file_instance.filename))
