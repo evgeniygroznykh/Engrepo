@@ -65,7 +65,7 @@ def switching_reports():
     reporting_from, reporting_to = reporting_period
     time_deltas = SwitchingReport.getTimeDeltas(REPORTING_PERIOD_IN_DAYS)
 
-    switching_reports = SwitchingReport.query.order_by(SwitchingReport.creation_date.desc()).all()
+    switching_reports = SwitchingReport.query.order_by(SwitchingReport.translation_start_time.desc()).all()
     return render_template("switching-reports.html", switching_reports=switching_reports, work_types = WORK_TYPES,
                            time_deltas=time_deltas, now=dt.now(), amount_of_days=REPORTING_PERIOD_IN_DAYS, search_string='empty',
                            default_from_value = reporting_from, default_to_value = reporting_to)
@@ -126,7 +126,7 @@ def switching_report_search():
                                                                    SwitchingReport.comment.ilike(f'%{search_string}%'),
                                                                    SwitchingReport.shift_comp.ilike(
                                                                        f'%{search_string}%'))) \
-                                                                        .order_by(SwitchingReport.creation_date.desc()).all()
+                                                                        .order_by(SwitchingReport.translation_start_time.desc()).all()
 
         return render_template('switching-reports.html', switching_reports=needed_switching_reports, work_types = WORK_TYPES, search_string=search_string)
 
@@ -141,8 +141,8 @@ def switching_reports_filter_or_download():
                 time_deltas = SwitchingReport.getTimeDeltas(days)
 
                 filtered_switching_reports = SwitchingReport.query.filter(
-                    and_(SwitchingReport.creation_date >= filter_from_date, SwitchingReport.creation_date <= filter_to_date)) \
-                    .order_by(SwitchingReport.creation_date.desc()).all()
+                    and_(SwitchingReport.translation_start_time >= filter_from_date, SwitchingReport.translation_start_time <= filter_to_date)) \
+                    .order_by(SwitchingReport.translation_start_time.desc()).all()
 
                 return render_template('switching-reports.html', switching_reports=filtered_switching_reports, work_types = WORK_TYPES,
                                                                     time_deltas=time_deltas, now=dt.now(), amount_of_days=days, search_string='empty')

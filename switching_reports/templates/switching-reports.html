@@ -63,7 +63,7 @@
                         <div class="work-type-block" id="{{ wt }}_{{ i }}_days_before">
                             <h2>{{ wt }}</h2>
                             {% for sw_rep in switching_reports %}
-                                {% if sw_rep.creation_date.day == (now - time_deltas[i]).day and sw_rep.work_type == wt %}
+                                {% if sw_rep.translation_start_time.day == (now - time_deltas[i]).day and sw_rep.work_type == wt %}
                                         <div class="report-desc-block">
                                             <h2>{{sw_rep.customer}}</h2>
                                             <p class="creation-date"><b>Дата создания:</b> {{ sw_rep.creation_date.__format__('%Y-%m-%d %H:%M') }}</p>
