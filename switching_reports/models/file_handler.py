@@ -18,6 +18,8 @@ class FileHandler:
     @staticmethod
     def uploadRequestFile(upload_folder, request_file:SwitchingReportRequestFile):
         try:
+            if not os.path.isdir(os.path.join(os.getcwd(), upload_folder)):
+                os.mkdir(os.path.join(os.getcwd(), upload_folder))
             request_file.request_file_instance.save(os.path.join(os.getcwd(), upload_folder, request_file.request_file_instance.filename))
         except Exception as exc:
             handleGeneralExceptions(exc, "'Request file for this switching report was set, but not physically saved' error occured.")
