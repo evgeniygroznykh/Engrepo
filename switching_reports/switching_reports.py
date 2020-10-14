@@ -68,7 +68,7 @@ def switching_reports():
     switching_reports = SwitchingReport.query.order_by(SwitchingReport.translation_start_time.desc()).all()
     return render_template("switching-reports.html", switching_reports=switching_reports, work_types = WORK_TYPES,
                            time_deltas=time_deltas, now=dt.now(), amount_of_days=REPORTING_PERIOD_IN_DAYS, search_string='empty',
-                           default_from_value = reporting_from, default_to_value = reporting_to)
+                           default_from_value=reporting_from, default_to_value=reporting_to)
 
 switching_report_details_page = Blueprint('switching_report_details_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_report_details_page)
