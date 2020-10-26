@@ -113,7 +113,8 @@ def switching_report_update(id):
     else:
         return render_template("switching-report-update.html", switching_report=switching_report,
                                                                         work_types=WORK_TYPES, customers=CUSTOMERS,
-                                                                        shifts=SHIFTS, sources=SOURCES, destinations=DESTINATIONS)
+                                                                        shifts=SHIFTS, sources=SOURCES, destinations=DESTINATIONS,
+                                                                        var_sources=VAR_SOURCES, var_destinations=VAR_DESTINATIONS)
 
 sw_search_page = Blueprint('sw_search_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(sw_search_page)
@@ -189,4 +190,5 @@ def use_as_template(id):
     else:
         return render_template("switching-report-use-as-template.html", switching_report=switching_report,
                                                                         work_types=WORK_TYPES, customers=CUSTOMERS,
-                                                                        shifts=SHIFTS, sources=SOURCES, destinations=DESTINATIONS)
+                                                                        shifts=SHIFTS, sources=SOURCES, destinations=DESTINATIONS,
+                                                                        var_sources=VAR_SOURCES, var_destinations=VAR_DESTINATIONS)
