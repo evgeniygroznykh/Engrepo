@@ -6,7 +6,7 @@ from flask import render_template, request, redirect, Blueprint
 from datetime import datetime as dt
 from cfg.external_config import external_config
 from sqlalchemy import or_, and_
-from switching_reports.models.csv_handler import getDataframeFromSwitchingReports, writeDataframeToCsv, \
+from switching_reports.models.csv_handler import getDataframeFromSwitchingReports, writeDataframeToXlsx, \
                                                     getReadableFilenameFromDates
 import switching_reports.models.http_request_handler as HttpRequestHandler
 
@@ -159,7 +159,7 @@ def switching_reports_filter_or_download():
 
                 file_name = getReadableFilenameFromDates(from_date, to_date)
                 dataframe = getDataframeFromSwitchingReports(filtered_switching_reports)
-                response = CustomHttpResponse(writeDataframeToCsv(dataframe), mimetype='text/csv; charset=utf-16')
+                response = CustomHttpResponse(writeDataframeToXlsx(dataframe), mimetype='application/vnd.ms-excel; charset=utf-16')
                 response.headers["Content-Disposition"] = f"attachment; filename={file_name}"
                 return response
             else:
