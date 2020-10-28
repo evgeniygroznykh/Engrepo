@@ -6,7 +6,7 @@ from flask import render_template, request, redirect, Blueprint
 from datetime import datetime as dt
 from cfg.external_config import external_config
 from sqlalchemy import or_, and_
-from switching_reports.models.csv_handler import getDataframeFromSwitchingReports, writeDataframeToXlsx, \
+from switching_reports.models.xlsx_handler import getDataframeFromSwitchingReports, writeDataframeToXlsx, \
                                                     getReadableFilenameFromDates
 import switching_reports.models.http_request_handler as HttpRequestHandler
 
