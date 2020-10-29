@@ -101,13 +101,13 @@ def writeDataframeToXlsx(dataframe:DataFrame):
         merge_boundaries = date_merge_index_tuple[0], date_merge_index_tuple[1]
         for col_name in MERGE_COL_NUMBERS.keys():
             if not col_name == 'Дата создания':
-                print(getMergeIndexes(dataframe, col_name, merge_boundaries))
                 mergeSimilarColumns(worksheet, getMergeIndexes(dataframe, col_name, merge_boundaries), col_name, text_format)
 
     writer.close()
     output.seek(0)
 
     return output
+
 
 
 
