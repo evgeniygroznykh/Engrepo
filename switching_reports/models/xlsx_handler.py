@@ -20,20 +20,35 @@ def getReadableFilenameFromDates(from_date:datetime, to_date:datetime):
 def getDataframeFromSwitchingReports(sw_reports:list):
     return pandas.DataFrame.from_records([sw_report.to_dict() for sw_report in sw_reports])
 
-def getMergeIndexes(df:DataFrame, col_name):
+def getMergeIndexes(df:DataFrame, col_name, index_boundaries=None):
     merge_indexes = []
-    start_index = 1
-    end_index = 1
-    for row in range(0, len(df[col_name])):
-        if row == len(df[col_name])-1:
-            merge_indexes.append((start_index, end_index, df.loc[row, col_name]))
-        else:
-            if df.loc[row, col_name] == df.loc[row+1, col_name]:
-                end_index += 1
-            else:
+    if index_boundaries:
+        left_bound, right_bound = index_boundaries
+        start_index = left_bound
+        end_index = start_index
+        for row in range(left_bound-1, right_bound):
+            if row == right_bound-1:
                 merge_indexes.append((start_index, end_index, df.loc[row, col_name]))
-                start_index = end_index + 1
-                end_index = start_index
+            else:
+                if df.loc[row, col_name] == df.loc[row+1, col_name]:
+                    end_index += 1
+                else:
+                    merge_indexes.append((start_index, end_index, df.loc[row, col_name]))
+                    start_index = end_index + 1
+                    end_index = start_index
+    else:
+        start_index = 1
+        end_index = 1
+        for row in range(0, len(df[col_name])):
+            if row == len(df[col_name])-1:
+                merge_indexes.append((start_index, end_index, df.loc[row, col_name]))
+            else:
+                if df.loc[row, col_name] == df.loc[row+1, col_name]:
+                    end_index += 1
+                else:
+                    merge_indexes.append((start_index, end_index, df.loc[row, col_name]))
+                    start_index = end_index + 1
+                    end_index = start_index
     return merge_indexes
 
 def addDateFormatToWorksheet(workbook, format_name='date_format'):
@@ -75,11 +90,19 @@ def writeDataframeToXlsx(dataframe:DataFrame):
     for col_excel_name in [chr(x) for x in range(65, 75)]:
         worksheet.set_column(f'{col_excel_name}:{col_excel_name}', 50, cell_format=default_format)
 
-    #Merge same data
+    #Merge same date
     date_format = addDateFormatToWorksheet(workbook)
     text_format = addTextFormatToWorksheet(workbook)
-    for col_name in MERGE_COL_NUMBERS.keys():
-        mergeSimilarColumns(worksheet, getMergeIndexes(dataframe, col_name), col_name, date_format if col_name == 'Дата создания' else text_format)
+
+    date_merge_indexes = getMergeIndexes(dataframe, list(MERGE_COL_NUMBERS.keys())[0])
+    mergeSimilarColumns(worksheet, date_merge_indexes, list(MERGE_COL_NUMBERS.keys())[0], date_format)
+
+    for date_merge_index_tuple in date_merge_indexes:
+        merge_boundaries = date_merge_index_tuple[0], date_merge_index_tuple[1]
+        for col_name in MERGE_COL_NUMBERS.keys():
+            if not col_name == 'Дата создания':
+                print(getMergeIndexes(dataframe, col_name, merge_boundaries))
+                mergeSimilarColumns(worksheet, getMergeIndexes(dataframe, col_name, merge_boundaries), col_name, text_format)
 
     writer.close()
     output.seek(0)
