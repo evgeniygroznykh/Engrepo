@@ -61,6 +61,7 @@ def writeDataframeToXlsx(dataframe:DataFrame):
     formatDateToDayOnly(dataframe, list(MERGE_COL_NUMBERS.keys())[0])
 
     #Format translation times
+    formatDateWithoutAMPM(dataframe, 'Дата редактирования')
     formatDateWithoutAMPM(dataframe, 'Начало трансляции')
     formatDateWithoutAMPM(dataframe, 'Окончание трансляции')
 
