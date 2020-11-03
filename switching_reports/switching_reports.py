@@ -6,8 +6,8 @@ from flask import render_template, request, redirect, Blueprint
 from datetime import datetime as dt
 from cfg.external_config import external_config
 from sqlalchemy import or_, and_
-from switching_reports.models.xlsx_handler import getDataframeFromSwitchingReports, writeDataframeToXlsx, \
-                                                    getReadableFilenameFromDates
+from switching_reports.models.xlsx_handler import writeDataframeToXlsx, getReadableFilenameFromDates
+from switching_reports.models.dataframe_handler import getDataframeFromSwitchingReports, formatDataframeForXlsxUpload
 import switching_reports.models.http_request_handler as HttpRequestHandler
 
 
@@ -57,23 +57,43 @@ def create_switching_report():
 
 switching_reports_page = Blueprint('switching_reports_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_reports_page)
-@switching_report_page.route("/", methods=['POST', 'GET'])
+@switching_reports_page.route("/", methods=['POST', 'GET'])
 @switching_reports_page.route("/switching_reports", methods=['POST', 'GET'])
 @switching_reports_page.route("/switching_reports/", methods=['POST', 'GET'])
-def switching_reports():
-    reporting_period = SwitchingReport.getReportingPeriodAsTuple(REPORTING_PERIOD_IN_DAYS)
-    reporting_from, reporting_to = reporting_period
-    time_deltas = SwitchingReport.getTimeDeltas(REPORTING_PERIOD_IN_DAYS)
+@switching_reports_page.route("/switching_reports/sw_filter_or_download_reports", methods=['POST', 'GET'])
+def get_switching_reports():
+    if request.method == 'POST':
+        if HttpRequestHandler.isReportingPeriodSet():
+            from_date, to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()
+            time_deltas = SwitchingReport.getTimeDeltas(days)
+            filtered_switching_reports = SwitchingReport.query.filter(and_(SwitchingReport.translation_start_time >= from_date,
+                SwitchingReport.translation_start_time <= from_date)).order_by(SwitchingReport.translation_start_time.desc()).all()
 
-    switching_reports = SwitchingReport.query.order_by(SwitchingReport.translation_start_time.desc()).all()
-    return render_template("switching-reports.html", switching_reports=switching_reports, work_types = WORK_TYPES,
-                           time_deltas=time_deltas, now=dt.now(), amount_of_days=REPORTING_PERIOD_IN_DAYS, search_string='empty',
-                           default_from_value=reporting_from, default_to_value=reporting_to)
+            if HttpRequestHandler.isFilterButtonPressed():
+                return render_template('switching_reports.html', switching_reports=filtered_switching_reports, work_types=WORK_TYPES,
+                                        time_deltas=time_deltas, now=dt.now(), amount_of_days=days)
+            elif HttpRequestHandler.isDownloadButtonPressed():
+                file_name = getReadableFilenameFromDates(from_date, to_date)
+                raw_dataframe = getDataframeFromSwitchingReports(filtered_switching_reports)
+                formatted_dataframe = formatDataframeForXlsxUpload(raw_dataframe)
+                response = CustomHttpResponse(writeDataframeToXlsx(formatted_dataframe), mimetype='application/vnd.ms-excel; charset=utf-16')
+                response.headers["Content-Disposition"] = f"attachment; filename={file_name}"
+                return response
+        else:
+            return('', 204)
+    else:
+        from_date, to_date = SwitchingReport.getReportingPeriodAsTuple(REPORTING_PERIOD_IN_DAYS)
+        time_deltas = SwitchingReport.getTimeDeltas(REPORTING_PERIOD_IN_DAYS)
+
+        switching_reports = SwitchingReport.query.order_by(SwitchingReport.translation_start_time.desc()).all()
+        return render_template("switching-reports.html", switching_reports=switching_reports, work_types = WORK_TYPES,
+                               time_deltas=time_deltas, now=dt.now(), amount_of_days=REPORTING_PERIOD_IN_DAYS, search_string='empty',
+                               default_from_value=from_date, default_to_value=to_date)
 
 switching_report_details_page = Blueprint('switching_report_details_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(switching_report_details_page)
 @switching_report_details_page.route("/switching_reports/id=<int:id>")
-def switching_report_details(id):
+def get_switching_report_details(id):
     switching_report = SwitchingReport.query.get_or_404(id)
     return render_template("switching-report-details.html", switching_report=switching_report)
 
@@ -131,44 +151,10 @@ def switching_report_search():
 
         return render_template('switching-reports.html', switching_reports=needed_switching_reports, work_types = WORK_TYPES, search_string=search_string)
 
-sw_filter_or_download_page = Blueprint('sw_filter_or_download_page', __name__, static_folder='static', template_folder='templates')
-SWITCHING_REPORT_BLUEPRINTS.append(sw_filter_or_download_page)
-@sw_filter_or_download_page.route("/switching_reports/sw_filter_or_download_reports", methods=['POST', 'GET'])
-def switching_reports_filter_or_download():
-    if request.method == 'POST':
-        if HttpRequestHandler.isFilterButtonPressed():
-            if HttpRequestHandler.isReportingPeriodSet():
-                filter_from_date, filter_to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()
-                time_deltas = SwitchingReport.getTimeDeltas(days)
-
-                filtered_switching_reports = SwitchingReport.query.filter(
-                    and_(SwitchingReport.translation_start_time >= filter_from_date, SwitchingReport.translation_start_time <= filter_to_date)) \
-                    .order_by(SwitchingReport.translation_start_time.desc()).all()
-
-                return render_template('switching-reports.html', switching_reports=filtered_switching_reports, work_types = WORK_TYPES,
-                                                                    time_deltas=time_deltas, now=dt.now(), amount_of_days=days, search_string='empty')
-            else:
-                return ('', 204)
-
-        if HttpRequestHandler.isDownloadButtonPressed():
-            if HttpRequestHandler.isReportingPeriodSet():
-                from_date, to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()
-                filtered_switching_reports = SwitchingReport.query.filter(
-                    and_(SwitchingReport.creation_date >= from_date, SwitchingReport.creation_date <= to_date)) \
-                    .order_by(SwitchingReport.creation_date.desc()).all()
-
-                file_name = getReadableFilenameFromDates(from_date, to_date)
-                dataframe = getDataframeFromSwitchingReports(filtered_switching_reports)
-                response = CustomHttpResponse(writeDataframeToXlsx(dataframe), mimetype='application/vnd.ms-excel; charset=utf-16')
-                response.headers["Content-Disposition"] = f"attachment; filename={file_name}"
-                return response
-            else:
-                return ('', 204)
-
 sw_template_page = Blueprint('sw_template_page', __name__, static_folder='static', template_folder='templates')
 SWITCHING_REPORT_BLUEPRINTS.append(sw_template_page)
 @sw_template_page.route("/switching_reports/id=<int:id>/use_as_template", methods=['POST', 'GET'])
-def use_as_template(id):
+def use_report_as_template(id):
     switching_report = SwitchingReport.query.get_or_404(id)
 
     if request.method == 'POST':

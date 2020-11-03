@@ -1,7 +1,7 @@
 import pandas
-import xlsxwriter as xls
-from datetime import datetime
 from pandas import DataFrame
+from datetime import datetime
+from switching_reports.models.dataframe_handler import getMergeIndexesWithSameValue
 from io import BytesIO
 
 
@@ -9,105 +9,65 @@ from io import BytesIO
 XLSX_CELL_FORMATS = {'date_format': {'align':'center', 'valign': 'vcenter', 'border': 1, 'num_format':'dd-mm-yyyy'},
                      'text_format': {'align':'center', 'valign': 'vcenter', 'border': 1},
                      'default_cell_format':{'align': 'center', 'valign': 'vcenter', 'border': 1}}
-MERGE_COL_NUMBERS = {'Дата создания': 0, 'Заказчик': 8, 'Исполнители': 9}
 SHEET_NAME = 'Switching_reports'
 XLSX_ENGINE = 'xlsxwriter'
 
 
-def getReadableFilenameFromDates(from_date:datetime, to_date:datetime):
-    return f"{from_date.strftime('%Y-%m-%d')}_{to_date.strftime('%Y-%m-%d')}.xlsx"
-
-def getDataframeFromSwitchingReports(sw_reports:list):
-    return pandas.DataFrame.from_records([sw_report.to_dict() for sw_report in sw_reports])
-
-def getMergeIndexes(df:DataFrame, col_name, index_boundaries=None):
-    merge_indexes = []
-    if index_boundaries:
-        left_bound, right_bound = index_boundaries
-        start_index = left_bound
-        end_index = start_index
-        for row in range(left_bound-1, right_bound):
-            if row == right_bound-1:
-                merge_indexes.append((start_index, end_index, df.loc[row, col_name]))
-            else:
-                if df.loc[row, col_name] == df.loc[row+1, col_name]:
-                    end_index += 1
-                else:
-                    merge_indexes.append((start_index, end_index, df.loc[row, col_name]))
-                    start_index = end_index + 1
-                    end_index = start_index
-    else:
-        start_index = 1
-        end_index = 1
-        for row in range(0, len(df[col_name])):
-            if row == len(df[col_name])-1:
-                merge_indexes.append((start_index, end_index, df.loc[row, col_name]))
-            else:
-                if df.loc[row, col_name] == df.loc[row+1, col_name]:
-                    end_index += 1
-                else:
-                    merge_indexes.append((start_index, end_index, df.loc[row, col_name]))
-                    start_index = end_index + 1
-                    end_index = start_index
-    return merge_indexes
-
-def addDateFormatToWorksheet(workbook, format_name='date_format'):
+def _addDateFormatToWorksheet(workbook, format_name='date_format'):
     return workbook.add_format(XLSX_CELL_FORMATS[format_name])
 
-def addTextFormatToWorksheet(workbook, format_name='text_format'):
+def _addTextFormatToWorksheet(workbook, format_name='text_format'):
     return workbook.add_format(XLSX_CELL_FORMATS[format_name])
 
-def mergeSimilarColumns(worksheet, merge_indexes, col_name, format):
+def _mergeSimilarColumns(worksheet, merge_indexes, col_name, format):
     for indexes_tuple in merge_indexes:
         start_index, end_index, merge_data = indexes_tuple
         worksheet.merge_range(start_index, MERGE_COL_NUMBERS[col_name], end_index, MERGE_COL_NUMBERS[col_name], merge_data, format)
 
-def formatDateToDayOnly(dataframe, col_name):
-    dataframe[col_name] = pandas.to_datetime(dataframe[col_name]).dt.date
+def _getXlsxFormats(workbook):
+    return (_addDateFormatToWorksheet(workbook), _addTextFormatToWorksheet(workbook))
 
-def formatDateWithoutAMPM(dataframe, col_name):
-    dataframe[col_name] = pandas.to_datetime(dataframe[col_name]).dt.strftime('%Y-%m-%d %H:%M')
-
-def writeDataframeToXlsx(dataframe:DataFrame):
-    output = BytesIO()
-    writer = pandas.ExcelWriter(output, engine=XLSX_ENGINE)
-
-    #Get date only
-    formatDateToDayOnly(dataframe, list(MERGE_COL_NUMBERS.keys())[0])
-
-    #Format translation times
-    formatDateWithoutAMPM(dataframe, 'Дата редактирования')
-    formatDateWithoutAMPM(dataframe, 'Начало трансляции')
-    formatDateWithoutAMPM(dataframe, 'Окончание трансляции')
-
-    dataframe.to_excel(writer, index=False, startrow=0, sheet_name=SHEET_NAME)
-
-    workbook = writer.book
+def _formatExcelData(writer:pandas.ExcelWriter, workbook):
     worksheet = writer.sheets[SHEET_NAME]
 
-    #Format all data in excel
     default_format = workbook.add_format(XLSX_CELL_FORMATS['default_cell_format'])
     for col_excel_name in [chr(x) for x in range(65, 75)]:
         worksheet.set_column(f'{col_excel_name}:{col_excel_name}', 50, cell_format=default_format)
 
-    #Merge same date
-    date_format = addDateFormatToWorksheet(workbook)
-    text_format = addTextFormatToWorksheet(workbook)
+def _mergeCellsWithSameDate(dataframe:DataFrame, workbook, worksheet):
+    date_format = _getXlsxFormats(workbook)[0]
 
-    date_merge_indexes = getMergeIndexes(dataframe, list(MERGE_COL_NUMBERS.keys())[0])
-    mergeSimilarColumns(worksheet, date_merge_indexes, list(MERGE_COL_NUMBERS.keys())[0], date_format)
+    date_merge_indexes = getMergeIndexesWithSameValue(dataframe, list(MERGE_COL_NUMBERS.keys())[0])
+    _mergeSimilarColumns(worksheet, date_merge_indexes, list(MERGE_COL_NUMBERS.keys())[0], date_format)
+
+def _mergeCellsWithSameValues(dataframe:DataFrame, workbook, worksheet):
+    text_format = _getXlsxFormats(workbook)[1]
+    date_merge_indexes = getMergeIndexesWithSameValue(dataframe, list(MERGE_COL_NUMBERS.keys())[0])
 
     for date_merge_index_tuple in date_merge_indexes:
         merge_boundaries = date_merge_index_tuple[0], date_merge_index_tuple[1]
         for col_name in MERGE_COL_NUMBERS.keys():
             if not col_name == 'Дата создания':
-                mergeSimilarColumns(worksheet, getMergeIndexes(dataframe, col_name, merge_boundaries), col_name, text_format)
+                _mergeSimilarColumns(worksheet, getMergeIndexesWithSameValue(dataframe, col_name, merge_boundaries), col_name, text_format)
+
+def getReadableFilenameFromDates(from_date:datetime, to_date:datetime):
+    return f"{from_date.strftime('%Y-%m-%d')}_{to_date.strftime('%Y-%m-%d')}.xlsx"
+
+def writeDataframeToXlsx(dataframe:DataFrame):
+    output = BytesIO()
+    writer = pandas.ExcelWriter(output, engine=XLSX_ENGINE)
+
+    dataframe.to_excel(writer, index=False, startrow=0, sheet_name=SHEET_NAME)
+    worksheet = writer.sheets[SHEET_NAME]
+    workbook = writer.book
+
+    _mergeCellsWithSameDate(workbook, worksheet)
+    _mergeCellsWithSameValues(workbook, worksheet)
 
     writer.close()
     output.seek(0)
 
     return output
-
 
 
 

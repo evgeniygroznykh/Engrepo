@@ -6,6 +6,9 @@
 .DS_Store
 .DS-Store
 
+#Python virtual environment
+venv
+
 # Application log file
 app_log.txt
 
