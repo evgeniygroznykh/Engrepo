@@ -4,7 +4,7 @@ from pandas import DataFrame
 
 #GLOBALS
 COLUMN_NAMES_TO_FORMAT = ['Дата редактирования', 'Начало трансляции', 'Окончание трансляции']
-MERGE_COL_NUMBERS = {'Дата создания': 0, 'Заказчик': 8, 'Исполнители': 9}
+CREATION_DATE_COLUMN_NAME = 'Дата создания'
 
 def _formatDateToDayOnly(dataframe, col_name):
     dataframe[col_name] = pandas.to_datetime(dataframe[col_name]).dt.date
@@ -16,6 +16,8 @@ def getMergeIndexesWithSameValue(df:DataFrame, col_name, index_boundaries=None):
     merge_indexes = []
     if index_boundaries:
         left_bound, right_bound = index_boundaries
+        df[col_name][left_bound:right_bound:].sort_values()
+
         start_index = left_bound
         end_index = start_index
         for row in range(left_bound-1, right_bound):
@@ -47,7 +49,7 @@ def getDataframeFromSwitchingReports(sw_reports:list):
     return pandas.DataFrame.from_records([sw_report.to_dict() for sw_report in sw_reports])
 
 def formatDataframeForXlsxUpload(raw_dataframe:DataFrame):
-    _formatDateToDayOnly(raw_dataframe, list(MERGE_COL_NUMBERS.keys())[0])
+    _formatDateToDayOnly(raw_dataframe, CREATION_DATE_COLUMN_NAME)
     _formatDateTo24H(raw_dataframe, 'Дата редактирования')
     _formatDateTo24H(raw_dataframe, 'Начало трансляции')
     _formatDateTo24H(raw_dataframe, 'Окончание трансляции')

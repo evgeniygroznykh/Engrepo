@@ -67,7 +67,7 @@ def get_switching_reports():
             from_date, to_date, days = HttpRequestHandler.getReportingPeriodFromFilterForm()
             time_deltas = SwitchingReport.getTimeDeltas(days)
             filtered_switching_reports = SwitchingReport.query.filter(and_(SwitchingReport.translation_start_time >= from_date,
-                SwitchingReport.translation_start_time <= from_date)).order_by(SwitchingReport.translation_start_time.desc()).all()
+                SwitchingReport.translation_start_time <= to_date)).order_by(SwitchingReport.translation_start_time.desc()).all()
 
             if HttpRequestHandler.isFilterButtonPressed():
                 return render_template('switching_reports.html', switching_reports=filtered_switching_reports, work_types=WORK_TYPES,

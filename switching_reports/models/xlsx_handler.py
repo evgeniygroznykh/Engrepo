@@ -11,6 +11,7 @@ XLSX_CELL_FORMATS = {'date_format': {'align':'center', 'valign': 'vcenter', 'bor
                      'default_cell_format':{'align': 'center', 'valign': 'vcenter', 'border': 1}}
 SHEET_NAME = 'Switching_reports'
 XLSX_ENGINE = 'xlsxwriter'
+MERGE_COL_NUMBERS = {'Дата создания': 0, 'Заказчик': 8, 'Исполнители': 9}
 
 
 def _addDateFormatToWorksheet(workbook, format_name='date_format'):
@@ -48,6 +49,8 @@ def _mergeCellsWithSameValues(dataframe:DataFrame, workbook, worksheet):
         merge_boundaries = date_merge_index_tuple[0], date_merge_index_tuple[1]
         for col_name in MERGE_COL_NUMBERS.keys():
             if not col_name == 'Дата создания':
+                left_bound, right_bound = merge_boundaries
+                dataframe[col_name][left_bound:right_bound:].sort_values()
                 _mergeSimilarColumns(worksheet, getMergeIndexesWithSameValue(dataframe, col_name, merge_boundaries), col_name, text_format)
 
 def getReadableFilenameFromDates(from_date:datetime, to_date:datetime):
@@ -61,8 +64,9 @@ def writeDataframeToXlsx(dataframe:DataFrame):
     worksheet = writer.sheets[SHEET_NAME]
     workbook = writer.book
 
-    _mergeCellsWithSameDate(workbook, worksheet)
-    _mergeCellsWithSameValues(workbook, worksheet)
+    _formatExcelData(writer, workbook)
+    _mergeCellsWithSameDate(dataframe, workbook, worksheet)
+    _mergeCellsWithSameValues(dataframe, workbook, worksheet)
 
     writer.close()
     output.seek(0)
