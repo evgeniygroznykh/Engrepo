@@ -3,6 +3,7 @@ from pandas import DataFrame
 from datetime import datetime
 from io import BytesIO
 from switching_reports.models.dataframe_handler import getMergeBoundaryIndexes, getLocalMergeIndexes
+from cfg.external_config import external_config
 
 
 #GLOBALS
@@ -16,19 +17,21 @@ MERGE_COLUMNS = ['Дата создания', 'Заказчик', 'Исполн�
 MERGE_COL_NUMBERS = {'Дата создания': 0, 'Исполнители': 9, 'Заказчик': 8}
 SHORT_DATETIME_COLUMNS = ['Дата создания']
 FULL_DATETIME_COLUMNS = ['Дата редактирования', 'Начало трансляции', 'Окончание трансляции']
+BG_COLOR_RGBA = external_config["excel_column_filler_rgba"]
+COLUMNS_WIDTH = external_config["columns_width"]
 COLOR_FLAG = True
 
 
 def _getCellFormat(col_name, workbook):
     if col_name in SHORT_DATETIME_COLUMNS:
         format_name = 'short_date_time_format'
-        XLSX_CELL_FORMATS[format_name]['bg_color'] = 'gray' if COLOR_FLAG else 'white'
+        XLSX_CELL_FORMATS[format_name]['bg_color'] = BG_COLOR_RGBA if COLOR_FLAG else 'white'
     elif col_name in FULL_DATETIME_COLUMNS:
         format_name = 'full_date_time_format'
-        XLSX_CELL_FORMATS[format_name]['bg_color'] = 'gray' if COLOR_FLAG else 'white'
+        XLSX_CELL_FORMATS[format_name]['bg_color'] = BG_COLOR_RGBA if COLOR_FLAG else 'white'
     else:
         format_name = 'text_format'
-        XLSX_CELL_FORMATS[format_name]['bg_color'] = 'gray' if COLOR_FLAG else 'white'
+        XLSX_CELL_FORMATS[format_name]['bg_color'] = BG_COLOR_RGBA if COLOR_FLAG else 'white'
     return workbook.add_format(XLSX_CELL_FORMATS[format_name])
 
 
@@ -37,9 +40,8 @@ def _formatColumns(writer):
     workbook = writer.book
 
     default_format = workbook.add_format(XLSX_CELL_FORMATS['default_cell_format'])
-    for col_excel_name in [chr(x) for x in range(65, 75)]:
-        print(f'Setting format for column {col_excel_name}:{col_excel_name}')
-        worksheet.set_column(f'{col_excel_name}:{col_excel_name}', 50, cell_format=default_format)
+    for k,v in COLUMNS_WIDTH.items():
+        worksheet.set_column(f'{k}:{k}', v, cell_format=default_format)
 
 
 def _fillRows(writer, date_boundary_indexes):
@@ -47,7 +49,7 @@ def _fillRows(writer, date_boundary_indexes):
     workbook = writer.book
     worksheet = writer.sheets[SHEET_NAME]
 
-    bg_color = 'gray' if COLOR_FLAG else 'white'
+    bg_color = BG_COLOR_RGBA if COLOR_FLAG else 'white'
     lower_bound, upper_bound = date_boundary_indexes[0], date_boundary_indexes[1]
 
     bg_color_cell_format = workbook.add_format({'align':'center', 'valign':'center', 'bg_color':bg_color, 'border':1})
