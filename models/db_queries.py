@@ -9,8 +9,6 @@ def getSwitchingReportsFromDatabaseUsingSearchString(database_model, search_stri
                                                                 database_model.comment.ilike(f'%{search_string}%'),
                                                                 database_model.shift_comp.ilike(f'%{search_string}%'))) \
         .order_by(database_model.date.desc()).all()
-    print(database_model)
-    print(needed_switching_reports)
     return needed_switching_reports
 
 @databaseConnectionHandler

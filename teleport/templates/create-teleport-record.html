@@ -1,0 +1,130 @@
+{% extends 'teleport-base.html'%}
+
+{% block my_styles %}
+{% endblock %}
+
+{% block title %}
+Создать отчёт о коммутации
+{% endblock %}
+
+{% block add_scripts %}
+{% endblock %}
+
+{% block nav %}
+<li class="nav-item active">
+    <a class="nav-link" href="/teleport/create_teleport_record">Создать новую запись</a>
+</li>
+<li class="nav-item active">
+    <a class="nav-link" href="/teleport/schedule">Расписание</a>
+</li>
+{% endblock %}
+
+{%block body %}
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            <div id='input-form-2' class="col-md-6 mb-3" style="float: right;">
+                <label for="switchingReportRemarks">Замечания</label>
+                <textarea class="form-control" id="switchingReportRemarks" name="switchingReportRemarks" rows="13" cols="50" placeholder="">{{ remarks }}</textarea>
+            </div>
+            <div id='input-form' class="col-md-6 mb-3">
+                <label for="switchingReportWorkType">Тип работ</label>
+                <div class="input-group mb-3">
+                <input type="text" class="form-control" id="switchingReportWorkType" name="switchingReportWorkType" placeholder="Выберите тип работ" value="" required="" maxlength="50">
+                </div>
+
+                {% if work_types|length > 0 %}
+                    {% for work_type in work_types%}
+                        <button class="btn btn-warning" type="button" onclick="chooseWorkType(this)" name="{{work_type}}_button">{{ work_type }}</button>
+                    {% endfor %}
+                {% endif %}
+                <br>
+                <hr class="mb-4">
+
+                <label for="switchingCustomer">Заказчик</label>
+                <div class="input-group mb-3">
+                <input type="text" class="form-control" id="switchingCustomer" name="switchingCustomer" placeholder="Выберите заказчика" value="" required="" maxlength="50">
+                </div>
+
+                {% if customers|length > 0 %}
+                    {% for cust in customers%}
+                        <button class="btn btn-warning" type="button" onclick="chooseCustomer(this)" name="{{cust}}_button">{{ cust }}</button>
+                    {% endfor %}
+                {% endif %}
+                <br>
+                <hr class="mb-4">
+
+                <label for="shiftComp">Состав смены</label>
+                <div class="input-group mb-3">
+                  <select class="custom-select" id="shiftComp" name="shiftComp">
+                      <option selected>Выберите смену</option>
+                    {% for shift in shifts %}
+                        <option value="{{ shift }}">{{ shift }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <label for="translationStartTime">Начало трансляции</label><br>
+                <input type="datetime-local" id="translationStartTime" name="translationStartTime" placeholder="" value="{{ default_start_time }}" required="">
+                <div class="invalid-feedback">
+                  Необходимо ввести время начала трансляции.
+                </div>
+                <br>
+
+                <label for="translationEndTime">Окончание трансляции</label><br>
+                <input type="datetime-local"  id="translationEndTime" name="translationEndTime" placeholder="" value="{{ default_end_time }}" required="">
+                <div class="invalid-feedback">
+                  Необходимо ввести время окончания трансляции.
+                </div>
+                <br>
+
+                <label for="switchingSource">Основной источник</label>
+                <input type="text" class="form-control" id="switchingSource" name="switchingSource" placeholder="" value="" required="" maxlength="50">
+                <div class="invalid-feedback">
+                  Необходимо ввести основной источник для данной коммутации.
+                </div>
+
+                <button id="main-sources-button" type="button" class="btn btn-dark">Sources</button>
+                <br>
+
+                <label for="switchingDestination">Основное направление</label>
+                <input type="text" class="form-control" id="switchingDestination" name="switchingDestination" placeholder="" value="" required="" maxlength="50">
+                <div class="invalid-feedback">
+                  Необходимо ввести основное направление для данной коммутации.
+                </div>
+
+                <button id="main-dests-button" type="button" class="btn btn-dark">Destinations</button>
+                <br>
+
+                <label for="reserveSwitchingSource">Резервный источник</label>
+                <input type="text" class="form-control" id="reserveSwitchingSource" name="reserveSwitchingSource" placeholder="no reserve" value="" maxlength="50">
+                <div class="invalid-feedback">
+                  Необходимо ввести основной источник для данной коммутации.
+                </div>
+
+                <button id="res-sources-button" type="button" class="btn btn-dark">Sources</button>
+                <br>
+
+                <label for="reserveSwitchingDestination">Резервное направление</label>
+                <input type="text" class="form-control" id="reserveSwitchingDestination" name="reserveSwitchingDestination" placeholder="no reserve" value="" maxlength="50">
+                <div class="invalid-feedback">
+                  Необходимо ввести основное направление для данной коммутации.
+                </div>
+
+                <button id="res-dests-button" type="button" class="btn btn-dark">Destinations</button>
+                <br>
+
+                <label for="switchingReportComment">Комментарий</label>
+                <textarea class="form-control" id="switchingReportComment" name="switchingReportComment" rows="10" cols="50" placeholder=""></textarea>
+
+                <br>
+                <br>
+                <div class="file-upload-wrapper">
+                  <input type="file" id="requestFile" name="requestFile" class="file-upload" />
+                </div>
+
+                <hr class="mb-4">
+                <button class="btn btn-dark btn-lg btn-block" type="submit">Отправить отчёт</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
