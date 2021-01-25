@@ -7,7 +7,7 @@ TELEPORT_BLUEPRINTS.append(teleport_schedule_page)
 @teleport_schedule_page.route("/schedule/", methods=['POST', 'GET'])
 @teleport_schedule_page.route("/schedule", methods=['POST', 'GET'])
 def teleport_schedule():
-    return render_template("teleport-schedule.html")
+    return render_template("teleport-schedule.html", token="React frontend")
 
 new_teleport_record_page = Blueprint('new_teleport_record_page', __name__, static_folder='static', template_folder='templates')
 TELEPORT_BLUEPRINTS.append(new_teleport_record_page)
