@@ -2,6 +2,7 @@ from flask import Flask
 from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
 from models.logger import handleGeneralExceptions
 from switching_reports.models.switching_report import SwitchingReport
+from teleport.models.teleport_record import TeleportRecord
 
 
 #GLOBALS
@@ -41,6 +42,12 @@ class DatabaseContext:
     @databaseConnectionHandler
     def addSwitchingReportToDatabase(database, switching_report:SwitchingReport):
         database.session.add(switching_report)
+        databaseSessionCommitChanges(database)
+
+    @staticmethod
+    @databaseConnectionHandler
+    def addTeleportRecordToDatabase(database, teleport_record:TeleportRecord):
+        database.session.add(teleport_record)
         databaseSessionCommitChanges(database)
 
     @staticmethod
