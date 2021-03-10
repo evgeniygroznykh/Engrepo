@@ -16,8 +16,9 @@ class FileHandler:
         return os.path.isfile(os.path.join(upload_folder, request_file.request_file_instance.filename))
 
     @staticmethod
-    def uploadRequestFile(upload_folder, request_file:SwitchingReportRequestFile):
+    def uploadRequestFile(upload_folder, request_file:SwitchingReportRequestFile, work_type:str):
         try:
+            upload_folder = upload_folder + f'/{work_type}'
             if not os.path.isdir(os.path.join(os.getcwd(), upload_folder)):
                 os.mkdir(os.path.join(os.getcwd(), upload_folder))
             request_file.request_file_instance.save(os.path.join(os.getcwd(), upload_folder, request_file.request_file_instance.filename))
