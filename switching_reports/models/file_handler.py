@@ -20,9 +20,9 @@ class FileHandler:
     @staticmethod
     def uploadRequestFile(upload_folder, request_file:SwitchingReportRequestFile, report_data:SwitchingReportServiceData):
         try:
-            upload_folder = upload_folder + f'/{report_data.work_type}/{report_data.creation_date.strftime("%d_%m_%y")}'
+            upload_folder = upload_folder + f'/{report_data.work_type}/{report_data.creation_date.strftime("%y_%m_%d")}'
             if not os.path.isdir(os.path.join(os.getcwd(), upload_folder)):
-                os.mkdir(os.path.join(os.getcwd(), upload_folder))
+                os.makedirs(os.path.join(os.getcwd(), upload_folder))
             request_file.request_file_instance.save(os.path.join(os.getcwd(), upload_folder, request_file.request_file_instance.filename))
         except Exception as exc:
             handleGeneralExceptions(exc, "'Request file for this switching report was set, but not physically saved' error occured.")

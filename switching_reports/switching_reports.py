@@ -120,7 +120,7 @@ def switching_report_update(id):
         if not FileHandler.isFileInRequestForm(sw_report_request_file):
             sw_report_request_file.setFilePath(UPLOAD_FOLDER)
             if not FileHandler.isRequestFileExistsInUploadFolder(UPLOAD_FOLDER, sw_report_request_file):
-                FileHandler.uploadRequestFile(UPLOAD_FOLDER, sw_report_request_file)
+                FileHandler.uploadRequestFile(UPLOAD_FOLDER, sw_report_request_file, switching_report_service_data)
                 switching_report.updateRequestFilePath(sw_report_request_file)
                 switching_report.formatRemarksIfNoRemarks()
 
@@ -166,7 +166,7 @@ def use_report_as_template(id):
         if not FileHandler.isFileInRequestForm(sw_report_request_file):
             sw_report_request_file.setFilePath(UPLOAD_FOLDER)
             if not FileHandler.isRequestFileExistsInUploadFolder(UPLOAD_FOLDER, sw_report_request_file):
-                FileHandler.uploadRequestFile(UPLOAD_FOLDER, sw_report_request_file)
+                FileHandler.uploadRequestFile(UPLOAD_FOLDER, sw_report_request_file, switching_report_service_data)
 
         switching_report = SwitchingReport.createSwitchingReport(switching_report_service_data, translation, switching,
                                                                  sw_report_request_file)
