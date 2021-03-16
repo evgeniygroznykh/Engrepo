@@ -86,67 +86,6 @@
             </div>
         </div>
 
-        <div class="main-var-srcs-bg-modal">
-            <div class="main-var-srcs-modal-content">
-              <div class="main-var-srcs-close-btn">+</div>
-              <form class="form-container">
-                <h1>VAR Sources (main)</h1>
-                  {% if var_sources|length > 0 %}
-                      {% for var_src in var_sources %}
-                        <button type="button" style="margin: 5px;" class="btn btn-primary" onclick="selectMainSource(this)">{{ var_src }}</button>
-                      {% endfor %}
-                  {% else %}
-                    <h2>No sources</h2>
-                  {% endif %}
-              </form>
-            </div>
-        </div>
-        <div class="main-var-dests-bg-modal">
-            <div class="main-var-dests-modal-content">
-              <div class="main-var-dests-close-btn">+</div>
-              <form class="form-container">
-                <h1>VAR Destinations (main)</h1>
-                  {% if var_destinations|length > 0 %}
-                      {% for var_dest in var_destinations %}
-                        <button type="button" style="margin: 5px;" class="btn btn-primary" onclick="selectMainDest(this)">{{ var_dest }}</button>
-                      {% endfor %}
-                  {% else %}
-                    <h2>No destinations</h2>
-                  {% endif %}
-              </form>
-            </div>
-        </div>
-        <div class="res-var-srcs-bg-modal">
-            <div class="res-var-srcs-modal-content">
-              <div class="res-var-srcs-close-btn">+</div>
-              <form class="form-container">
-                <h1>VAR Sources (reserve)</h1>
-                  {% if var_sources|length > 0 %}
-                      {% for var_src in var_sources %}
-                        <button type="button" style="margin: 5px;" class="btn btn-primary" onclick="selectResSource(this)">{{ var_src }}</button>
-                      {% endfor %}
-                  {% else %}
-                    <h2>No sources</h2>
-                  {% endif %}
-              </form>
-            </div>
-        </div>
-        <div class="res-var-dests-bg-modal">
-            <div class="res-var-dests-modal-content">
-              <div class="res-var-dests-close-btn">+</div>
-              <form class="res-container">
-                <h1>VAR Destinations (reserve)</h1>
-                  {% if var_destinations|length > 0 %}
-                      {% for var_dest in var_destinations %}
-                        <button type="button" style="margin: 5px;" class="btn btn-primary" onclick="selectResDest(this)">{{ var_dest }}</button>
-                      {% endfor %}
-                  {% else %}
-                    <h2>No destinations</h2>
-                  {% endif %}
-              </form>
-            </div>
-        </div>
-
         <div class="container">
             <form method="post" enctype="multipart/form-data">
                 <div id='input-form-2' class="col-md-6 mb-3" style="float: right;">

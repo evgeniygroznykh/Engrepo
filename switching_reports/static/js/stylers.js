@@ -4,36 +4,28 @@ function styleReportDescriptions (){
 }
 
 function styleWorkTypeDivs (){
-    $("div[id^='Коммутация VAR']").each(function() {
-            if (this.children.length <= 1){
-                this.style.background = 'grey';
-            }
-            else {
-                this.style.background = '#fcca03';
-            }
-        });
-        $("div[id^='Коммутация Матч Премьер']").each(function() {
-            if (this.children.length <= 1){
-                this.style.background = 'grey';
-            }
-            else {
-                this.style.background = '#fcca03';
-            }
-        });
-            $("div[id^='Запись трансляции']").each(function() {
-            if (this.children.length <= 1){
-                this.style.background = 'grey';
-            }
-            else {
-                this.style.background = '#fcca03';
-            }
-        });
-            $("div[id^='Коммутация Останкино']").each(function() {
-            if (this.children.length <= 1){
-                this.style.background = 'grey';
-            }
-            else {
-                this.style.background = '#fcca03';
-            }
-        });
+    $("div[id^='Коммутация Матч Премьер']").each(function() {
+        if (this.children.length <= 1){
+            this.style.background = 'grey';
+        }
+        else {
+            this.style.background = '#fcca03';
+        }
+    });
+        $("div[id^='Запись трансляции']").each(function() {
+        if (this.children.length <= 1){
+            this.style.background = 'grey';
+        }
+        else {
+            this.style.background = '#fcca03';
+        }
+    });
+        $("div[id^='Коммутация Останкино']").each(function() {
+        if (this.children.length <= 1){
+            this.style.background = 'grey';
+        }
+        else {
+            this.style.background = '#fcca03';
+        }
+    });
 }
