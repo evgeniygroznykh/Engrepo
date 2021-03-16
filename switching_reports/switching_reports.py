@@ -70,7 +70,7 @@ def get_switching_reports():
                 SwitchingReport.translation_start_time <= to_date)).order_by(SwitchingReport.translation_start_time.desc()).all()
 
             if HttpRequestHandler.isFilterButtonPressed():
-                return render_template('switching_reports.html', switching_reports=filtered_switching_reports, work_types=WORK_TYPES,
+                return render_template('switching-reports.html', switching_reports=filtered_switching_reports, work_types=WORK_TYPES,
                                         time_deltas=time_deltas, now=dt.now(), amount_of_days=days)
             elif HttpRequestHandler.isDownloadButtonPressed():
                 file_name = getReadableFilenameFromDates(from_date, to_date)
