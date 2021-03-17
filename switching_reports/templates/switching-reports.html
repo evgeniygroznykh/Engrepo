@@ -66,7 +66,9 @@
                                 {% if sw_rep.translation_start_time.day == (now - time_deltas[i]).day and sw_rep.work_type == wt
                                     and sw_rep.translation_start_time.month == (now - time_deltas[i]).month %}
                                         <div class="report-desc-block">
-                                            <h2>{{sw_rep.customer}}</h2>
+                                            <h2>{{sw_rep.report_header}}</h2>
+                                            <p><b>Заказчик:</b> {{ sw_rep.customer }}</p>
+                                            <p><b>Тип работ:</b> {{ sw_rep.work_type }}</p>
                                             <p class="creation-date"><b>Дата создания:</b> {{ sw_rep.creation_date.__format__('%Y-%m-%d %H:%M') }}</p>
                                             {% if sw_rep.modified_date %}
                                             <p class="creation-date"><b>Дата редактирования:</b> {{ sw_rep.modified_date.__format__('%Y-%m-%d %H:%M') }}</p>

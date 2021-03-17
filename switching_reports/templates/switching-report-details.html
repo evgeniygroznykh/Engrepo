@@ -27,7 +27,9 @@
 {%block body %}
 <div class="container mt-5">
     <div class="report-desc-block" style="display: block;">
-        <h2>{{switching_report.work_type}} для {{switching_report.customer}}</h2>
+        <h2>{{switching_report.report_header}}</h2>
+        <p><b>Заказчик:</b> {{ switching_report.customer }}</p>
+        <p><b>Тип работ:</b> {{ switching_report.work_type }}</p>
         <p id="desc"><b>Комментарий:</b> {{ switching_report.comment[:262] }}<span id="more">{{switching_report.comment[262:]}}</span></p>
         <button onclick="read()" id="more_link">Читать подробнее..</button>
         <br>

@@ -6,6 +6,7 @@ from datetime import datetime
 class SwitchingReportServiceData:
     creation_date : datetime
     modified_date : datetime
+    report_header : str
     work_type : str
     customer : str
     shift_composition : str

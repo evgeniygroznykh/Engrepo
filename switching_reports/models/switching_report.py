@@ -12,6 +12,7 @@ class SwitchingReport(app_db.Model):
     id = app_db.Column(app_db.Integer, primary_key=True)
     creation_date = app_db.Column(app_db.DateTime)
     modified_date = app_db.Column(app_db.DateTime)
+    report_header = app_db.Column(app_db.String(250))
     work_type = app_db.Column(app_db.String(300), nullable=False)
     shift_comp = app_db.Column(app_db.String(300), nullable=False)
     comment = app_db.Column(app_db.Text, nullable=False)
@@ -32,6 +33,7 @@ class SwitchingReport(app_db.Model):
         return {
             'Дата создания':self.creation_date,
             'Дата редактирования':self.modified_date,
+            'Заголовок':self.report_header,
             'Комментарий':self.comment,
             'Виды работ':self.work_type,
             'Начало трансляции':self.translation_start_time,
@@ -52,6 +54,7 @@ class SwitchingReport(app_db.Model):
     def updateServiceData(self, new_service_data:SwitchingReportServiceData):
         self.creation_date = new_service_data.creation_date
         self.modified_date = new_service_data.modified_date
+        self.report_header = new_service_data.report_header
         self.work_type = new_service_data.work_type
         self.customer = new_service_data.customer
         self.shift_comp = new_service_data.shift_composition
@@ -93,6 +96,7 @@ class SwitchingReport(app_db.Model):
                               switching:Switching, request_file):
         return SwitchingReport(creation_date=service_data.creation_date,
                                            work_type=service_data.work_type,
+                                           report_header=service_data.report_header,
                                            customer=service_data.customer,
                                            translation_start_time=translation.stringifyStartTime(), translation_end_time=translation.stringifyEndTime(),
                                            main_source=switching.main_source, main_destination=switching.main_destination,

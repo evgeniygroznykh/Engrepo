@@ -44,12 +44,13 @@ def getSwitchingReportServiceDataFromReqForm(is_update:bool, switching_report:Sw
             modified_date = dt.now()
             creation_date = switching_report.creation_date
 
+        report_header = request.form['switchingReportHeader']
         work_type = request.form['switchingReportWorkType']
         customer = request.form['switchingCustomer']
         shift_composition = request.form['shiftComp']
         comment = request.form['switchingReportComment']
         remarks = request.form['switchingReportRemarks']
-        service_data = SwitchingReportServiceData(creation_date, modified_date, work_type, customer, shift_composition, comment, remarks)
+        service_data = SwitchingReportServiceData(creation_date, modified_date, report_header, work_type, customer, shift_composition, comment, remarks)
         return service_data
     except KeyError as key_exc:
         handleGeneralExceptions(key_exc, "Some of the service data keys weren't found in request form.")
